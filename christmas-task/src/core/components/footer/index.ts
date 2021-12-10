@@ -20,7 +20,7 @@ class Footer extends Component {
     footerElements.innerHTML = `
       <div class="footer__item">
         <a href="https://github.com/taneros" target="_blank">
-          <img class="footer__item__icon-git" src="./images/github.svg" alt="Taneros' GitHub">
+          <img class="footer__item__icon-git" src="./assets/github.svg" alt="Taneros' GitHub">
         </a>
       </div>
       <div class="footer__item">
@@ -28,7 +28,7 @@ class Footer extends Component {
       </div>
       <div class="footer__item">
         <a href="https://rs.school/js/" title="Link to the course" target="_blank">
-          <img class="footer__item__icon-rss" src="./images/rs_school_js_grey.svg" alt="RS School">
+          <img class="footer__item__icon-rss" src="./assets/rs_school_js_grey.svg" alt="RS School">
         </a>
       </div>
     `;
