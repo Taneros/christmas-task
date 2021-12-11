@@ -1,10 +1,6 @@
 //TODO
 /**
  *
- * Create Main Page with tag amin
- *
- * Add class parameter to constructor
- *
  *
  **/
 
