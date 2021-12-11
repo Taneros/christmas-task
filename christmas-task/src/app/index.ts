@@ -57,11 +57,16 @@ class App {
   }
 
   // Router
-  private enableRouteChange() {
-    window.addEventListener('hashchange', () => {
-      const hash = window.location.hash.slice(1);
+  private enableRouteChange(hash: string = '') {
+    if (!hash) {
+      window.addEventListener('hashchange', () => {
+        const hash = window.location.hash.slice(1);
+        App.renderNewPage(hash);
+      });
+    } else {
+      window.location.hash = hash;
       App.renderNewPage(hash);
-    });
+    }
   }
 
   constructor() {
@@ -75,7 +80,7 @@ class App {
     App.container.append(this.main.render());
     App.renderNewPage('main');
     App.container.append(this.footer.render());
-    this.enableRouteChange();
+    this.enableRouteChange('settings');
   }
 }
 
