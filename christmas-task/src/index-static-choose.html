@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Christmas Task</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <header class="header">
+        <nav class="header__nav">
+          <a href="#main-page" class="header__nav__btn">Main Page</a
+          ><a href="#settings-page" class="header__nav__btn">Choose Toys</a
+          ><a href="#game-page" class="header__nav__btn">Decorate Tree</a>
+        </nav>
+      </header>
+      <main class="main" id="main-page">
+        <div id="settings-page" class="main__settings-page">
+          <section class="controls">
+            <div class="controls__filter-by-value">
+              <h2 class="controls__filter-header">Sort by Value</h2>
+              <div class="filter__btns">
+                <h3 class="filter-btns__header">Form</h3>
+                <button class="filter__btns btn" data-filer="шар"></button>
+                <button
+                  class="filter__btns btn"
+                  data-filer="колокольчик"
+                ></button>
+                <button class="filter__btns btn" data-filer="шишка"></button>
+                <button class="filter__btns btn" data-filer="снежинка"></button>
+                <button class="filter__btns btn" data-filer="фигурка"></button>
+              </div>
+            </div>
+            <div class="controls__filter-by-range">
+              <h2 class="controls__filter-header">Sort by Range</h2>
+            </div>
+            <div class="controls__filter-by-name">
+              <h2 class="controls__filter-header">Sort by Name</h2>
+            </div>
+          </section>
+          <section class="cards">
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+          </section>
+        </div>
+      </main>
+      <footer class="footer">
+        <div class="footer__content">
+          <div class="footer__item">
+            <a href="https://github.com/taneros" target="_blank">
+              <img
+                class="footer__item__icon-git"
+                src="./assets/github.svg"
+                alt="Taneros' GitHub"
+              />
+            </a>
+          </div>
+          <div class="footer__item">
+            <p class="footer__item__date">© 2021</p>
+          </div>
+          <div class="footer__item">
+            <a
+              href="https://rs.school/js/"
+              title="Link to the course"
+              target="_blank"
+            >
+              <img
+                class="footer__item__icon-rss"
+                src="./assets/rs_school_js_grey.svg"
+                alt="RS School"
+              />
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

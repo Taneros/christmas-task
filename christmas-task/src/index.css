@@ -1,15 +1,14 @@
 @import url('./nullstyle.css');
 
 body {
-  max-width: 100vw;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: #fff;
 }
 
-/* Main App Style Divs */
+/* Main App Style */
 
 .app {
-  min-width: 100vw;
+  max-width: 100vw;
   min-height: 100vh;
   display: grid;
   grid-template-areas:
@@ -30,6 +29,7 @@ body {
 }
 
 /* Navigation Styles */
+
 .header__nav {
   display: flex;
   justify-content: space-between;
@@ -45,7 +45,77 @@ body {
 .main {
   grid-area: main;
   height: 100%;
+  max-width: 100%;
   margin: 0 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Settings */
+
+.main__settings {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  row-gap: 1em;
+  align-items: start;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: stretch;
+  grid-column-gap: 1em;
+  height: max-content;
+}
+
+.controls > div {
+  background-color: darkolivegreen;
+  height: 250px;
+  border-radius: 5px;
+}
+
+.controls__filter-header {
+  font-size: 1.1em;
+  margin: 0.5em 0.25em;
+}
+
+.filter-btns__header {
+  font-size: 0.9em;
+  margin: 0.5em 0.25em;
+}
+
+.filter__btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+.filter__btns > * + * {
+  margin: 0.5em;
+}
+
+.filter__btns .btn {
+  width: 25px;
+  height: 25px;
+  background-color: darkgreen;
+}
+
+.cards {
+  display: grid;
+  gap: 0.5em;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 1em;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  height: 280px;
+  background-color: lightcyan;
+  border-radius: 5px;
 }
 
 /* Footer Styles */
