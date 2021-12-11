@@ -9,8 +9,8 @@ class SettingsPage extends Page {
   }
 
   render() {
-    const title = this.createHeaderTitle(SettingsPage.TextObject.MainTitle);
-    this.container.append(title);
+    // const title = this.createHeaderTitle(SettingsPage.TextObject.MainTitle);
+    // this.container.append(title);
     return this.container;
   }
 }
