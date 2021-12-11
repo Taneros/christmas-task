@@ -1,5 +1,5 @@
-import { PageIds } from '../../../pages/app';
-import Component from '../../templates/components';
+import { PageIds } from '../../../app';
+import Component from '../../templates/component';
 
 const Buttons = [
   {

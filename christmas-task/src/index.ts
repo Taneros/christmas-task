@@ -1,6 +1,6 @@
 console.log('App started!');
 import './index.css';
-import App from './pages/app';
+import App from './app';
 
 const app = new App();
 

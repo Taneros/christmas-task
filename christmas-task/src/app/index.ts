@@ -1,10 +1,19 @@
-import Footer from '../../core/components/footer';
-import Header from '../../core/components/header';
-import Main from '../../core/components/main';
-import Page from '../../core/templates/page';
-import GamePage from '../game';
-import MainPage from '../main';
-import SettingsPage from '../settings';
+import Footer from '../core/components/footer';
+import Header from '../core/components/header';
+import Main from '../core/components/main';
+import Page from '../core/templates/page';
+import GamePage from '../pages/game';
+import MainPage from '../pages/main';
+import SettingsPage from '../pages/settings';
+
+//TODO
+/**
+ *
+ * rename classes all caps
+ *
+ * rename vars camel case
+ *
+ **/
 
 export const enum PageIds {
   MainPage = 'main',
@@ -18,12 +27,15 @@ export const enum PageClasses {
   GamePageClass = 'main__game',
 }
 
+export const enum SectionClasses {
+  Settings,
+}
+
 class App {
   private static container: HTMLElement = document.querySelector('.app')!;
   private main: Main;
   private header: Header;
   private footer: Footer;
-  // private static defaultPageId: string = 'current-page';
 
   static renderNewPage(idPage: string) {
     const mainHTML: HTMLElement = document.querySelector('.main')!;
