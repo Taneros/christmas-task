@@ -1,26 +1,26 @@
 import Footer from '../../core/components/footer';
 import Header from '../../core/components/header';
-import Component from '../../core/templates/components';
+import Main from '../../core/components/main';
 import Page from '../../core/templates/page';
 import GamePage from '../game';
 import MainPage from '../main';
 import SettingsPage from '../settings';
 
 export const enum PageIds {
-  MainPage = 'main-page',
-  SettingsPage = 'settings-page',
-  GamePage = 'game-page',
+  MainPage = 'main',
+  SettingsPage = 'settings',
+  GamePage = 'game',
 }
 
 export const enum PageClasses {
-  MainPageClass = 'main__main-page',
-  SettingsPageClass = 'main__settings-page',
-  GamePageClass = 'main__game-page',
+  MainPageClass = 'main__main',
+  SettingsPageClass = 'main__settings',
+  GamePageClass = 'main__game',
 }
 
 class App {
   private static container: HTMLElement = document.querySelector('.app')!;
-  private main: MainPage;
+  private main: Main;
   private header: Header;
   private footer: Footer;
   // private static defaultPageId: string = 'current-page';
@@ -44,6 +44,7 @@ class App {
     }
   }
 
+  // Router
   private enableRouteChange() {
     window.addEventListener('hashchange', () => {
       const hash = window.location.hash.slice(1);
@@ -52,7 +53,7 @@ class App {
   }
 
   constructor() {
-    this.main = new MainPage('main-page', 'main__main-page');
+    this.main = new Main('main', 'main');
     this.header = new Header('header', 'header');
     this.footer = new Footer('footer', 'footer');
   }
@@ -60,7 +61,7 @@ class App {
   run() {
     App.container.append(this.header.render());
     App.container.append(this.main.render());
-    // App.renderNewPage('main-page');
+    App.renderNewPage('main');
     App.container.append(this.footer.render());
     this.enableRouteChange();
   }
