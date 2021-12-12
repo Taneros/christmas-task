@@ -1,4 +1,4 @@
-const data = [
+export const data = [
   {
     num: '1',
     name: 'Большой шар с рисунком',
@@ -600,5 +600,3 @@ const data = [
     favorite: true,
   },
 ];
-
-export default data;
