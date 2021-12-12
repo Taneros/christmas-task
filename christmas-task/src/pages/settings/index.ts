@@ -3,31 +3,31 @@ import Component from '../../core/templates/component';
 import Page from '../../core/templates/page';
 import SettingsSections from '../../core/templates/settings';
 
-interface IData {
-  num: string;
-  name: string;
-  count: string;
-  year: string;
-  shape: string;
-  color: string;
-  size: string;
-  favorite: boolean;
-}
-
 // interface IData {
-//   [key: string]: string | boolean;
+//   num: string;
+//   name: string;
+//   count: string;
+//   year: string;
+//   shape: string;
+//   color: string;
+//   size: string;
+//   favorite: boolean;
 // }
 
-interface filter {
-  count: {};
-  year: {};
-  shape: { [key: string]: boolean };
-  color: {};
-  size: {};
-  favorite: boolean;
+interface IData {
+  [key: string]: string | boolean;
 }
 
-export interface IObj {
+// interface filter {
+//   count: {};
+//   year: {};
+//   shape: { [key: string]: boolean };
+//   color: {};
+//   size: {};
+//   favorite: boolean;
+// }
+
+interface IObj {
   [key: string]: { [key: string]: boolean | number } | boolean;
 }
 
@@ -62,47 +62,52 @@ class SettingsPage extends Page {
   translateProp(prop: string, lang: string): string {
     let translation: string = '';
 
+    const rusLabel = [
+      'шар',
+      'колокольчик',
+      'шишка',
+      'снежинка',
+      'фигурка',
+      'белый',
+      'желтый',
+      'красный',
+      'синий',
+      'зелёный',
+      'большой',
+      'средний',
+      'малый',
+    ];
+    const engLabel = [
+      'ball',
+      'bell',
+      'pinecone',
+      'snowflake',
+      'figurine',
+      'white',
+      'yellow',
+      'red',
+      'blue',
+      'green',
+      'big',
+      'medium',
+      'small',
+    ];
+
     if (lang === 'en') {
-      switch (prop) {
-        case 'шар':
-          translation = 'ball';
-          break;
-        case 'колокольчик':
-          translation = 'bell';
-          break;
-        case 'шишка':
-          translation = 'pinecone';
-          break;
-        case 'снежинка':
-          translation = 'snowflake';
-          break;
-        case 'фигурка':
-          translation = 'figurine';
-          break;
-      }
+      translation = engLabel[rusLabel.indexOf(prop)];
     } else {
-      switch (prop) {
-        case 'ball':
-          translation = 'шар';
-          break;
-        case 'bell':
-          translation = 'колокольчик';
-          break;
-        case 'pinecone':
-          translation = 'шишка';
-          break;
-        case 'snowflake':
-          translation = 'снежинка';
-          break;
-        case 'figurine':
-          translation = 'фигурка';
-          break;
-      }
+      translation = rusLabel[engLabel.indexOf(prop)];
     }
-    return translation;
+    return translation || prop;
   }
 
   bindListeners(): void {
+    //TODO
+    /**
+     * Move filter and if conditions to separate method cllaed from bind listeners
+     *
+     **/
+
     const buttonBlocks = this.container.querySelectorAll('.filter__btns');
     const filter: IObj = {
       count: { start: 1, end: 12 },
@@ -114,57 +119,137 @@ class SettingsPage extends Page {
         snowflake: false,
         figurine: false,
       },
-      color: {},
-      size: {},
+      color: {
+        white: false,
+        yellow: false,
+        red: false,
+        blue: false,
+        green: false,
+      },
+      size: {
+        big: false,
+        medium: false,
+        small: false,
+      },
       favorite: false,
     };
 
     buttonBlocks.forEach((btnBlock) => {
       btnBlock?.addEventListener('click', (e) => {
         const buttonDiv = e.currentTarget as HTMLElement;
-        const button = e.target as HTMLElement;
+        const button = e.target as HTMLInputElement;
+        // console.log('button', button.checked);
         const dataFilterVal: string | undefined = button.dataset.filter;
-
+        // console.log('dataFilterVal', dataFilterVal);
         if (dataFilterVal) {
-          const btnDiv: string = buttonDiv.id.split('-').slice(-1)[0];
-          const btnData: string = this.translateProp(dataFilterVal, 'en');
-          const levelOne = filter[btnDiv];
-          typeof levelOne === 'object'
-            ? levelOne[btnData] === false
-              ? (levelOne[btnData] = true)
-              : (levelOne[btnData] = false)
-            : null;
-          this.fileterData(filter);
+          const btnDiv: string | undefined = buttonDiv.id
+            .split('-')
+            .slice(-1)[0];
+          const btnData: string | undefined = this.translateProp(
+            dataFilterVal,
+            'en'
+          );
+          console.log('btnDiv, btnData', btnDiv, btnData);
+          let levelOneProp = filter[btnDiv];
+          console.log('levelOneProp', levelOneProp);
+          // typeof levelOneProp === 'object'
+          //   ? levelOneProp[btnData] === false
+          //     ? (levelOneProp[btnData] = true)
+          //     : (levelOneProp[btnData] = false)
+          //   : levelOneProp === false
+          //   ? (levelOneProp = true)
+          //   : (levelOneProp = false);
+
+          if (typeof levelOneProp === 'object') {
+            if (levelOneProp[btnData] === false) {
+              levelOneProp[btnData] = true;
+            } else {
+              levelOneProp[btnData] = false;
+            }
+          } else {
+            console.log('button.checked', button.checked);
+            if (levelOneProp === false) {
+              console.log('before false');
+              filter[btnDiv] = true;
+            } else {
+              console.log('before true');
+              filter[btnDiv] = false;
+              // button.checked === true
+              //   ? (button.checked = false)
+              //   : (button.checked = true);
+            }
+          }
         }
+        console.log('filtered data:', this.fileterData(filter));
       });
     });
   }
 
-  fileterData(filter: IObj): Array<IData> {
+  fileterData(filter: IObj) {
+    console.log(`filter`, filter);
+
     const shape = typeof filter.shape === 'object' ? filter.shape : {};
+    const color = typeof filter.color === 'object' ? filter.color : {};
+    const size = typeof filter.size === 'object' ? filter.size : {};
+    const favorite =
+      typeof filter.favorite === 'boolean' ? filter.favorite : false;
 
-    console.log('shape', shape);
+    // console.log('shape', shape);
+
     const filteredData: Array<IData> = [];
-
-    const dataImport: Array<IData> = data;
+    const dataImport: Array<IData> = data.slice();
 
     dataImport.forEach((el) => {
+      // filter shape
       for (let key in shape) {
-        // console.log('key', key);
-        // console.log('shape[key] === true', shape[key] === true, key);
-        // console.log(`el['shape'] === key`, el['shape']);
+        // console.log(`key`, key);
+        // console.log(`shape[key]`, shape[`${key}`]);
+        // console.log(`el[key]`, el[`shape`]);
+        // console.log(`translation`, key, this.translateProp(key, 'ru'));
         if (
-          shape[key] === true &&
-          el['shape'] === this.translateProp(key, 'ru')
+          shape[`${key}`] === true &&
+          el[`shape`] === this.translateProp(key, 'ru')
         ) {
-          console.log('match!');
+          // console.log('match!');
           filteredData.push(el);
         }
       }
+      // filter color
+      for (let key in color) {
+        if (
+          color[key] === true &&
+          el['color'] === this.translateProp(key, 'ru')
+        ) {
+          // console.log('match!');
+          filteredData.push(el);
+        }
+      }
+      // filter size
+      for (let key in size) {
+        if (
+          size[key] === true &&
+          el['size'] === this.translateProp(key, 'ru')
+        ) {
+          // console.log('match!');
+          filteredData.push(el);
+        }
+      }
+      // filter favourite
+      if (favorite && el['favorite'] === true) {
+        // console.log('match!');
+        filteredData.push(el);
+      }
     });
-    console.log(filteredData);
+    return this.checkUnique(filteredData);
+  }
 
-    return filteredData;
+  checkUnique(a: Array<IData>) {
+    let uniqueSet = new Set();
+    a.forEach((el) => uniqueSet.add(el));
+    // b.forEach((el) => uniqueSet.add(el));
+    // uniqueSet.add(b)
+    const uniqueArr = Array.from(uniqueSet);
+    return uniqueArr;
   }
 
   render() {
