@@ -102,51 +102,73 @@ class SettingsPage extends Page {
   createContentCards(filteredData: Array<IData>): void {
     const cardsSection: HTMLElement = this.container.querySelector('.cards')!;
 
-    function makeCard() {}
+    //TODO
+    /**
+     * put if else in one function
+     **/
 
-    if (!SettingsPage.filter.isChanged) {
+    function renderCard(data: Array<IData>): void {
       const cardDataFirstLoad = [...data];
       cardDataFirstLoad.forEach((el) => {
         const cardDivComp = new Component('div', 'card');
         const cardDiv: HTMLElement = cardDivComp.render();
         let cardTemplate: string = SettingsSections.cards;
-
-        // Object.entries(el).forEach((value) => {
-        //   const regexp: RegExp = new RegExp(`{{${key}}}`, 'g');
-        //   cardTemplate = cardTemplate.replace(regexp, value);
-        // });
-
-        for (let prop in el) {
-          const EL: IData = { ...el };
-          const regexp: RegExp = new RegExp(`{{${prop}}}`, 'g');
-          // @ts-expect-error;
-          cardTemplate = cardTemplate.replace(regexp, EL[`${prop}`]);
-        }
-        cardDiv.innerHTML = cardTemplate;
-        cardsSection.append(cardDiv);
-      });
-    } else {
-      cardsSection.innerHTML = '';
-      filteredData.forEach((el) => {
-        const cardDivComp = new Component('div', 'card');
-        const cardDiv: HTMLElement = cardDivComp.render();
-        let cardTemplate: string = SettingsSections.cards;
-        for (let prop in el) {
-          // console.log('prop', prop);
-          const regexp: RegExp = new RegExp(`{{${prop}}}`, 'g');
-          // console.log('cardTemplate', cardTemplate);
-          //@ts-ignore
-          cardTemplate = cardTemplate.replace(regexp, el[prop]);
-        }
+        Object.entries(el).forEach((key) => {
+          const regexp: RegExp = new RegExp(`{{${key[0]}}}`, 'g');
+          if (typeof key[1] === 'string')
+            cardTemplate = cardTemplate.replace(regexp, key[1]);
+          else
+            cardTemplate = cardTemplate.replace(
+              regexp,
+              key[1] === false ? 'Нет' : 'Да'
+            );
+        });
         cardDiv.innerHTML = cardTemplate;
         cardsSection.append(cardDiv);
       });
     }
 
-    //TODO
-    /**
-     * take string replace {{}} with regex and match with each element in array
-     **/
+    if (!SettingsPage.filter.isChanged) {
+      renderCard(data);
+      // const cardDataFirstLoad = [...data];
+      // cardDataFirstLoad.forEach((el) => {
+      //   const cardDivComp = new Component('div', 'card');
+      //   const cardDiv: HTMLElement = cardDivComp.render();
+      //   let cardTemplate: string = SettingsSections.cards;
+      //   Object.entries(el).forEach((key) => {
+      //     const regexp: RegExp = new RegExp(`{{${key[0]}}}`, 'g');
+      //     if (typeof key[1] === 'string')
+      //       cardTemplate = cardTemplate.replace(regexp, key[1]);
+      //     else
+      //       cardTemplate = cardTemplate.replace(
+      //         regexp,
+      //         key[1] === false ? 'Нет' : 'Да'
+      //       );
+      //   });
+      //   cardDiv.innerHTML = cardTemplate;
+      //   cardsSection.append(cardDiv);
+      // });
+    } else {
+      cardsSection.innerHTML = '';
+      renderCard(filteredData);
+      // filteredData.forEach((el) => {
+      //   const cardDivComp = new Component('div', 'card');
+      //   const cardDiv: HTMLElement = cardDivComp.render();
+      //   let cardTemplate: string = SettingsSections.cards;
+      //   Object.entries(el).forEach((key) => {
+      //     const regexp: RegExp = new RegExp(`{{${key[0]}}}`, 'g');
+      //     if (typeof key[1] === 'string')
+      //       cardTemplate = cardTemplate.replace(regexp, key[1]);
+      //     else
+      //       cardTemplate = cardTemplate.replace(
+      //         regexp,
+      //         key[1] === false ? 'Нет' : 'Да'
+      //       );
+      //   });
+      //   cardDiv.innerHTML = cardTemplate;
+      //   cardsSection.append(cardDiv);
+      // });
+    }
   }
 
   translateProp(prop: string, lang: string): string {
@@ -164,8 +186,8 @@ class SettingsPage extends Page {
     const buttonBlocks = this.container.querySelectorAll('.filter__btns');
     buttonBlocks.forEach((btnBlock) => {
       btnBlock?.addEventListener('click', (e: Event) => {
-        this.handleFilterByValue(e);
         SettingsPage.filter.isChanged = true;
+        this.handleFilterByValue(e);
       });
     });
   }
@@ -189,7 +211,7 @@ class SettingsPage extends Page {
           levelOneProp[btnData] = false;
         }
       } else {
-        console.log('button.checked', button.checked);
+        // console.log('button.checked', button.checked);
         if (levelOneProp === false) {
           // console.log('before false');
           SettingsPage.filter[btnDiv] = true;
