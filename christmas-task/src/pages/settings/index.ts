@@ -7,6 +7,17 @@ interface IData {
   [key: string]: string | boolean;
 }
 
+interface IDataExact extends IData {
+  num: string;
+  name: string;
+  count: string;
+  year: string;
+  shape: string;
+  color: string;
+  size: string;
+  favorite: boolean;
+}
+
 interface IObj {
   [key: string]: { [key: string]: boolean | number } | boolean;
 }
@@ -85,19 +96,52 @@ class SettingsPage extends Page {
     this.container.append(controlSection);
     const cardsSection: HTMLElement = this.cardsSection.render();
     this.container.append(cardsSection);
-
     this.bindListeners();
   }
 
-  createContentCards(): void {
+  createContentCards(filteredData: Array<IData>): void {
     const cardsSection: HTMLElement = this.container.querySelector('.cards')!;
+
+    function makeCard() {}
 
     if (!SettingsPage.filter.isChanged) {
       const cardDataFirstLoad = [...data];
-      cardDataFirstLoad.forEach((el) => {});
-    }
+      cardDataFirstLoad.forEach((el) => {
+        const cardDivComp = new Component('div', 'card');
+        const cardDiv: HTMLElement = cardDivComp.render();
+        let cardTemplate: string = SettingsSections.cards;
 
-    cardsSection.innerHTML = SettingsSections.cards;
+        // Object.entries(el).forEach((value) => {
+        //   const regexp: RegExp = new RegExp(`{{${key}}}`, 'g');
+        //   cardTemplate = cardTemplate.replace(regexp, value);
+        // });
+
+        for (let prop in el) {
+          const EL: IData = { ...el };
+          const regexp: RegExp = new RegExp(`{{${prop}}}`, 'g');
+          // @ts-expect-error;
+          cardTemplate = cardTemplate.replace(regexp, EL[`${prop}`]);
+        }
+        cardDiv.innerHTML = cardTemplate;
+        cardsSection.append(cardDiv);
+      });
+    } else {
+      cardsSection.innerHTML = '';
+      filteredData.forEach((el) => {
+        const cardDivComp = new Component('div', 'card');
+        const cardDiv: HTMLElement = cardDivComp.render();
+        let cardTemplate: string = SettingsSections.cards;
+        for (let prop in el) {
+          // console.log('prop', prop);
+          const regexp: RegExp = new RegExp(`{{${prop}}}`, 'g');
+          // console.log('cardTemplate', cardTemplate);
+          //@ts-ignore
+          cardTemplate = cardTemplate.replace(regexp, el[prop]);
+        }
+        cardDiv.innerHTML = cardTemplate;
+        cardsSection.append(cardDiv);
+      });
+    }
 
     //TODO
     /**
@@ -121,6 +165,7 @@ class SettingsPage extends Page {
     buttonBlocks.forEach((btnBlock) => {
       btnBlock?.addEventListener('click', (e: Event) => {
         this.handleFilterByValue(e);
+        SettingsPage.filter.isChanged = true;
       });
     });
   }
@@ -134,9 +179,9 @@ class SettingsPage extends Page {
     if (dataFilterVal) {
       const btnDiv: string = buttonDiv.id.split('-').slice(-1)[0];
       const btnData: string = this.translateProp(dataFilterVal, 'en');
-      console.log('btnDiv, btnData', btnDiv, btnData);
+      // console.log('btnDiv, btnData', btnDiv, btnData);
       let levelOneProp = SettingsPage.filter[btnDiv];
-      console.log('levelOneProp', levelOneProp);
+      // console.log('levelOneProp', levelOneProp);
       if (typeof levelOneProp === 'object') {
         if (levelOneProp[btnData] === false) {
           levelOneProp[btnData] = true;
@@ -146,19 +191,20 @@ class SettingsPage extends Page {
       } else {
         console.log('button.checked', button.checked);
         if (levelOneProp === false) {
-          console.log('before false');
+          // console.log('before false');
           SettingsPage.filter[btnDiv] = true;
         } else {
-          console.log('before true');
+          // console.log('before true');
           SettingsPage.filter[btnDiv] = false;
         }
       }
     }
-    console.log('filtered data:', this.filterData(SettingsPage.filter));
+    // console.log('filtered data:', this.filterData(SettingsPage.filter));
+    this.createContentCards(this.filterData(SettingsPage.filter));
   }
 
   filterData(filter: IObj) {
-    console.log(`filter`, filter);
+    // console.log(`filter`, filter);
     const shape = typeof filter.shape === 'object' ? filter.shape : {};
     const color = typeof filter.color === 'object' ? filter.color : {};
     const size = typeof filter.size === 'object' ? filter.size : {};
@@ -205,14 +251,15 @@ class SettingsPage extends Page {
   }
 
   checkUnique(a: Array<IData>) {
-    let uniqueSet = new Set();
+    let uniqueSet: Set<IData> = new Set();
     a.forEach((el) => uniqueSet.add(el));
-    const uniqueArr = Array.from(uniqueSet);
+    const uniqueArr: Array<IData> = Array.from(uniqueSet);
     return uniqueArr;
   }
 
   render() {
     this.createContentControls();
+    this.createContentCards([]);
     return this.container;
   }
 }

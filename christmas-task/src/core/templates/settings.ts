@@ -38,12 +38,16 @@ class SettingsSections {
     `;
 
   static cards = `
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
+  <h2 class="card__title">{{name}}</h2>
+  <img class="card__img" src="./assets/toys/{{num}}.png" alt="toy" />
+  <div class="card__description">
+    <p id="count" class="card__description__property"><span>Количество:{{count}}</span></p>
+    <p id="year" class="card__description__property"><span>Год покупки:{{year}}</span></p>
+    <p id="shape" class="card__description__property"><span>Форма:{{shape}}</span></p>
+    <p id="color" class="card__description__property"><span>Цвет:{{color}}</span></p>
+    <p id="size" class="card__description__property"><span>Размер:{{size}}</span></p>
+    <p if="favorite" class="card__description__property"><span>Любимая:{{favorite}}</span></p>
+  </div>
     `;
 }
 

@@ -56,7 +56,54 @@
             </div>
           </section>
           <section class="cards">
-            <div class="card"></div>
+            <div class="card">
+              <h2 class="card__title">Большой шар с рисунком</h2>
+              <img class="card__img" src="./assets/toys/1.png" alt="toy" />
+              <div class="card__description">
+                <p id="count" class="card__description__property">
+                  Количество:<span>2</span>
+                </p>
+                <p id="year" class="card__description__property">
+                  Год покупки:<span>1960</span>
+                </p>
+                <p id="shape" class="card__description__property">
+                  Форма:<span>шар</span>
+                </p>
+                <p id="color" class="card__description__property">
+                  Цвет:<span>желтый</span>
+                </p>
+                <p id="size" class="card__description__property">
+                  Размер:<span>большой</span>
+                </p>
+                <p if="favorite" class="card__description__property">
+                  Любимая:<span>нет</span>
+                </p>
+              </div>
+            </div>
+            <div class="card">
+              <h2 class="card__title">{{name}}</h2>
+              <img class="card__img" src="./assets/toys/{{}}.png" alt="toy" />
+              <div class="card__description">
+                <p id="count" class="card__description__property">
+                  {{count}}:<span>2</span>
+                </p>
+                <p id="year" class="card__description__property">
+                  {{year}}:<span>1960</span>
+                </p>
+                <p id="shape" class="card__description__property">
+                  {{shape}}:<span>шар</span>
+                </p>
+                <p id="color" class="card__description__property">
+                  {{color}}:<span>желтый</span>
+                </p>
+                <p id="size" class="card__description__property">
+                  {{size}}:<span>большой</span>
+                </p>
+                <p if="favorite" class="card__description__property">
+                  {{favorite}}:<span>нет</span>
+                </p>
+              </div>
+            </div>
             <div class="card"></div>
             <div class="card"></div>
             <div class="card"></div>

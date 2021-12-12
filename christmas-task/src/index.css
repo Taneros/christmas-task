@@ -75,6 +75,7 @@ body {
   background-color: darkolivegreen;
   height: 250px;
   border-radius: 5px;
+  padding: 10px;
 }
 
 .controls__filter-header {
@@ -103,6 +104,8 @@ body {
   background-color: darkgreen;
 }
 
+/* Cards styles */
+
 .cards {
   display: grid;
   gap: 0.5em;
@@ -116,6 +119,17 @@ body {
   height: 280px;
   background-color: lightcyan;
   border-radius: 5px;
+}
+
+.card__img {
+  width: 90px;
+  height: 112px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.cards {
+  color: #121c1e;
 }
 
 /* Footer Styles */
