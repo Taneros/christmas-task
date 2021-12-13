@@ -101,7 +101,6 @@ class SettingsPage extends Page {
 
   private createContentCards(filteredData: Array<IData>) {
     const cardsSection: HTMLElement = this.container.querySelector('.cards')!;
-
     function renderCard(data: Array<IData>): void {
       const cardDataFirstLoad = [...data];
       cardDataFirstLoad.forEach((el) => {

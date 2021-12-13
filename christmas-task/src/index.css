@@ -1,5 +1,9 @@
 @import url('./nullstyle.css');
 
+:root {
+  --width: 300px;
+}
+
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: #fff;
@@ -102,6 +106,67 @@ body {
   width: 25px;
   height: 25px;
   background-color: darkgreen;
+}
+
+/* Settings - Slider Styles */
+
+.slider {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slider {
+  clear: both;
+  padding-top: 0.5em;
+  padding-bottom: 1em;
+}
+
+.slider .controls__filter-header {
+  font-size: 0.9em;
+}
+
+.slider__rail-label {
+  float: left;
+  position: relative;
+  margin: 0 10px;
+}
+
+.slider__rail-label.max {
+  padding-left: 0.5em;
+  text-align: left;
+}
+
+.slider .slider__rail {
+  background-color: #eee;
+  border: 1px solid #888;
+  position: relative;
+  height: 4px;
+  float: left;
+  width: var(--width);
+}
+
+.slider__thumb {
+  --left: 0px;
+}
+
+.slider .slider__thumb {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  top: -10px;
+}
+
+.slider .slider__thumb.focus,
+.slider .slider__thumb:hover {
+  outline-color: rgb(93, 206, 0);
+  outline-style: solid;
+  outline-width: 2px;
+  outline-offset: 2px;
+}
+
+.slider .slider__rail.focus {
+  background-color: #aaa;
 }
 
 /* Cards styles */
