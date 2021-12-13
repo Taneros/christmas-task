@@ -8,7 +8,6 @@ import SettingsSections from '../../core/templates/settings';
 /**
  * use const for getting classnames in case of chahnge ex: .slider__thumb
  *
- * fix clicking on empty area next to button filters everything to 0 cards
  **/
 
 interface IData {
@@ -195,9 +194,9 @@ class SettingsPage extends Page {
           SettingsPage.filter[btnDiv] = false;
         }
       }
+      // console.log('filtered data:', this.filterData(SettingsPage.filter));
+      this.createContentCards(this.filterData(SettingsPage.filter));
     }
-    // console.log('filtered data:', this.filterData(SettingsPage.filter));
-    this.createContentCards(this.filterData(SettingsPage.filter));
   }
 
   private filterData(filter: IObj) {
