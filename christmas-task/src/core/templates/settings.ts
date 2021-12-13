@@ -60,6 +60,35 @@ class SettingsSections {
     </div>
     <div class="slider__rail-label max">0</div>
   </div>
+  <div class="slider">
+    <h3 class="controls__filter-header">Year</h3>
+    <div class="slider__rail-label min">0</div>
+    <div class="slider__rail" style="width: 300px;">
+      <img
+        id="min-qty"
+        src="./assets/controls/min-arrow.png"
+        tabindex="0"
+        class="slider__thumb"
+        aria-valuemin="1940"
+        aria-valuenow="1940"
+        aria-valuetext=""
+        aria-valuemax="2020"
+        aria-label="Minimum Qty"
+      />
+      <img
+        id="max-qty"
+        src="./assets/controls/max-arrow.png"
+        tabindex="0"
+        class="slider__thumb"
+        aria-valuemin="1940"
+        aria-valuenow="2020"
+        aria-valuetext=""
+        aria-valuemax="2020"
+        aria-label="Maximum Qty"
+      />
+    </div>
+    <div class="slider__rail-label max">0</div>
+  </div>
 </div>
 <div class="controls__filter-by-name">
   <h2 class="controls__filter-header">Sort by Name</h2>

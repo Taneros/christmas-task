@@ -1,9 +1,31 @@
-// Create Slider that contains value, valuemin, valuemax, and valuenow
-// @ts-nocheck
 export class Slider {
-  constructor(imgEl) {
+  private imgElem: HTMLElement;
+  private sliderRail: HTMLElement;
+  private labelEl: Element | null | undefined;
+  private minImgEl: Element | null;
+  private maxImgEl: Element | null;
+  private valueNow: number;
+  private railMin: number;
+  private railWidth: number;
+  private railMax: number;
+  private railBorderWidth: number;
+  private thumbWidth: number;
+  private thumbHeight: number;
+  private keyCode: Readonly<{
+    left: number;
+    up: number;
+    right: number;
+    down: number;
+    pageUp: number;
+    pageDown: number;
+    end: number;
+    home: number;
+  }>;
+  private dolValueNow: number | undefined;
+
+  constructor(imgEl: HTMLElement) {
     this.imgElem = imgEl;
-    this.sliderRail = imgEl.parentElement;
+    this.sliderRail = imgEl.parentElement!;
 
     this.labelEl = null;
     this.minImgEl = null;
@@ -31,17 +53,23 @@ export class Slider {
     });
   }
   // Initialize slider
+
   init() {
+    // console.log(`this.domNode`, this.imgElem);
     if (this.imgElem.previousElementSibling) {
       console.log(
-        `1 - this.domNode.previousElementSibling`,
+        `this.domNode.previousElementSibling`,
         this.imgElem.previousElementSibling
       );
       this.minImgEl = this.imgElem.previousElementSibling;
-      console.log(' - 1 - this.minDomNode  ', this.minImgEl);
-      this.railMin = parseInt(this.minImgEl.getAttribute('aria-valuemin'));
+      console.log('  this.minDomNode  ', this.minImgEl);
+      this.railMin = parseInt(
+        this.minImgEl.getAttribute('aria-valuemin') as string
+      );
     } else {
-      this.railMin = parseInt(this.imgElem.getAttribute('aria-valuemin'));
+      this.railMin = parseInt(
+        this.imgElem.getAttribute('aria-valuemin') as string
+      );
     }
 
     if (this.imgElem.nextElementSibling) {
@@ -51,21 +79,30 @@ export class Slider {
       );
       this.maxImgEl = this.imgElem.nextElementSibling;
       console.log('  - 2 - this.maxDomNode', this.maxImgEl);
-      this.railMax = parseInt(this.maxImgEl.getAttribute('aria-valuemax'));
+      this.railMax = parseInt(
+        this.maxImgEl.getAttribute('aria-valuemax') as string
+      );
     } else {
-      this.railMax = parseInt(this.imgElem.getAttribute('aria-valuemax'));
+      this.railMax = parseInt(
+        this.imgElem.getAttribute('aria-valuemax') as string
+      );
     }
 
-    this.valueNow = parseInt(this.imgElem.getAttribute('aria-valuenow'));
+    this.valueNow = parseInt(
+      this.imgElem.getAttribute('aria-valuenow') as string
+    );
 
-    this.railWidth = parseInt(this.sliderRail.style.width.slice(0, -2));
+    this.railWidth = parseInt(
+      this.sliderRail.style.width.slice(0, -2) as string
+    );
 
     if (this.imgElem.id === 'min-qty') {
-      this.labelEl = this.imgElem.parentElement.previousElementSibling;
+      this.labelEl = this.imgElem.parentElement?.previousElementSibling;
+      console.log('this.labelDomNode', this.labelEl);
     }
 
     if (this.imgElem.id === 'max-qty') {
-      this.labelEl = this.imgElem.parentElement.nextElementSibling;
+      this.labelEl = this.imgElem.parentElement?.nextElementSibling;
     }
 
     if (this.imgElem.tabIndex != 0) {
@@ -80,9 +117,13 @@ export class Slider {
     this.moveSliderTo(this.valueNow);
   }
 
-  moveSliderTo(value) {
-    var valueMax = parseInt(this.imgElem.getAttribute('aria-valuemax'));
-    var valueMin = parseInt(this.imgElem.getAttribute('aria-valuemin'));
+  moveSliderTo(value: number) {
+    var valueMax = parseInt(
+      this.imgElem.getAttribute('aria-valuemax') as string
+    );
+    var valueMin = parseInt(
+      this.imgElem.getAttribute('aria-valuemin') as string
+    );
 
     if (value > valueMax) {
       value = valueMax;
@@ -95,15 +136,15 @@ export class Slider {
     this.valueNow = value;
     this.dolValueNow = value;
 
-    this.imgElem.setAttribute('aria-valuenow', this.valueNow);
-    this.imgElem.setAttribute('aria-valuetext', this.dolValueNow);
+    this.imgElem.setAttribute('aria-valuenow', String(this.valueNow));
+    this.imgElem.setAttribute('aria-valuetext', String(this.dolValueNow));
 
     if (this.minImgEl) {
-      this.minImgEl.setAttribute('aria-valuemax', this.valueNow);
+      this.minImgEl.setAttribute('aria-valuemax', String(this.valueNow));
     }
 
     if (this.maxImgEl) {
-      this.maxImgEl.setAttribute('aria-valuemin', this.valueNow);
+      this.maxImgEl.setAttribute('aria-valuemin', String(this.valueNow));
     }
 
     var pos = Math.round(
@@ -126,7 +167,11 @@ export class Slider {
     }
   }
 
-  handleKeyDown(event) {
+  handleKeyDown(event: {
+    keyCode: any;
+    preventDefault: () => void;
+    stopPropagation: () => void;
+  }) {
     var flag = false;
 
     switch (event.keyCode) {
@@ -171,29 +216,38 @@ export class Slider {
       event.stopPropagation();
     }
   }
-  handleFocus(event) {
+  handleFocus(event: any) {
     this.imgElem.classList.add('focus');
     this.sliderRail.classList.add('focus');
   }
-  handleBlur(event) {
+  handleBlur(event: any) {
     this.imgElem.classList.remove('focus');
     this.sliderRail.classList.remove('focus');
   }
-  handleMouseDown(event) {
+  handleMouseDown(event: {
+    preventDefault: () => void;
+    stopPropagation: () => void;
+  }) {
     var self = this;
 
-    var handleMouseMove = function (event) {
+    var handleMouseMove = function (event: {
+      pageX: number;
+      preventDefault: () => void;
+      stopPropagation: () => void;
+    }) {
       var diffX = event.pageX - self.sliderRail.offsetLeft;
       self.valueNow =
         self.railMin +
-        parseInt(((self.railMax - self.railMin) * diffX) / self.railWidth);
+        parseInt(
+          String(((self.railMax - self.railMin) * diffX) / self.railWidth)
+        );
       self.moveSliderTo(self.valueNow);
 
       event.preventDefault();
       event.stopPropagation();
     };
 
-    var handleMouseUp = function (event) {
+    var handleMouseUp = function (event: any) {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
@@ -211,35 +265,3 @@ export class Slider {
     this.imgElem.focus();
   }
 }
-
-// handleMouseMove has the same functionality as we need for handleMouseClick on the rail
-// Slider.prototype.handleClick = function (event) {
-
-//  var diffX = event.pageX - this.railDomNode.offsetLeft;
-//  this.valueNow = parseInt(((this.railMax - this.railMin) * diffX) / this.railWidth);
-//  this.moveSliderTo(this.valueNow);
-
-//  event.preventDefault();
-//  event.stopPropagation();
-
-// };
-
-// Initialise Sliders on the page
-window.addEventListener('load', function () {
-  var sliderThumbs = document.querySelectorAll('.slider__thumb');
-
-  const sliderThumbElementList = [];
-
-  if (sliderThumbs) {
-    for (let node of sliderThumbs) {
-      if (node.nodeType === Node.ELEMENT_NODE) {
-        sliderThumbElementList.push(node);
-      }
-    }
-  }
-
-  for (let thumb of sliderThumbElementList) {
-    const slider = new Slider(thumb);
-    slider.init();
-  }
-});

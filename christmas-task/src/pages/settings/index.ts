@@ -7,6 +7,7 @@ import SettingsSections from '../../core/templates/settings';
 //TODO
 /**
  * use const for getting classnames in case of chahnge ex: .slider__thumb
+ * Translate data to eng
  *
  **/
 
@@ -103,10 +104,22 @@ class SettingsPage extends Page {
     // slider  1 - 12
     const sliderThumbs: NodeList =
       controlSection.querySelectorAll('.slider__thumb');
-    for (let thumb of sliderThumbs) {
+
+    const sliderThumbElementList: Array<HTMLElement> = [];
+
+    if (sliderThumbs) {
+      for (let node of sliderThumbs) {
+        if (node.nodeType == Node.ELEMENT_NODE) {
+          sliderThumbElementList.push(node as HTMLElement);
+        }
+      }
+    }
+
+    for (let thumb of sliderThumbElementList) {
       const slider = new Slider(thumb);
       slider.init();
     }
+
     this.container.append(controlSection);
 
     const cardsSection: HTMLElement = this.cardsSection.render();
@@ -164,6 +177,13 @@ class SettingsPage extends Page {
         this.handleFilterByValue(e);
       });
     });
+    const rangeSlider = this.container.querySelectorAll('.slider');
+    rangeSlider.forEach((slider) => {
+      slider?.addEventListener('click', (e: Event) => {
+        SettingsPage.filter.isChanged = true;
+        this.handleFilterByRange(e);
+      });
+    });
   }
 
   private handleFilterByValue(e: Event) {
@@ -197,6 +217,13 @@ class SettingsPage extends Page {
       // console.log('filtered data:', this.filterData(SettingsPage.filter));
       this.createContentCards(this.filterData(SettingsPage.filter));
     }
+  }
+
+  private handleFilterByRange(e: Event) {
+    //   const rangeDiv = e.currentTarget as HTMLElement;
+    //   const thumb = e.target as HTMLElement;
+    //   console.log(`rangeDiv`, rangeDiv);
+    //   console.log(`thimb`, thumb);
   }
 
   private filterData(filter: IObj) {
