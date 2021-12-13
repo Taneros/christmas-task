@@ -5,6 +5,7 @@ import Page from '../core/templates/page';
 import GamePage from '../pages/game';
 import MainPage from '../pages/main';
 import SettingsPage from '../pages/settings';
+import { Slider } from './slider';
 
 //TODO
 /**
@@ -44,9 +45,9 @@ class App {
 
     if (idPage === PageIds.MainPage)
       page = new MainPage(idPage, PageClasses.MainPageClass);
-    else if (idPage === PageIds.SettingsPage)
+    else if (idPage === PageIds.SettingsPage) {
       page = new SettingsPage(idPage, PageClasses.SettingsPageClass);
-    else if (idPage === PageIds.GamePage)
+    } else if (idPage === PageIds.GamePage)
       page = new GamePage(idPage, PageClasses.GamePageClass);
 
     if (page) {

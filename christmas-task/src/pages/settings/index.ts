@@ -1,7 +1,15 @@
+import { Slider } from '../../app/slider';
 import { data } from '../../assets/data';
 import Component from '../../core/templates/component';
 import Page from '../../core/templates/page';
 import SettingsSections from '../../core/templates/settings';
+
+//TODO
+/**
+ * use const for getting classnames in case of chahnge ex: .slider__thumb
+ *
+ * fix clicking on empty area next to button filters everything to 0 cards
+ **/
 
 interface IData {
   [key: string]: string | boolean;
@@ -93,7 +101,15 @@ class SettingsPage extends Page {
   private createContentControls() {
     const controlSection: HTMLElement = this.controlSection.render();
     controlSection.innerHTML = SettingsSections.controls;
+    // slider  1 - 12
+    const sliderThumbs: NodeList =
+      controlSection.querySelectorAll('.slider__thumb');
+    for (let thumb of sliderThumbs) {
+      const slider = new Slider(thumb);
+      slider.init();
+    }
     this.container.append(controlSection);
+
     const cardsSection: HTMLElement = this.cardsSection.render();
     this.container.append(cardsSection);
     this.bindListeners();

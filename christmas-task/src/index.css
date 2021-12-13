@@ -1,8 +1,8 @@
 @import url('./nullstyle.css');
 
-:root {
+/* :root {
   --width: 300px;
-}
+} */
 
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -143,7 +143,6 @@ body {
   position: relative;
   height: 4px;
   float: left;
-  width: var(--width);
 }
 
 .slider__thumb {

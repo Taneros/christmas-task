@@ -48,17 +48,13 @@ export class Slider {
 
     this.valueNow = parseInt(this.domNode.getAttribute('aria-valuenow'));
 
-    this.railWidth = parseInt(
-      getComputedStyle(this.railDomNode)
-        .getPropertyValue('--width')
-        .slice(0, -2)
-    );
+    this.railWidth = parseInt(this.railDomNode.style.width.slice(0, -2));
 
-    if (this.domNode.classList.contains('min')) {
+    if (this.domNode.id === 'min-qty') {
       this.labelDomNode = this.domNode.parentElement.previousElementSibling;
     }
 
-    if (this.domNode.classList.contains('max')) {
+    if (this.domNode.id === 'max-qty') {
       this.labelDomNode = this.domNode.parentElement.nextElementSibling;
     }
 
@@ -218,7 +214,7 @@ export class Slider {
 
 // Initialise Sliders on the page
 window.addEventListener('load', function () {
-  var sliders = document.querySelectorAll('[role=slider]');
+  var sliders = document.querySelectorAll('.slider__thumb');
 
   console.log('sliders:', sliders);
 
