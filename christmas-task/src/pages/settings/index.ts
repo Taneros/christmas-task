@@ -90,7 +90,7 @@ class SettingsPage extends Page {
     this.cardsSection = new Component('section', 'cards');
   }
 
-  createContentControls(): void {
+  private createContentControls() {
     const controlSection: HTMLElement = this.controlSection.render();
     controlSection.innerHTML = SettingsSections.controls;
     this.container.append(controlSection);
@@ -99,13 +99,8 @@ class SettingsPage extends Page {
     this.bindListeners();
   }
 
-  createContentCards(filteredData: Array<IData>): void {
+  private createContentCards(filteredData: Array<IData>) {
     const cardsSection: HTMLElement = this.container.querySelector('.cards')!;
-
-    //TODO
-    /**
-     * put if else in one function
-     **/
 
     function renderCard(data: Array<IData>): void {
       const cardDataFirstLoad = [...data];
@@ -130,48 +125,13 @@ class SettingsPage extends Page {
 
     if (!SettingsPage.filter.isChanged) {
       renderCard(data);
-      // const cardDataFirstLoad = [...data];
-      // cardDataFirstLoad.forEach((el) => {
-      //   const cardDivComp = new Component('div', 'card');
-      //   const cardDiv: HTMLElement = cardDivComp.render();
-      //   let cardTemplate: string = SettingsSections.cards;
-      //   Object.entries(el).forEach((key) => {
-      //     const regexp: RegExp = new RegExp(`{{${key[0]}}}`, 'g');
-      //     if (typeof key[1] === 'string')
-      //       cardTemplate = cardTemplate.replace(regexp, key[1]);
-      //     else
-      //       cardTemplate = cardTemplate.replace(
-      //         regexp,
-      //         key[1] === false ? 'Нет' : 'Да'
-      //       );
-      //   });
-      //   cardDiv.innerHTML = cardTemplate;
-      //   cardsSection.append(cardDiv);
-      // });
     } else {
       cardsSection.innerHTML = '';
       renderCard(filteredData);
-      // filteredData.forEach((el) => {
-      //   const cardDivComp = new Component('div', 'card');
-      //   const cardDiv: HTMLElement = cardDivComp.render();
-      //   let cardTemplate: string = SettingsSections.cards;
-      //   Object.entries(el).forEach((key) => {
-      //     const regexp: RegExp = new RegExp(`{{${key[0]}}}`, 'g');
-      //     if (typeof key[1] === 'string')
-      //       cardTemplate = cardTemplate.replace(regexp, key[1]);
-      //     else
-      //       cardTemplate = cardTemplate.replace(
-      //         regexp,
-      //         key[1] === false ? 'Нет' : 'Да'
-      //       );
-      //   });
-      //   cardDiv.innerHTML = cardTemplate;
-      //   cardsSection.append(cardDiv);
-      // });
     }
   }
 
-  translateProp(prop: string, lang: string): string {
+  private translateProp(prop: string, lang: string): string {
     let translation: string = '';
 
     if (lang === 'en') {
@@ -182,7 +142,7 @@ class SettingsPage extends Page {
     return translation || prop;
   }
 
-  bindListeners() {
+  private bindListeners() {
     const buttonBlocks = this.container.querySelectorAll('.filter__btns');
     buttonBlocks.forEach((btnBlock) => {
       btnBlock?.addEventListener('click', (e: Event) => {
@@ -192,7 +152,7 @@ class SettingsPage extends Page {
     });
   }
 
-  handleFilterByValue(e: Event) {
+  private handleFilterByValue(e: Event) {
     const buttonDiv = e.currentTarget as HTMLElement;
     const button = e.target as HTMLInputElement;
     // console.log('button', button.checked);
@@ -225,7 +185,7 @@ class SettingsPage extends Page {
     this.createContentCards(this.filterData(SettingsPage.filter));
   }
 
-  filterData(filter: IObj) {
+  private filterData(filter: IObj) {
     // console.log(`filter`, filter);
     const shape = typeof filter.shape === 'object' ? filter.shape : {};
     const color = typeof filter.color === 'object' ? filter.color : {};
@@ -272,7 +232,7 @@ class SettingsPage extends Page {
     return this.checkUnique(filteredData);
   }
 
-  checkUnique(a: Array<IData>) {
+  private checkUnique(a: Array<IData>) {
     let uniqueSet: Set<IData> = new Set();
     a.forEach((el) => uniqueSet.add(el));
     const uniqueArr: Array<IData> = Array.from(uniqueSet);
