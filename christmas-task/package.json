@@ -30,6 +30,7 @@
     "webpack-remove-empty-scripts": "^0.7.1"
   },
   "dependencies": {
+    "nouislider": "^15.5.0",
     "progress-webpack-plugin": "^1.0.12"
   },
   "main": "webpack.config.js",

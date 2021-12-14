@@ -5,7 +5,6 @@ import Page from '../core/templates/page';
 import GamePage from '../pages/game';
 import MainPage from '../pages/main';
 import SettingsPage from '../pages/settings';
-import { Slider } from './slider';
 
 //TODO
 /**

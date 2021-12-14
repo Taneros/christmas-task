@@ -1,8 +1,10 @@
-import { Slider } from '../../app/slider';
 import { data } from '../../assets/data';
 import Component from '../../core/templates/component';
 import Page from '../../core/templates/page';
 import SettingsSections from '../../core/templates/settings';
+import '../../app/nouislider.css';
+import _default, { target, API } from 'nouislider';
+const noUiSlider = _default;
 
 //TODO
 /**
@@ -35,7 +37,7 @@ class SettingsPage extends Page {
   private cardsSection: Component;
 
   private static filter: IObj = {
-    count: { start: 1, end: 12 },
+    count: { start: 9, end: 12 },
     year: { start: 1940, end: 2020 },
     shape: {
       ball: false,
@@ -102,23 +104,21 @@ class SettingsPage extends Page {
     const controlSection: HTMLElement = this.controlSection.render();
     controlSection.innerHTML = SettingsSections.controls;
     // slider  1 - 12
-    const sliderThumbs: NodeList =
-      controlSection.querySelectorAll('.slider__thumb');
 
-    const sliderThumbElementList: Array<HTMLElement> = [];
+    const sliderDiv = <target>controlSection.querySelector('.slider__rail');
+    const sliderQty = noUiSlider.create(sliderDiv, {
+      start: [1, 12],
+      connect: true,
+      range: {
+        min: 1,
+        max: 12,
+      },
+      step: 1,
+    });
 
-    if (sliderThumbs) {
-      for (let node of sliderThumbs) {
-        if (node.nodeType == Node.ELEMENT_NODE) {
-          sliderThumbElementList.push(node as HTMLElement);
-        }
-      }
-    }
-
-    for (let thumb of sliderThumbElementList) {
-      const slider = new Slider(thumb);
-      slider.init();
-    }
+    (<API>sliderDiv.noUiSlider).on('update', function (values) {
+      console.log(`values`, values);
+    });
 
     this.container.append(controlSection);
 
@@ -187,6 +187,7 @@ class SettingsPage extends Page {
   }
 
   private handleFilterByValue(e: Event) {
+    console.log(`!!`);
     const buttonDiv = e.currentTarget as HTMLElement;
     const button = e.target as HTMLInputElement;
     // console.log('button', button.checked);
@@ -219,39 +220,7 @@ class SettingsPage extends Page {
     }
   }
 
-  private handleFilterByRange(e: Event) {
-    const rangeDiv = e.currentTarget as HTMLElement;
-    const parentDiv = rangeDiv.parentElement as HTMLElement;
-    const thumbMin = rangeDiv.querySelector('#min-qty') as HTMLElement;
-    const thumbMax = rangeDiv.querySelector('#max-qty') as HTMLElement;
-    // console.log(`rangeDiv currentTarget`, rangeDiv);
-    // console.log(`parentDiv`, parentDiv);
-    // console.log(`rangeDiv target`, rangeDiv);
-
-    const minQty = parseInt(thumbMin.getAttribute('aria-valuenow') as string);
-    const maxQty = parseInt(thumbMax.getAttribute('aria-valuenow') as string);
-    const btnDIv: string = parentDiv.id.split('-').slice(-1)[0];
-    console.log(`SettingsPage.filter.count`, SettingsPage.filter.count);
-    const levelOneProp = SettingsPage.filter[btnDIv];
-    console.log(`levelOneProp`, levelOneProp);
-    console.log(`minQty`, minQty);
-    console.log(`maxQty`, maxQty);
-    //TODO
-    /**
-     * remove level one prop exta anneeded variable
-     **/
-
-    if (
-      typeof levelOneProp === 'object' &&
-      (levelOneProp.start !== minQty || levelOneProp.end !== maxQty)
-    ) {
-      console.log(`inside if`);
-      levelOneProp.start = minQty;
-      levelOneProp.end = maxQty;
-      // console.log(`SettingsPage.filter`, SettingsPage.filter);
-      this.createContentCards(this.filterData(SettingsPage.filter));
-    }
-  }
+  private handleFilterByRange(e: Event) {}
 
   private filterData(filter: IObj) {
     // console.log(`filter`, filter);
@@ -273,7 +242,7 @@ class SettingsPage extends Page {
           shape[`${key}`] === true &&
           el[`shape`] === this.translateProp(key, 'ru')
         ) {
-          filteredData.push(el);
+          this.checkUnique_(filteredData, el) ? filteredData.push(el) : null;
         }
       }
       // filter color
@@ -300,15 +269,26 @@ class SettingsPage extends Page {
       }
       // filter qty
       for (let key in qty) {
-        // console.log(`qty filter`, key, qty);
-        if (key === 'start' && el['count'] >= qty[key]) {
+        if (
+          key === 'start' &&
+          parseInt(el['count'] as string) >= <number>qty[key]
+        ) {
+          console.log(`inside if`);
           filteredData.push(el);
-        } else if (el['count'] <= qty[key]) {
+        } else if (parseInt(el['count'] as string) <= <number>qty[key]) {
           filteredData.push(el);
         }
       }
     });
     return this.checkUnique(filteredData);
+  }
+
+  private checkUnique_(a: Array<IData>, toy: IData) {
+    const uniqueSet: Set<IData> = new Set();
+    a.forEach((el) => uniqueSet.add(el));
+    const setSizeBefore = uniqueSet.size;
+    uniqueSet.add(toy);
+    return uniqueSet.size > setSizeBefore;
   }
 
   private checkUnique(a: Array<IData>) {
