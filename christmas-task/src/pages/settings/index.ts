@@ -177,7 +177,7 @@ class SettingsPage extends Page {
         this.handleFilterByValue(e);
       });
     });
-    const rangeSlider = this.container.querySelectorAll('.slider');
+    const rangeSlider = this.container.querySelectorAll('.slider__rail');
     rangeSlider.forEach((slider) => {
       slider?.addEventListener('click', (e: Event) => {
         SettingsPage.filter.isChanged = true;
@@ -220,10 +220,37 @@ class SettingsPage extends Page {
   }
 
   private handleFilterByRange(e: Event) {
-    //   const rangeDiv = e.currentTarget as HTMLElement;
-    //   const thumb = e.target as HTMLElement;
-    //   console.log(`rangeDiv`, rangeDiv);
-    //   console.log(`thimb`, thumb);
+    const rangeDiv = e.currentTarget as HTMLElement;
+    const parentDiv = rangeDiv.parentElement as HTMLElement;
+    const thumbMin = rangeDiv.querySelector('#min-qty') as HTMLElement;
+    const thumbMax = rangeDiv.querySelector('#max-qty') as HTMLElement;
+    // console.log(`rangeDiv currentTarget`, rangeDiv);
+    // console.log(`parentDiv`, parentDiv);
+    // console.log(`rangeDiv target`, rangeDiv);
+
+    const minQty = parseInt(thumbMin.getAttribute('aria-valuenow') as string);
+    const maxQty = parseInt(thumbMax.getAttribute('aria-valuenow') as string);
+    const btnDIv: string = parentDiv.id.split('-').slice(-1)[0];
+    console.log(`SettingsPage.filter.count`, SettingsPage.filter.count);
+    const levelOneProp = SettingsPage.filter[btnDIv];
+    console.log(`levelOneProp`, levelOneProp);
+    console.log(`minQty`, minQty);
+    console.log(`maxQty`, maxQty);
+    //TODO
+    /**
+     * remove level one prop exta anneeded variable
+     **/
+
+    if (
+      typeof levelOneProp === 'object' &&
+      (levelOneProp.start !== minQty || levelOneProp.end !== maxQty)
+    ) {
+      console.log(`inside if`);
+      levelOneProp.start = minQty;
+      levelOneProp.end = maxQty;
+      // console.log(`SettingsPage.filter`, SettingsPage.filter);
+      this.createContentCards(this.filterData(SettingsPage.filter));
+    }
   }
 
   private filterData(filter: IObj) {
@@ -233,6 +260,8 @@ class SettingsPage extends Page {
     const size = typeof filter.size === 'object' ? filter.size : {};
     const favorite =
       typeof filter.favorite === 'boolean' ? filter.favorite : false;
+
+    const qty = typeof filter.count === 'object' ? filter.count : {};
 
     const filteredData: Array<IData> = [];
     const dataImport: Array<IData> = data.slice();
@@ -268,6 +297,15 @@ class SettingsPage extends Page {
       // filter favourite
       if (favorite && el['favorite'] === true) {
         filteredData.push(el);
+      }
+      // filter qty
+      for (let key in qty) {
+        // console.log(`qty filter`, key, qty);
+        if (key === 'start' && el['count'] >= qty[key]) {
+          filteredData.push(el);
+        } else if (el['count'] <= qty[key]) {
+          filteredData.push(el);
+        }
       }
     });
     return this.checkUnique(filteredData);

@@ -57,12 +57,8 @@ export class Slider {
   init() {
     // console.log(`this.domNode`, this.imgElem);
     if (this.imgElem.previousElementSibling) {
-      console.log(
-        `this.domNode.previousElementSibling`,
-        this.imgElem.previousElementSibling
-      );
       this.minImgEl = this.imgElem.previousElementSibling;
-      console.log('  this.minDomNode  ', this.minImgEl);
+
       this.railMin = parseInt(
         this.minImgEl.getAttribute('aria-valuemin') as string
       );
@@ -73,12 +69,7 @@ export class Slider {
     }
 
     if (this.imgElem.nextElementSibling) {
-      console.log(
-        `2 - this.domNode.nextElementSibling`,
-        this.imgElem.nextElementSibling
-      );
       this.maxImgEl = this.imgElem.nextElementSibling;
-      console.log('  - 2 - this.maxDomNode', this.maxImgEl);
       this.railMax = parseInt(
         this.maxImgEl.getAttribute('aria-valuemax') as string
       );
@@ -98,7 +89,6 @@ export class Slider {
 
     if (this.imgElem.id === 'min-qty') {
       this.labelEl = this.imgElem.parentElement?.previousElementSibling;
-      console.log('this.labelDomNode', this.labelEl);
     }
 
     if (this.imgElem.id === 'max-qty') {

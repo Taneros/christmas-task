@@ -31,7 +31,7 @@ class SettingsSections {
 </div>
 <div class="controls__filter-by-range">
   <h2 class="controls__filter-header">Sort by Range</h2>
-  <div class="slider">
+  <div id="slider-count" class="slider">
     <h3 class="controls__filter-header">Quantity</h3>
     <div class="slider__rail-label min">0</div>
     <div class="slider__rail" style="width: 300px;">
@@ -60,7 +60,7 @@ class SettingsSections {
     </div>
     <div class="slider__rail-label max">0</div>
   </div>
-  <div class="slider">
+  <div id="slider-year" class="slider">
     <h3 class="controls__filter-header">Year</h3>
     <div class="slider__rail-label min">0</div>
     <div class="slider__rail" style="width: 300px;">
