@@ -197,7 +197,7 @@ class SettingsPage extends Page {
     // console.log('dataFilterVal', dataFilterVal);
     if (dataFilterVal) {
       const btnDiv: string = buttonDiv.id.split('-').slice(-1)[0];
-      const btnData: string = this.translateProp(dataFilterVal, 'en');
+      const btnData: string = dataFilterVal;
       // console.log('btnDiv, btnData', btnDiv, btnData);
       let levelOneProp = SettingsPage.filter[btnDiv];
       // console.log('levelOneProp', levelOneProp);
