@@ -130,30 +130,12 @@ body {
   width: 250px;
   height: 5px;
   background-color: lightgreen;
-}
-
-.slider__input::-webkit-outer-spin-button,
-.slider__input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.slider__input {
-  -moz-appearance: textfield;
-}
-
-.slider__input {
-  width: 20px;
-  height: 1.5em;
   margin: 0 5px;
-  border: 1px solid darkgreen;
-  border-radius: 5px;
-  background-color: rgb(160, 184, 119);
+  padding: 0 15px;
 }
 
-.slider__input::-moz-placeholder,
-.slider__input::-webkit-input-placeholder,
-.slider__input::-ms-input-placeholder {
-  color: rgb(131, 10, 10);
+.slider__input__output {
+  margin: 0 5px;
 }
 
 /* Cards styles */

@@ -29,7 +29,7 @@ interface IDataExact extends IData {
 }
 
 interface IObj {
-  [key: string]: { [key: string]: boolean | number } | boolean;
+  [key: string]: { [key: string]: boolean | number } | boolean | string;
 }
 
 class SettingsPage extends Page {
@@ -37,7 +37,7 @@ class SettingsPage extends Page {
   private cardsSection: Component;
 
   private static filter: IObj = {
-    count: { start: 9, end: 12 },
+    count: { start: 0, end: 0 },
     year: { start: 1940, end: 2020 },
     shape: {
       ball: false,
@@ -60,6 +60,7 @@ class SettingsPage extends Page {
     },
     favorite: false,
     isChanged: false,
+    lastChanged: '',
   };
 
   private static rusLabel = [
@@ -117,11 +118,13 @@ class SettingsPage extends Page {
     });
 
     (<API>sliderDiv.noUiSlider).on('update', function (values) {
-      console.log(`values`, values);
+      const outputQtyMin = sliderDiv.previousElementSibling as HTMLElement;
+      outputQtyMin.innerHTML = String(parseInt(<string>values[0]));
+      const outputQtyMax = sliderDiv.nextElementSibling as HTMLElement;
+      outputQtyMax.innerHTML = String(parseInt(<string>values[1]));
     });
 
     this.container.append(controlSection);
-
     const cardsSection: HTMLElement = this.cardsSection.render();
     this.container.append(cardsSection);
     this.bindListeners();
@@ -187,7 +190,6 @@ class SettingsPage extends Page {
   }
 
   private handleFilterByValue(e: Event) {
-    console.log(`!!`);
     const buttonDiv = e.currentTarget as HTMLElement;
     const button = e.target as HTMLInputElement;
     // console.log('button', button.checked);
@@ -215,12 +217,32 @@ class SettingsPage extends Page {
           SettingsPage.filter[btnDiv] = false;
         }
       }
+      SettingsPage.filter.lastChanged = btnDiv;
       // console.log('filtered data:', this.filterData(SettingsPage.filter));
       this.createContentCards(this.filterData(SettingsPage.filter));
     }
   }
 
-  private handleFilterByRange(e: Event) {}
+  private handleFilterByRange(e: Event) {
+    const sliderRail = e.currentTarget as HTMLElement;
+    const sliderRailId = sliderRail.id.split('-').slice(-1)[0];
+
+    const outputQtyMinEl = sliderRail.previousElementSibling as HTMLElement;
+    const outputQtyMinVal = Number(outputQtyMinEl.innerHTML);
+
+    const outputQtyMaxEl = sliderRail.nextElementSibling as HTMLElement;
+    const outputQtyMaxVal = Number(outputQtyMaxEl.innerHTML);
+
+    let levelOneProp = SettingsPage.filter[sliderRailId];
+
+    if (typeof levelOneProp === 'object') {
+      levelOneProp.start = outputQtyMinVal;
+      levelOneProp.end = outputQtyMaxVal;
+    }
+
+    SettingsPage.filter.lastChanged = sliderRailId;
+    this.createContentCards(this.filterData(SettingsPage.filter));
+  }
 
   private filterData(filter: IObj) {
     // console.log(`filter`, filter);
@@ -229,7 +251,6 @@ class SettingsPage extends Page {
     const size = typeof filter.size === 'object' ? filter.size : {};
     const favorite =
       typeof filter.favorite === 'boolean' ? filter.favorite : false;
-
     const qty = typeof filter.count === 'object' ? filter.count : {};
 
     const filteredData: Array<IData> = [];
@@ -251,7 +272,7 @@ class SettingsPage extends Page {
           color[key] === true &&
           el['color'] === this.translateProp(key, 'ru')
         ) {
-          filteredData.push(el);
+          this.checkUnique_(filteredData, el) ? filteredData.push(el) : null;
         }
       }
       // filter size
@@ -260,27 +281,31 @@ class SettingsPage extends Page {
           size[key] === true &&
           el['size'] === this.translateProp(key, 'ru')
         ) {
-          filteredData.push(el);
+          this.checkUnique_(filteredData, el) ? filteredData.push(el) : null;
         }
       }
       // filter favourite
       if (favorite && el['favorite'] === true) {
-        filteredData.push(el);
+        this.checkUnique_(filteredData, el) ? filteredData.push(el) : null;
       }
       // filter qty
       for (let key in qty) {
         if (
           key === 'start' &&
-          parseInt(el['count'] as string) >= <number>qty[key]
+          parseInt(el['count'] as string) >= <number>qty[key] &&
+          parseInt(el['count'] as string) <= <number>qty['end']
         ) {
-          console.log(`inside if`);
-          filteredData.push(el);
-        } else if (parseInt(el['count'] as string) <= <number>qty[key]) {
-          filteredData.push(el);
+          this.checkUnique_(filteredData, el) ? filteredData.push(el) : null;
+        } else if (
+          key === 'end' &&
+          parseInt(el['count'] as string) >= <number>qty[key] &&
+          parseInt(el['count'] as string) <= <number>qty['start']
+        ) {
+          this.checkUnique_(filteredData, el) ? filteredData.push(el) : null;
         }
       }
     });
-    return this.checkUnique(filteredData);
+    return filteredData;
   }
 
   private checkUnique_(a: Array<IData>, toy: IData) {

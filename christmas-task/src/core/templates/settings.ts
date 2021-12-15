@@ -33,27 +33,11 @@ class SettingsSections {
   <h2 class="controls__filter-header">Sort by Range</h2>
   <div id="slider-count" class="controls__slider slider">
     <h3 class="controls__filter-header">Quantity</h3>
-    <div class="slider__inputs">
-      <label class="slider__input__label">
-        <input
-          type="number"
-          min="1"
-          max="12"
-          placeholder="1"
-          class="slider__input"
-        />
-      </label>
-      <div class="slider__rail"></div>
-      <label class="slider__input__label">
-        <input
-          type="number"
-          min="1"
-          max="12"
-          placeholder="12"
-          class="slider__input"
-        />
-      </label>
-    </div>
+      <div class="slider__inputs">
+        <output class="slider__input__output">1</output>
+        <div id="slider-count-count" class="slider__rail"></div>
+        <output class="slider__input__output">12</output>
+      </div>
   </div>
 </div>
 <div class="controls__filter-by-name">
