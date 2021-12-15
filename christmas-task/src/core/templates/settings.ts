@@ -24,9 +24,9 @@ class SettingsSections {
     <button class="btn" data-filter="medium"></button>
     <button class="btn" data-filter="small"></button>
   </div>
-  <div id="filter-by-favorite" class="filter__btns filter__btns_favourite">
-    <h3 class="filter-btns__header">Favourite</h3>
-    <input type="checkbox" data-filter="favourite" class="input" />
+  <div id="filter-by-favorite" class="filter__btns filter__btns_favorite">
+    <h3 class="filter-btns__header">Favorite</h3>
+    <input type="checkbox" data-filter="favorite" class="input" />
   </div>
 </div>
 <div class="controls__filter-by-range">
