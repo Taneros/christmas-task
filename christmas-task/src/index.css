@@ -105,7 +105,74 @@ body {
 .filter__btns .btn {
   width: 25px;
   height: 25px;
-  background-color: darkgreen;
+  background-color: transparent;
+}
+
+/* Shape Buttons Styles */
+
+.filter__btns_shape .btn:nth-child(2) {
+  background-image: url('./assets/svg/ball.svg');
+  background-size: 25px;
+}
+.filter__btns_shape .btn:nth-child(3) {
+  background-image: url('./assets/svg/bell.svg');
+  background-size: 25px;
+}
+.filter__btns_shape .btn:nth-child(4) {
+  background-image: url('./assets/svg/cone.svg');
+  background-size: 25px;
+}
+.filter__btns_shape .btn:nth-child(5) {
+  background-image: url('./assets/svg/snowflake.svg');
+  background-size: 25px;
+}
+.filter__btns_shape .btn:nth-child(6) {
+  background-image: url('./assets/svg/toy.svg');
+  background-size: 25px;
+}
+
+/* Color Buttons Styles */
+.filter__btns_color .btn:nth-child(2) {
+  background-color: white;
+}
+.filter__btns_color .btn:nth-child(3) {
+  background-color: yellow;
+}
+.filter__btns_color .btn:nth-child(4) {
+  background-color: red;
+}
+.filter__btns_color .btn:nth-child(5) {
+  background-color: blue;
+}
+.filter__btns_color .btn:nth-child(6) {
+  background-color: green;
+}
+
+/* Size Buttons Styles */
+.filter__btns_size .btn:nth-child(2) {
+  width: 35px;
+  height: 35px;
+  background-image: url('./assets/svg/ball.svg');
+  background-size: 35px;
+}
+.filter__btns_size .btn:nth-child(3) {
+  width: 25px;
+  height: 25px;
+  background-image: url('./assets/svg/ball.svg');
+  background-size: 25px;
+}
+.filter__btns_size .btn:nth-child(4) {
+  width: 20px;
+  height: 20px;
+  background-image: url('./assets/svg/ball.svg');
+  background-size: 20px;
+}
+
+/* Favourite Checkbox Styles */
+
+.filter__btns_favourite .input {
+  width: 25px;
+  height: 25px;
 }
 
 /* Settings - Slider Styles */
