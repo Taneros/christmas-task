@@ -29,7 +29,7 @@ interface IDataExact extends IData {
 }
 
 interface IObj {
-  [key: string]: { [key: string]: boolean };
+  [key: string]: { [key: string]: boolean | number };
 }
 
 class SettingsPage extends Page {
@@ -37,6 +37,8 @@ class SettingsPage extends Page {
   private cardsSection: Component;
 
   private static filter: IObj = {
+    count: { start: 1, end: 12 },
+    year: { start: 1940, end: 2020 },
     shape: {
       ball: false,
       bell: false,
@@ -91,7 +93,6 @@ class SettingsPage extends Page {
     'medium',
     'small',
   ];
-  static filterVal: any;
 
   constructor(id: string, className: string) {
     super(id, className);
@@ -153,10 +154,10 @@ class SettingsPage extends Page {
     }
 
     if (!SettingsPage.filter.isChanged.isChanged) {
-      console.log(`false! >>>`, SettingsPage.filter.isChanged.isChanged);
+      // console.log(`false! >>>`, SettingsPage.filter.isChanged.isChanged);
       renderCard(data);
     } else {
-      console.log(`true! >>>`, SettingsPage.filter.isChanged.isChanged);
+      // console.log(`true! >>>`, SettingsPage.filter.isChanged.isChanged);
       cardsSection.innerHTML = '';
       renderCard(filteredData);
     }
@@ -214,50 +215,96 @@ class SettingsPage extends Page {
   }
 
   private handleFilterByRange(e: Event) {
-    // const sliderRail = e.currentTarget as HTMLElement;
-    // const sliderRailId = sliderRail.id.split('-').slice(-1)[0];
+    const sliderRail = e.currentTarget as HTMLElement;
+    const sliderRailId = sliderRail.id.split('-').slice(-1)[0];
     // const outputQtyMinEl = sliderRail.previousElementSibling as HTMLElement;
-    // const outputQtyMinVal = Number(outputQtyMinEl.innerHTML);
+    const outputQtyMinVal = Number(
+      sliderRail.previousElementSibling?.innerHTML
+    );
     // const outputQtyMaxEl = sliderRail.nextElementSibling as HTMLElement;
-    // const outputQtyMaxVal = Number(outputQtyMaxEl.innerHTML);
-    // let levelOneProp = SettingsPage.filter[sliderRailId];
-    // if (typeof levelOneProp === 'object') {
-    //   levelOneProp.start = outputQtyMinVal;
-    //   levelOneProp.end = outputQtyMaxVal;
-    // }
-    // this.createContentCards(this.filterData(SettingsPage.filter));
+    const outputQtyMaxVal = Number(sliderRail.nextElementSibling?.innerHTML);
+    const levelOneProp = SettingsPage.filter[sliderRailId];
+
+    levelOneProp.start = outputQtyMinVal;
+    levelOneProp.end = outputQtyMaxVal;
+
+    this.createContentCards(this.filterData(SettingsPage.filter));
+  }
+
+  private filterDataByRange(filter: IObj) {
+    console.log(`filter`, filter);
+
+    const qty = typeof filter.count === 'object' ? filter.count : {};
+
+    let dataImport: Array<IData> = this.filterData(filter);
+    let filteredData: Array<IData> = [];
+
+    dataImport.forEach((el) => {
+      for (let key in qty) {
+        if (
+          key === 'start' &&
+          parseInt(el['count'] as string) >= <number>qty[key] &&
+          parseInt(el['count'] as string) <= <number>qty['end']
+        ) {
+          filteredData.push(el);
+        } else if (
+          key === 'end' &&
+          parseInt(el['count'] as string) >= <number>qty[key] &&
+          parseInt(el['count'] as string) <= <number>qty['start']
+        ) {
+          filteredData.push(el);
+        }
+      }
+    });
+
+    return filteredData;
   }
 
   private filterData(filter: IObj) {
     console.log(`filter`, filter);
-    const shape = filter.shape;
-    const color = filter.color;
-    const size = filter.size;
-    const favorite = filter.favorite;
-
+    const qty = typeof filter.count === 'object' ? filter.count : {};
     let dataImport: Array<IData> = data.slice();
 
     for (const [key, value] of Object.entries(filter)) {
       let filteredData: Array<IData> = [];
-      for (const [k, v] of Object.entries(value)) {
-        if (v === true) {
-          console.log(`k v true >>>`, k, v);
+      for (const [innerKey, innerVal] of Object.entries(value)) {
+        if (innerVal === true) {
+          // console.log(`k v true >>>`, innerKey, innerVal);
           filteredData = filteredData.concat(
             dataImport.filter((toy) => {
-              console.log(
-                `this.translateProp(k, 'ru') >>>`,
-                this.translateProp(k, 'ru')
-              );
+              // console.log(
+              //   `this.translateProp(k, 'ru') >>>`,
+              //   this.translateProp(innerKey, 'ru')
+              // );
               return (
                 toy[`${key}`] ===
-                (this.translateProp(k, 'ru') === k
-                  ? v
-                  : this.translateProp(k, 'ru'))
+                (this.translateProp(innerKey, 'ru') === innerKey
+                  ? innerVal
+                  : this.translateProp(innerKey, 'ru'))
               );
             })
           );
         }
       }
+      // filter by range qty
+
+      dataImport = dataImport.filter((el, idx) => {
+        for (let key in qty) {
+          if (
+            key === 'start' &&
+            parseInt(el['count'] as string) >= <number>qty[key] &&
+            parseInt(el['count'] as string) <= <number>qty['end']
+          ) {
+            return el;
+          } else if (
+            key === 'end' &&
+            parseInt(el['count'] as string) >= <number>qty[key] &&
+            parseInt(el['count'] as string) <= <number>qty['start']
+          ) {
+            return el;
+          }
+        }
+      });
 
       if (filteredData.length) {
         dataImport = dataImport.concat(filteredData);
@@ -269,22 +316,6 @@ class SettingsPage extends Page {
       }
     }
 
-    // for (let key in qty) {
-    //   if (
-    //     key === 'start' &&
-    //     parseInt(el['count'] as string) >= <number>qty[key] &&
-    //     parseInt(el['count'] as string) <= <number>qty['end']
-    //   ) {
-    //     filteredData.push(el);
-    //   } else if (
-    //     key === 'end' &&
-    //     parseInt(el['count'] as string) >= <number>qty[key] &&
-    //     parseInt(el['count'] as string) <= <number>qty['start']
-    //   ) {
-    //     filteredData.push(el);
-    //   }
-    // }
-    // });
     return dataImport;
   }
 
