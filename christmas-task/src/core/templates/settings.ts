@@ -39,6 +39,14 @@ class SettingsSections {
         <output class="slider__input__output">12</output>
       </div>
   </div>
+  <div id="slider-year" class="controls__slider slider">
+    <h3 class="controls__filter-header">Year</h3>
+      <div class="slider__inputs">
+        <output class="slider__input__output">1940</output>
+        <div id="slider-count-year" class="slider__rail"></div>
+        <output class="slider__input__output">2020</output>
+      </div>
+  </div>
 </div>
 <div class="controls__filter-by-name">
   <h2 class="controls__filter-header">Sort by Name</h2>

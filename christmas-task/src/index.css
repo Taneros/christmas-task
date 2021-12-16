@@ -103,8 +103,8 @@ body {
 }
 
 .filter__btns .btn {
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   background-color: transparent;
 }
 
@@ -166,6 +166,16 @@ body {
   height: 20px;
   background-image: url('./assets/svg/ball.svg');
   background-size: 20px;
+}
+
+.filter__btns .btn {
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.filter__btns .btn.active {
+  border-radius: 5px;
+  border: 1px solid lightgreen;
 }
 
 /* Favourite Checkbox Styles */
