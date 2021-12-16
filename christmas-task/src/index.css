@@ -150,20 +150,20 @@ body {
 
 /* Size Buttons Styles */
 .filter__btns_size .btn:nth-child(2) {
-  width: 35px;
-  height: 35px;
+  /* width: 35px;
+  height: 35px; */
   background-image: url('./assets/svg/ball.svg');
-  background-size: 35px;
+  background-size: 30px;
 }
 .filter__btns_size .btn:nth-child(3) {
-  width: 25px;
-  height: 25px;
+  /* width: 25px;
+  height: 25px; */
   background-image: url('./assets/svg/ball.svg');
   background-size: 25px;
 }
 .filter__btns_size .btn:nth-child(4) {
-  width: 20px;
-  height: 20px;
+  /* width: 20px;
+  height: 20px; */
   background-image: url('./assets/svg/ball.svg');
   background-size: 20px;
 }
@@ -213,6 +213,96 @@ body {
 
 .slider__input__output {
   margin: 0 5px;
+}
+
+/* Select dropdown styles */
+:root {
+  --select-border: #777;
+  --select-focus: rgb(7, 139, 51);
+  --select-arrow: var(--select-border);
+}
+
+/* reset styles */
+select {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  padding: 0 1em 0 0;
+  margin: 0;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+  outline: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select {
+  display: grid;
+  grid-template-areas: 'select';
+  align-items: center;
+  position: relative;
+  min-width: 15ch;
+  max-width: 30ch;
+  border: 1px solid var(--select-border);
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+  /* font-size: 1.25rem; */
+  cursor: pointer;
+  line-height: 1.1;
+  background-color: #fff;
+  background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
+}
+
+.select::after {
+  content: '';
+  width: 0.8em;
+  height: 0.5em;
+  background-color: var(--select-arrow);
+  clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+  display: grid;
+  grid-template-areas: 'select';
+  justify-self: end;
+}
+
+select,
+.select:after {
+  grid-area: select;
+}
+
+select:focus + .focus {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border: 2px solid var(--select-focus);
+  border-radius: inherit;
+}
+
+select[multiple] {
+  padding-right: 0;
+  /*
+   * Safari will not reveal an option
+   * unless the select height has room to 
+   * show all of it
+   * Firefox and Chrome allow showing 
+   * a partial option
+   */
+  height: 6rem;
+  /* 
+   * Experimental - styling of selected options
+   * in the multiselect
+   * Not supported crossbrowser
+   */
+}
+select[multiple] option {
+  white-space: normal;
+  outline-color: var(--select-focus);
 }
 
 /* Cards styles */

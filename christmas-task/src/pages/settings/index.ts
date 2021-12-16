@@ -237,8 +237,10 @@ class SettingsPage extends Page {
 
       if (levelOneProp[btnData] === false) {
         levelOneProp[btnData] = true;
+        button.classList.add('active');
       } else {
         levelOneProp[btnData] = false;
+        button.classList.remove('active');
       }
       // console.log('filtered data:', this.filterData(SettingsPage.filter));
       this.createContentCards(this.filterData(SettingsPage.filter));
@@ -259,35 +261,6 @@ class SettingsPage extends Page {
 
     this.createContentCards(this.filterData(SettingsPage.filter));
   }
-
-  // private filterDataByRange(filter: IObj) {
-  //   console.log(`filter`, filter);
-
-  //   const qty = typeof filter.count === 'object' ? filter.count : {};
-
-  //   let dataImport: Array<IData> = this.filterData(filter);
-  //   let filteredData: Array<IData> = [];
-
-  //   dataImport.forEach((el) => {
-  //     for (let key in qty) {
-  //       if (
-  //         key === 'start' &&
-  //         parseInt(el['count'] as string) >= <number>qty[key] &&
-  //         parseInt(el['count'] as string) <= <number>qty['end']
-  //       ) {
-  //         filteredData.push(el);
-  //       } else if (
-  //         key === 'end' &&
-  //         parseInt(el['count'] as string) >= <number>qty[key] &&
-  //         parseInt(el['count'] as string) <= <number>qty['start']
-  //       ) {
-  //         filteredData.push(el);
-  //       }
-  //     }
-  //   });
-
-  //   return filteredData;
-  // }
 
   private filterData(filter: IObj) {
     console.log(`filter`, filter);
@@ -368,21 +341,6 @@ class SettingsPage extends Page {
     }
 
     return dataImport;
-  }
-
-  private checkUnique_(a: Array<IData>, toy: IData) {
-    const uniqueSet: Set<IData> = new Set();
-    a.forEach((el) => uniqueSet.add(el));
-    const setSizeBefore = uniqueSet.size;
-    uniqueSet.add(toy);
-    return uniqueSet.size > setSizeBefore;
-  }
-
-  private checkUnique(a: Array<IData>) {
-    let uniqueSet: Set<IData> = new Set();
-    a.forEach((el) => uniqueSet.add(el));
-    const uniqueArr: Array<IData> = Array.from(uniqueSet);
-    return uniqueArr;
   }
 
   render() {

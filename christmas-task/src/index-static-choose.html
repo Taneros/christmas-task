@@ -23,7 +23,7 @@
               <h2 class="controls__filter-header">Sort by Value</h2>
               <div id="filter-by-shape" class="filter__btns filter__btns_shape">
                 <h3 class="filter-btns__header">Shape</h3>
-                <button class="btn" data-filter="ball"></button>
+                <button class="btn active" data-filter="ball"></button>
                 <button class="btn" data-filter="bell"></button>
                 <button class="btn" data-filter="pinecone"></button>
                 <button class="btn" data-filter="snowflake"></button>
@@ -64,6 +64,18 @@
             </div>
             <div class="controls__filter-by-name">
               <h2 class="controls__filter-header">Sort by Name</h2>
+              <label for="standard-select"
+                >Если вбруг тебе мало сортировок вот еще:</label
+              >
+              <div class="select">
+                <select id="standard-select">
+                  <option value="Option 1">Alphabetically: A - Z</option>
+                  <option value="Option 2">Alphabetically: Z - A</option>
+                  <option value="Option 3">Numerically: 1 - 12</option>
+                  <option value="Option 4">Numerically: 12 - 1</option>
+                </select>
+                <span class="focus"></span>
+              </div>
             </div>
           </section>
           <section class="cards">

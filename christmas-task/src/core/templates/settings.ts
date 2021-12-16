@@ -49,7 +49,18 @@ class SettingsSections {
   </div>
 </div>
 <div class="controls__filter-by-name">
-  <h2 class="controls__filter-header">Sort by Name</h2>
+  <label for="dropdown-select"
+    >Если вдруг тебе мало сортировок вот еще:</label
+  >
+  <div class="select">
+    <select id="dropdown-select">
+      <option value="a-z">Alphabetically: A - Z</option>
+      <option value="z-a">Alphabetically: Z - A</option>
+      <option value="1-12">Numerically: 1 - 12</option>
+      <option value="12-1">Numerically: 12 - 1</option>
+    </select>
+    <span class="focus"></span>
+  </div>
 </div>
 `;
 
