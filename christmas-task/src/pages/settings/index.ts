@@ -4,7 +4,6 @@ import Page from '../../core/templates/page';
 import SettingsSections from '../../core/templates/settings';
 import './nouislider.css';
 import _default, { target, API } from 'nouislider';
-import SearchInput from '../../core/templates/search-input';
 const noUiSlider = _default;
 import * as interfaces from '../../core/interfaces';
 import Utils from '../../app/utils';
@@ -22,7 +21,6 @@ import Utils from '../../app/utils';
 class SettingsPage extends Page {
   private controlSection: Component;
   private cardsSection: Component;
-  private searchBox: Component;
 
   private static filter: interfaces.IObj = {
     count: { start: 1, end: 12 },
@@ -55,25 +53,14 @@ class SettingsPage extends Page {
     super(id, className);
     this.controlSection = new Component('section', 'controls');
     this.cardsSection = new Component('section', 'cards');
-    this.searchBox = new Component(
-      'div',
-      'header__search search-container',
-      'search-box'
-    );
   }
 
   private createContentControls() {
-    // header search searchBox
-    const header = document.querySelector('.header') as HTMLElement;
-    const searchDiv: HTMLElement = this.searchBox.render();
-    searchDiv.innerHTML = SearchInput.searchForm;
-    header.append(searchDiv);
-
     // controls section
     const controlSection: HTMLElement = this.controlSection.render();
     controlSection.innerHTML = SettingsSections.controls;
 
-    // rnge sliders
+    // range sliders
     const sliderDivQty = <target>(
       controlSection.querySelector('#slider-count-count')
     );
@@ -155,13 +142,13 @@ class SettingsPage extends Page {
     }
 
     if (!SettingsPage.filter.isChanged.isChanged) {
-      console.log(`false! >>>`, SettingsPage.filter.isChanged.isChanged);
+      // console.log(`false! >>>`, SettingsPage.filter.isChanged.isChanged);
       renderCard(data);
     } else {
-      console.log(
-        `true! is isChanged >>>`,
-        SettingsPage.filter.isChanged.isChanged
-      );
+      // console.log(
+      //   `true! is isChanged >>>`,
+      //   SettingsPage.filter.isChanged.isChanged
+      // );
       cardsSection.innerHTML = '';
       renderCard(filteredData);
     }

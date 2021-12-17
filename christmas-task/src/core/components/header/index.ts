@@ -1,5 +1,6 @@
 import { PageIds } from '../../../app';
 import Component from '../../templates/component';
+import SearchInput from '../../templates/search-input';
 
 const Buttons = [
   {
@@ -18,10 +19,16 @@ const Buttons = [
 
 class Header extends Component {
   private className: string;
+  private searchBox: Component;
 
   constructor(tagName: string, className: string) {
     super(tagName, className);
     this.className = className;
+    this.searchBox = new Component(
+      'div',
+      'header__search search-container',
+      'search-box'
+    );
   }
 
   renderNavButtons() {
@@ -37,8 +44,17 @@ class Header extends Component {
     this.container.append(navButtons);
   }
 
+  renderSearchBox() {
+    // header Search Box
+    // const header = document.querySelector('.header') as HTMLElement;
+    const searchDiv: HTMLElement = this.searchBox.render();
+    searchDiv.innerHTML = SearchInput.searchForm;
+    this.container.append(searchDiv);
+  }
+
   render() {
     this.renderNavButtons();
+    this.renderSearchBox();
     return this.container;
   }
 }

@@ -11,6 +11,7 @@ import SettingsPage from '../pages/settings';
  *
  * rename classes all caps
  * rename vars camel case
+ * remove header on main page
  *
  **/
 
@@ -36,17 +37,18 @@ class App {
   private header: Header;
   private footer: Footer;
 
-  static renderNewPage(idPage: string) {
+  private renderNewPage(idPage: string) {
     const mainHTML: HTMLElement = document.querySelector('.main')!;
     mainHTML.innerHTML = '';
     let page: Page | null = null;
 
-    if (idPage === PageIds.MainPage)
+    if (idPage === PageIds.MainPage) {
       page = new MainPage(idPage, PageClasses.MainPageClass);
-    else if (idPage === PageIds.SettingsPage) {
+    } else if (idPage === PageIds.SettingsPage) {
       page = new SettingsPage(idPage, PageClasses.SettingsPageClass);
-    } else if (idPage === PageIds.GamePage)
+    } else if (idPage === PageIds.GamePage) {
       page = new GamePage(idPage, PageClasses.GamePageClass);
+    }
 
     if (page) {
       const pageHTML = page.render();
@@ -60,11 +62,11 @@ class App {
     if (!hash) {
       window.addEventListener('hashchange', () => {
         const hash = window.location.hash.slice(1);
-        App.renderNewPage(hash);
+        this.renderNewPage(hash);
       });
     } else {
       window.location.hash = hash;
-      App.renderNewPage(hash);
+      this.renderNewPage(hash);
     }
   }
 
@@ -77,9 +79,9 @@ class App {
   run() {
     App.container.append(this.header.render());
     App.container.append(this.main.render());
-    App.renderNewPage('main');
+    this.renderNewPage('main');
     App.container.append(this.footer.render());
-    this.enableRouteChange();
+    this.enableRouteChange('');
   }
 }
 
