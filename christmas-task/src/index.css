@@ -30,6 +30,8 @@ body {
   height: 50px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin: 0 1em;
 }
 
 /* Navigation Styles */
@@ -43,8 +45,28 @@ body {
 .header__nav .header__nav__btn {
   display: block;
   color: whitesmoke;
+}
+.header__nav > * + * {
   margin: 0 1em;
 }
+
+/* Search Input Styles */
+
+/* Style the input container */
+
+/* Style the input field inside the navbar */
+.search-container .search-container__input {
+  padding: 6px;
+  font-size: 17px;
+  border: none;
+  border-radius: 5px;
+}
+
+.search-container button:hover {
+  background: #ccc;
+}
+
+/* Main container styles */
 
 .main {
   grid-area: main;

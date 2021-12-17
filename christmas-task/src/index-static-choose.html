@@ -15,6 +15,17 @@
           ><a href="#settings-page" class="header__nav__btn">Choose Toys</a
           ><a href="#game-page" class="header__nav__btn">Decorate Tree</a>
         </nav>
+        <div id="search-box" class="header__search search-container">
+          <form class="search-container__form">
+            <input
+              class="search-container__input"
+              id="search-box-input"
+              type="text"
+              placeholder="Search.."
+              name="search"
+            />
+          </form>
+        </div>
       </header>
       <main class="main" id="main-page">
         <div id="settings-page" class="main__settings">
@@ -64,9 +75,7 @@
             </div>
             <div class="controls__filter-by-name">
               <h2 class="controls__filter-header">Sort by Name</h2>
-              <label for="standard-select"
-                >Если вбруг тебе мало сортировок вот еще:</label
-              >
+              <label for="standard-select"></label>
               <div class="select">
                 <select id="standard-select">
                   <option value="Option 1">Alphabetically: A - Z</option>

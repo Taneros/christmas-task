@@ -4,13 +4,15 @@ import Page from '../../core/templates/page';
 import SettingsSections from '../../core/templates/settings';
 import './nouislider.css';
 import _default, { target, API } from 'nouislider';
+import SearchInput from '../../core/templates/search-input';
 const noUiSlider = _default;
 
 //TODO
 /**
- * filter by range
+ * move settings of functions to app > settings.ts
+ * move interfaces to app > interfaces.ts
+ * move methods to core > utilities.ts
  *
- * filter by
  **/
 
 interface IData {
@@ -35,6 +37,7 @@ interface IObj {
 class SettingsPage extends Page {
   private controlSection: Component;
   private cardsSection: Component;
+  private searchBox: Component;
 
   private static filter: IObj = {
     count: { start: 1, end: 12 },
@@ -99,12 +102,25 @@ class SettingsPage extends Page {
     super(id, className);
     this.controlSection = new Component('section', 'controls');
     this.cardsSection = new Component('section', 'cards');
+    this.searchBox = new Component(
+      'div',
+      'header__search search-container',
+      'search-box'
+    );
   }
 
   private createContentControls() {
+    // header search searchBox
+    const header = document.querySelector('.header') as HTMLElement;
+    const searchDiv: HTMLElement = this.searchBox.render();
+    searchDiv.innerHTML = SearchInput.searchForm;
+    header.append(searchDiv);
+
+    // controls section
     const controlSection: HTMLElement = this.controlSection.render();
     controlSection.innerHTML = SettingsSections.controls;
-    // slider  1 - 12
+
+    // rnge sliders
     const sliderDivQty = <target>(
       controlSection.querySelector('#slider-count-count')
     );
@@ -186,10 +202,13 @@ class SettingsPage extends Page {
     }
 
     if (!SettingsPage.filter.isChanged.isChanged) {
-      // console.log(`false! >>>`, SettingsPage.filter.isChanged.isChanged);
+      console.log(`false! >>>`, SettingsPage.filter.isChanged.isChanged);
       renderCard(data);
     } else {
-      // console.log(`true! >>>`, SettingsPage.filter.isChanged.isChanged);
+      console.log(
+        `true! is isChanged >>>`,
+        SettingsPage.filter.isChanged.isChanged
+      );
       cardsSection.innerHTML = '';
       renderCard(filteredData);
     }
@@ -226,6 +245,25 @@ class SettingsPage extends Page {
       SettingsPage.filter.isChanged.isChanged = true;
       this.handleFilterByOption(e);
     });
+    const searchInput = document.querySelector(
+      '#search-box-input'
+    ) as HTMLElement;
+
+    const debounce = (callback: { (e: Event): void }, wait: number) => {
+      let timeout: ReturnType<typeof setTimeout>;
+      return (...args: [e: Event]) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          SettingsPage.filter.isChanged.isChanged = true;
+          callback.apply(this, args);
+        }, wait);
+      };
+    };
+
+    searchInput.addEventListener(
+      'keyup',
+      debounce(this.handleFilterBySearchInput, 500)
+    );
   }
 
   private handleFilterByValue(e: Event) {
@@ -279,6 +317,41 @@ class SettingsPage extends Page {
     }
 
     this.createContentCards(this.filterData(SettingsPage.filter));
+  }
+
+  private handleFilterBySearchInput(e: Event) {
+    // console.log(`e`, e);
+    const input = e.target as HTMLInputElement;
+    const inputValue = input.value;
+
+    // console.log(`input`, input);
+    // console.log(`inputValue`, inputValue);
+
+    this.createContentCards(this.searchItems(inputValue.toLowerCase().trim()));
+  }
+
+  private searchItems(input: string) {
+    let dataImport: Array<IData> = data.slice();
+
+    const filteredData: Array<IData> = [];
+    dataImport.forEach((el) => {
+      for (const [key, value] of Object.entries(el)) {
+        if (key === 'name' && String(value).includes(input))
+          filteredData.push(el);
+      }
+    });
+    console.log(`filteredData`, filteredData);
+
+    if (filteredData.length) {
+      dataImport = dataImport.concat(filteredData);
+      if (dataImport.length !== filteredData.length) {
+        dataImport = dataImport.filter((el, idx) => {
+          return dataImport.indexOf(el) !== idx;
+        });
+      }
+    }
+
+    return dataImport;
   }
 
   private filterData(filter: IObj) {
