@@ -4,9 +4,9 @@ import Page from '../../core/templates/page';
 import SettingsSections from '../../core/templates/settings';
 import './nouislider.css';
 import _default, { target, API } from 'nouislider';
-const noUiSlider = _default;
 import * as interfaces from '../../core/interfaces';
 import Utils from '../../app/utils';
+import Settings from '../../app/settings';
 
 //TODO
 /**
@@ -22,32 +22,7 @@ class SettingsPage extends Page {
   private controlSection: Component;
   private cardsSection: Component;
 
-  private static filter: interfaces.IObj = {
-    count: { start: 1, end: 12 },
-    year: { start: 1940, end: 2020 },
-    shape: {
-      ball: false,
-      bell: false,
-      pinecone: false,
-      snowflake: false,
-      figurine: false,
-    },
-    color: {
-      white: false,
-      yellow: false,
-      red: false,
-      blue: false,
-      green: false,
-    },
-    size: {
-      big: false,
-      medium: false,
-      small: false,
-    },
-    favorite: { favorite: false },
-    select: { AZ: true, ZA: false, qtyUp: false, qtyDown: false },
-    isChanged: { isChanged: false },
-  };
+  private static filter = Settings.filter;
 
   constructor(id: string, className: string) {
     super(id, className);
@@ -60,42 +35,25 @@ class SettingsPage extends Page {
     const controlSection: HTMLElement = this.controlSection.render();
     controlSection.innerHTML = SettingsSections.controls;
 
+    const noUiSlider = _default;
+
     // range sliders
     const sliderDivQty = <target>(
       controlSection.querySelector('#slider-count-count')
     );
 
-    const sliderQtySettings = {
-      start: [1, 12],
-      connect: true,
-      range: {
-        min: 1,
-        max: 12,
-      },
-      step: 1,
-    };
-
     const sliderDivYear = <target>(
       controlSection.querySelector('#slider-count-year')
     );
 
-    const sliderYearSettings = {
-      start: [1960, 2020],
-      connect: true,
-      range: {
-        min: 1960,
-        max: 2020,
-      },
-      step: 10,
-    };
-
-    const sliders = [
-      { slider_1: sliderDivQty, sliderQtySettings },
-      { slider_2: sliderDivYear, sliderQtySettings },
-    ];
-
-    const sliderQty = noUiSlider.create(sliderDivQty, sliderQtySettings);
-    const sliderYear = noUiSlider.create(sliderDivYear, sliderYearSettings);
+    const sliderQty = noUiSlider.create(
+      sliderDivQty,
+      Settings.sliderQtySettings
+    );
+    const sliderYear = noUiSlider.create(
+      sliderDivYear,
+      Settings.sliderYearSettings
+    );
 
     (<API>sliderQty).on('update', function (values) {
       const outputQtyMin = sliderDivQty.previousElementSibling as HTMLElement;
