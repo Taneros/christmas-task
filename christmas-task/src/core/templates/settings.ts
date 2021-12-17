@@ -54,10 +54,10 @@ class SettingsSections {
   >
   <div class="select">
     <select id="dropdown-select">
-      <option value="a-z">Alphabetically: A - Z</option>
-      <option value="z-a">Alphabetically: Z - A</option>
-      <option value="1-12">Numerically: 1 - 12</option>
-      <option value="12-1">Numerically: 12 - 1</option>
+      <option value="AZ">Alphabetically: A - Z</option>
+      <option value="ZA">Alphabetically: Z - A</option>
+      <option value="qtyUp">Quantity: 1 - 12</option>
+      <option value="qtyDown">Quantity: 12 - 1</option>
     </select>
     <span class="focus"></span>
   </div>

@@ -59,6 +59,7 @@ class SettingsPage extends Page {
       small: false,
     },
     favorite: { favorite: false },
+    select: { AZ: true, ZA: false, qtyUp: false, qtyDown: false },
     isChanged: { isChanged: false },
   };
 
@@ -220,6 +221,11 @@ class SettingsPage extends Page {
         this.handleFilterByRange(e);
       });
     });
+    const dropDownSelect = this.container.querySelector('#dropdown-select');
+    dropDownSelect?.addEventListener('change', (e: Event) => {
+      SettingsPage.filter.isChanged.isChanged = true;
+      this.handleFilterByOption(e);
+    });
   }
 
   private handleFilterByValue(e: Event) {
@@ -262,10 +268,25 @@ class SettingsPage extends Page {
     this.createContentCards(this.filterData(SettingsPage.filter));
   }
 
+  private handleFilterByOption(e: Event) {
+    const selectEl = e.currentTarget as HTMLSelectElement;
+    const selectId = selectEl.id.split('-').slice(-1)[0];
+    const levelOneProp = SettingsPage.filter[selectId];
+
+    for (let [k, v] of Object.entries(levelOneProp)) {
+      if (k === selectEl.value) levelOneProp[k] = true;
+      else levelOneProp[k] = false;
+    }
+
+    this.createContentCards(this.filterData(SettingsPage.filter));
+  }
+
   private filterData(filter: IObj) {
-    console.log(`filter`, filter);
+    // console.log(`filter`, filter.select);
     const qty = typeof filter.count === 'object' ? filter.count : {};
     const year = typeof filter.year === 'object' ? filter.year : {};
+    const selectDropDown =
+      typeof filter.select === 'object' ? filter.select : {};
 
     let dataImport: Array<IData> = data.slice();
 
@@ -273,13 +294,8 @@ class SettingsPage extends Page {
       let filteredData: Array<IData> = [];
       for (const [innerKey, innerVal] of Object.entries(value)) {
         if (innerVal === true) {
-          // console.log(`k v true >>>`, innerKey, innerVal);
           filteredData = filteredData.concat(
             dataImport.filter((toy) => {
-              // console.log(
-              //   `this.translateProp(k, 'ru') >>>`,
-              //   this.translateProp(innerKey, 'ru')
-              // );
               return (
                 toy[`${key}`] ===
                 (this.translateProp(innerKey, 'ru') === innerKey
@@ -327,6 +343,27 @@ class SettingsPage extends Page {
           }
         }
       });
+
+      for (const [innerKey, innerVal] of Object.entries(selectDropDown)) {
+        if (innerVal === true && innerKey === 'AZ') {
+          console.log(`innerKey innerVal >>>`, innerKey, innerVal);
+          dataImport = dataImport.sort(function (a: IData, b: IData): number {
+            return String(a.name).charCodeAt(0) - String(b.name).charCodeAt(0);
+          });
+        } else if (innerVal === true && innerKey === 'ZA') {
+          dataImport = dataImport.sort(function (a: IData, b: IData): number {
+            return String(b.name).charCodeAt(0) - String(a.name).charCodeAt(0);
+          });
+        } else if (innerVal === true && innerKey === 'qtyUp') {
+          dataImport = dataImport.sort(function (a: IData, b: IData): number {
+            return Number(a.count) - Number(b.count);
+          });
+        } else if (innerVal === true && innerKey === 'qtyDown') {
+          dataImport = dataImport.sort(function (a: IData, b: IData): number {
+            return Number(b.count) - Number(a.count);
+          });
+        }
+      }
 
       console.log(`filteredData.length`, filteredData.length);
 
