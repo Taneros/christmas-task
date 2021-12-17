@@ -70,13 +70,13 @@ class SettingsPage extends Page {
     });
 
     this.container.append(controlSection);
-    const cardsSection: HTMLElement = this.cardsSection.render();
-    this.container.append(cardsSection);
-    this.bindListeners();
+    // this.bindListeners();
   }
 
   private createContentCards(filteredData: Array<interfaces.IData>) {
-    const cardsSection: HTMLElement = this.container.querySelector('.cards')!;
+    const cardsSections: HTMLElement = this.cardsSection.render();
+    this.container.append(cardsSections);
+    // const cardsSection: HTMLElement = this.container.querySelector('.cards')!;
 
     function renderCard(data: Array<interfaces.IData>): void {
       const cardDataFirstLoad = [...data];
@@ -95,10 +95,9 @@ class SettingsPage extends Page {
             );
         });
         cardDiv.innerHTML = cardTemplate;
-        cardsSection.append(cardDiv);
+        cardsSections.append(cardDiv);
       });
     }
-
     if (!SettingsPage.filter.isChanged.isChanged) {
       // console.log(`false! >>>`, SettingsPage.filter.isChanged.isChanged);
       renderCard(data);
@@ -107,12 +106,13 @@ class SettingsPage extends Page {
       //   `true! is isChanged >>>`,
       //   SettingsPage.filter.isChanged.isChanged
       // );
-      cardsSection.innerHTML = '';
+      cardsSections.innerHTML = '';
       renderCard(filteredData);
     }
   }
 
   private bindListeners() {
+    // Buttons
     const buttonBlocks = this.container.querySelectorAll('.filter__btns');
     buttonBlocks.forEach((btnBlock) => {
       btnBlock?.addEventListener('click', (e: Event) => {
@@ -120,6 +120,7 @@ class SettingsPage extends Page {
         this.handleFilterByValue(e);
       });
     });
+    // Range sliders
     const rangeSlider = this.container.querySelectorAll('.slider__rail');
     rangeSlider.forEach((slider) => {
       slider?.addEventListener('click', (e: Event) => {
@@ -127,11 +128,14 @@ class SettingsPage extends Page {
         this.handleFilterByRange(e);
       });
     });
+    // Dropdown select search
     const dropDownSelect = this.container.querySelector('#dropdown-select');
     dropDownSelect?.addEventListener('change', (e: Event) => {
       SettingsPage.filter.isChanged.isChanged = true;
       this.handleFilterByOption(e);
     });
+
+    // Search Box
     const searchInput = document.querySelector(
       '#search-box-input'
     ) as HTMLElement;
@@ -151,6 +155,23 @@ class SettingsPage extends Page {
       'keyup',
       debounce(this.handleFilterBySearchInput, 500)
     );
+
+    // Reset buttons
+
+    const resetFiltersButtons: HTMLCollectionOf<Element> =
+      this.container.getElementsByClassName('btn controls_reset');
+
+    const myArr: Element[] = Array.from(resetFiltersButtons);
+
+    for (const el of myArr) {
+      el?.addEventListener('click', (e: Event) => {
+        if (el.id === 'reset-filters') {
+          console.log(`e.currentTarget`, e.currentTarget);
+          SettingsPage.filter.isChanged.isChanged = false;
+          this.render();
+        }
+      });
+    }
   }
 
   private handleFilterByValue(e: Event) {
@@ -181,7 +202,7 @@ class SettingsPage extends Page {
   private handleFilterByRange(e: Event) {
     const sliderRail = e.currentTarget as HTMLElement;
     const sliderRailId = sliderRail.id.split('-').slice(-1)[0];
-    console.log(`rail id`, sliderRailId);
+    // console.log(`rail id`, sliderRailId);
     const outputQtyMinVal = Number(
       sliderRail.previousElementSibling?.innerHTML
     );
@@ -217,6 +238,7 @@ class SettingsPage extends Page {
   render() {
     this.createContentControls();
     this.createContentCards([]);
+    this.bindListeners();
     return this.container;
   }
 }

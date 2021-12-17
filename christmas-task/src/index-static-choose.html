@@ -74,17 +74,31 @@
               </div>
             </div>
             <div class="controls__filter-by-name">
-              <h2 class="controls__filter-header">Sort by Name</h2>
+              <h2 class="controls__filter-header">More Sorting Settings</h2>
               <label for="standard-select"></label>
               <div class="select">
                 <select id="standard-select">
-                  <option value="Option 1">Alphabetically: A - Z</option>
-                  <option value="Option 2">Alphabetically: Z - A</option>
-                  <option value="Option 3">Numerically: 1 - 12</option>
-                  <option value="Option 4">Numerically: 12 - 1</option>
+                  <option value="AZ">Alphabetically: A - Z</option>
+                  <option value="ZA">Alphabetically: Z - A</option>
+                  <option value="qtyUp">Quantity: 1 - 12</option>
+                  <option value="qtyDown">Quantity: 12 - 1</option>
                 </select>
                 <span class="focus"></span>
               </div>
+              <button
+                id="reset-filters"
+                type="button"
+                class="btn controls_reset"
+              >
+                Reset All Filters
+              </button>
+              <button
+                id="reset-localstorage"
+                type="button"
+                class="btn controls_reset"
+              >
+                Reset Game
+              </button>
             </div>
           </section>
           <section class="cards">

@@ -49,9 +49,9 @@ class SettingsSections {
   </div>
 </div>
 <div class="controls__filter-by-name">
+<h2 class="controls__filter-header">More Sorting Settings</h2>
   <label for="dropdown-select"
-    >Если вдруг тебе мало сортировок вот еще:</label
-  >
+    ></label>
   <div class="select">
     <select id="dropdown-select">
       <option value="AZ">Alphabetically: A - Z</option>
@@ -61,6 +61,8 @@ class SettingsSections {
     </select>
     <span class="focus"></span>
   </div>
+  <button id="reset-filters" type="button" class="btn controls_reset"> Reset All Filters</button>
+  <button id="reset-localstorage" type="button" class="btn controls_reset">Reset Game</button>
 </div>
 `;
 
