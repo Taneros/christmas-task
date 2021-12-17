@@ -6,40 +6,25 @@ import './nouislider.css';
 import _default, { target, API } from 'nouislider';
 import SearchInput from '../../core/templates/search-input';
 const noUiSlider = _default;
+import * as interfaces from '../../core/interfaces';
+import Utils from '../../app/utils';
 
 //TODO
 /**
  * move settings of functions to app > settings.ts
- * move interfaces to app > interfaces.ts
- * move methods to core > utilities.ts
+ * move search filter methods to core > utilities.ts
+ *
+ * create components names.ts
+ *  class returns names, tags, ids, classes of components
  *
  **/
-
-interface IData {
-  [key: string]: string | boolean;
-}
-
-interface IDataExact extends IData {
-  num: string;
-  name: string;
-  count: string;
-  year: string;
-  shape: string;
-  color: string;
-  size: string;
-  favorite: boolean;
-}
-
-interface IObj {
-  [key: string]: { [key: string]: boolean | number };
-}
 
 class SettingsPage extends Page {
   private controlSection: Component;
   private cardsSection: Component;
   private searchBox: Component;
 
-  private static filter: IObj = {
+  private static filter: interfaces.IObj = {
     count: { start: 1, end: 12 },
     year: { start: 1940, end: 2020 },
     shape: {
@@ -65,38 +50,6 @@ class SettingsPage extends Page {
     select: { AZ: true, ZA: false, qtyUp: false, qtyDown: false },
     isChanged: { isChanged: false },
   };
-
-  private static rusLabel = [
-    'шар',
-    'колокольчик',
-    'шишка',
-    'снежинка',
-    'фигурка',
-    'белый',
-    'желтый',
-    'красный',
-    'синий',
-    'зелёный',
-    'большой',
-    'средний',
-    'малый',
-  ];
-
-  private static engLabel = [
-    'ball',
-    'bell',
-    'pinecone',
-    'snowflake',
-    'figurine',
-    'white',
-    'yellow',
-    'red',
-    'blue',
-    'green',
-    'big',
-    'medium',
-    'small',
-  ];
 
   constructor(id: string, className: string) {
     super(id, className);
@@ -177,10 +130,10 @@ class SettingsPage extends Page {
     this.bindListeners();
   }
 
-  private createContentCards(filteredData: Array<IData>) {
+  private createContentCards(filteredData: Array<interfaces.IData>) {
     const cardsSection: HTMLElement = this.container.querySelector('.cards')!;
 
-    function renderCard(data: Array<IData>): void {
+    function renderCard(data: Array<interfaces.IData>): void {
       const cardDataFirstLoad = [...data];
       cardDataFirstLoad.forEach((el) => {
         const cardDivComp = new Component('div', 'card');
@@ -212,17 +165,6 @@ class SettingsPage extends Page {
       cardsSection.innerHTML = '';
       renderCard(filteredData);
     }
-  }
-
-  private translateProp(prop: string, lang: string): string {
-    let translation: string = '';
-
-    if (lang === 'en') {
-      translation = SettingsPage.engLabel[SettingsPage.rusLabel.indexOf(prop)];
-    } else {
-      translation = SettingsPage.rusLabel[SettingsPage.engLabel.indexOf(prop)];
-    }
-    return translation || prop;
   }
 
   private bindListeners() {
@@ -287,7 +229,7 @@ class SettingsPage extends Page {
         button.classList.remove('active');
       }
       // console.log('filtered data:', this.filterData(SettingsPage.filter));
-      this.createContentCards(this.filterData(SettingsPage.filter));
+      this.createContentCards(Utils.filterData(SettingsPage.filter));
     }
   }
 
@@ -303,154 +245,28 @@ class SettingsPage extends Page {
     levelOneProp.start = outputQtyMinVal;
     levelOneProp.end = outputQtyMaxVal;
 
-    this.createContentCards(this.filterData(SettingsPage.filter));
+    this.createContentCards(Utils.filterData(SettingsPage.filter));
   }
 
   private handleFilterByOption(e: Event) {
     const selectEl = e.currentTarget as HTMLSelectElement;
     const selectId = selectEl.id.split('-').slice(-1)[0];
     const levelOneProp = SettingsPage.filter[selectId];
-
     for (let [k, v] of Object.entries(levelOneProp)) {
       if (k === selectEl.value) levelOneProp[k] = true;
       else levelOneProp[k] = false;
     }
 
-    this.createContentCards(this.filterData(SettingsPage.filter));
+    this.createContentCards(Utils.filterData(SettingsPage.filter));
   }
 
   private handleFilterBySearchInput(e: Event) {
     // console.log(`e`, e);
     const input = e.target as HTMLInputElement;
     const inputValue = input.value;
-
     // console.log(`input`, input);
     // console.log(`inputValue`, inputValue);
-
-    this.createContentCards(this.searchItems(inputValue.toLowerCase().trim()));
-  }
-
-  private searchItems(input: string) {
-    let dataImport: Array<IData> = data.slice();
-
-    const filteredData: Array<IData> = [];
-    dataImport.forEach((el) => {
-      for (const [key, value] of Object.entries(el)) {
-        if (key === 'name' && String(value).includes(input))
-          filteredData.push(el);
-      }
-    });
-    console.log(`filteredData`, filteredData);
-
-    if (filteredData.length) {
-      dataImport = dataImport.concat(filteredData);
-      if (dataImport.length !== filteredData.length) {
-        dataImport = dataImport.filter((el, idx) => {
-          return dataImport.indexOf(el) !== idx;
-        });
-      }
-    }
-
-    return dataImport;
-  }
-
-  private filterData(filter: IObj) {
-    // console.log(`filter`, filter.select);
-    const qty = typeof filter.count === 'object' ? filter.count : {};
-    const year = typeof filter.year === 'object' ? filter.year : {};
-    const selectDropDown =
-      typeof filter.select === 'object' ? filter.select : {};
-
-    let dataImport: Array<IData> = data.slice();
-
-    for (const [key, value] of Object.entries(filter)) {
-      let filteredData: Array<IData> = [];
-      for (const [innerKey, innerVal] of Object.entries(value)) {
-        if (innerVal === true) {
-          filteredData = filteredData.concat(
-            dataImport.filter((toy) => {
-              return (
-                toy[`${key}`] ===
-                (this.translateProp(innerKey, 'ru') === innerKey
-                  ? innerVal
-                  : this.translateProp(innerKey, 'ru'))
-              );
-            })
-          );
-        }
-      }
-      // filter by range qty
-      dataImport = dataImport.filter((el, idx) => {
-        for (let key in qty) {
-          if (
-            key === 'start' &&
-            parseInt(el['count'] as string) >= <number>qty[key] &&
-            parseInt(el['count'] as string) <= <number>qty['end']
-          ) {
-            return el;
-          } else if (
-            key === 'end' &&
-            parseInt(el['count'] as string) >= <number>qty[key] &&
-            parseInt(el['count'] as string) <= <number>qty['start']
-          ) {
-            return el;
-          }
-        }
-      });
-
-      // filter by range year
-      dataImport = dataImport.filter((el, idx) => {
-        for (let key in year) {
-          if (
-            key === 'start' &&
-            parseInt(el['year'] as string) >= <number>year[key] &&
-            parseInt(el['year'] as string) <= <number>year['end']
-          ) {
-            return el;
-          } else if (
-            key === 'end' &&
-            parseInt(el['year'] as string) >= <number>year[key] &&
-            parseInt(el['year'] as string) <= <number>year['start']
-          ) {
-            return el;
-          }
-        }
-      });
-
-      for (const [innerKey, innerVal] of Object.entries(selectDropDown)) {
-        if (innerVal === true && innerKey === 'AZ') {
-          console.log(`innerKey innerVal >>>`, innerKey, innerVal);
-          dataImport = dataImport.sort(function (a: IData, b: IData): number {
-            return String(a.name).charCodeAt(0) - String(b.name).charCodeAt(0);
-          });
-        } else if (innerVal === true && innerKey === 'ZA') {
-          dataImport = dataImport.sort(function (a: IData, b: IData): number {
-            return String(b.name).charCodeAt(0) - String(a.name).charCodeAt(0);
-          });
-        } else if (innerVal === true && innerKey === 'qtyUp') {
-          dataImport = dataImport.sort(function (a: IData, b: IData): number {
-            return Number(a.count) - Number(b.count);
-          });
-        } else if (innerVal === true && innerKey === 'qtyDown') {
-          dataImport = dataImport.sort(function (a: IData, b: IData): number {
-            return Number(b.count) - Number(a.count);
-          });
-        }
-      }
-
-      console.log(`filteredData.length`, filteredData.length);
-
-      if (filteredData.length) {
-        dataImport = dataImport.concat(filteredData);
-        if (dataImport.length !== filteredData.length) {
-          dataImport = dataImport.filter((el, idx) => {
-            return dataImport.indexOf(el) !== idx;
-          });
-        }
-      }
-    }
-
-    return dataImport;
+    this.createContentCards(Utils.searchItems(inputValue.toLowerCase().trim()));
   }
 
   render() {

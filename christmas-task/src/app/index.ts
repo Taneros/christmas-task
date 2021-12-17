@@ -10,7 +10,6 @@ import SettingsPage from '../pages/settings';
 /**
  *
  * rename classes all caps
- *
  * rename vars camel case
  *
  **/
@@ -80,7 +79,7 @@ class App {
     App.container.append(this.main.render());
     App.renderNewPage('main');
     App.container.append(this.footer.render());
-    this.enableRouteChange('settings');
+    this.enableRouteChange();
   }
 }
 
