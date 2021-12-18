@@ -16,13 +16,30 @@ import Settings from '../../app/settings';
  * create components names.ts
  *  class returns names, tags, ids, classes of components
  *
+ * create basket:
+ *  + button with number (see premade)
+ *  + add event listener to each card
+ *  + array to store cards numbers
+ *  - overlay trigger with basket items on basket btn click
+ *  - style: add class outline to each card
+ *  - if basket has more than 20 -> show pop up
+ *
+ *
+ *
  **/
+
+interface basket {
+  [key: string]: Array<number>;
+}
 
 class SettingsPage extends Page {
   private controlSection: Component;
   private cardsSection: Component;
-
   private static filter = Settings.filter;
+
+  static basketItems: basket = {
+    items: [],
+  };
 
   constructor(id: string, className: string) {
     super(id, className);
@@ -78,7 +95,7 @@ class SettingsPage extends Page {
     this.container.append(cardsSections);
     // const cardsSection: HTMLElement = this.container.querySelector('.cards')!;
 
-    function renderCard(data: Array<interfaces.IData>): void {
+    const renderCard = (data: Array<interfaces.IData>): void => {
       const cardDataFirstLoad = [...data];
       cardDataFirstLoad.forEach((el) => {
         const cardDivComp = new Component('div', 'card');
@@ -95,9 +112,13 @@ class SettingsPage extends Page {
             );
         });
         cardDiv.innerHTML = cardTemplate;
+        cardDiv.addEventListener('click', (e: Event) => {
+          console.log(`e.currentTarget`, e.currentTarget);
+          this.handleCardClick(e);
+        });
         cardsSections.append(cardDiv);
       });
-    }
+    };
     if (!SettingsPage.filter.isChanged.isChanged) {
       // console.log(`false! >>>`, SettingsPage.filter.isChanged.isChanged);
       renderCard(data);
@@ -156,6 +177,10 @@ class SettingsPage extends Page {
       debounce(this.handleFilterBySearchInput, 500)
     );
 
+    // Basket
+    const basketDiv = document.querySelector('#basket');
+    // console.log(`basketDiv`, basketDiv);
+
     // Reset buttons
 
     const resetFiltersButtons: HTMLCollectionOf<Element> =
@@ -166,12 +191,61 @@ class SettingsPage extends Page {
     for (const el of myArr) {
       el?.addEventListener('click', (e: Event) => {
         if (el.id === 'reset-filters') {
-          console.log(`e.currentTarget`, e.currentTarget);
+          // console.log(`e.currentTarget`, e.currentTarget);
           SettingsPage.filter.isChanged.isChanged = false;
           this.render();
         }
       });
     }
+  }
+
+  private handleCardClick(e: Event) {
+    const basketItems = SettingsPage.basketItems.items;
+    const cardDiv = <HTMLElement>e.currentTarget;
+    const cardImg = <HTMLElement>cardDiv.querySelector('.card__img');
+    const cardImgNum = Number(
+      cardImg.getAttribute('src')?.split('/').slice(-1)[0].split('.')[0]
+    );
+
+    // console.log(`cardImgNum`, cardImgNum);
+
+    const checkUnique = (
+      items: Array<number>,
+      item: number
+    ): boolean | undefined => {
+      const uniqueSet: Set<number> = new Set();
+      items.forEach((item) => uniqueSet.add(item));
+      const setSizeBefore = uniqueSet.size;
+      uniqueSet.add(item);
+      if (uniqueSet.size > setSizeBefore) return true;
+      else return false;
+    };
+
+    const basketNumBadge: HTMLElement =
+      document.querySelector('.basket__badge')!;
+
+    if (checkUnique(basketItems, cardImgNum)) {
+      // check [] less < 21
+      if (basketItems.length < Settings.basketMaxToys) {
+        cardDiv.classList.toggle('active');
+        basketItems.push(cardImgNum);
+      } else
+        console.log(
+          `BacketSize is too big!`,
+          SettingsPage.basketItems.items.length
+        );
+    } else {
+      // not unique
+      // remove element from array
+      basketItems.splice(basketItems.indexOf(cardImgNum), 1);
+      cardDiv.classList.toggle('active');
+
+      console.log(
+        `SettingsPage.basketItems.item`,
+        SettingsPage.basketItems.items
+      );
+    }
+    basketNumBadge.innerHTML = String(basketItems.length);
   }
 
   private handleFilterByValue(e: Event) {

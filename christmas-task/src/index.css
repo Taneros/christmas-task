@@ -66,6 +66,32 @@ body {
   background: #ccc;
 }
 
+/* Basket Styles */
+
+.basket__notification {
+  display: inline-block;
+  background-color: #01aa6d;
+  color: white;
+  text-decoration: none;
+  padding: 1em 1.5em;
+  position: relative;
+  border-radius: 5px;
+}
+
+.basket__notification:hover {
+  background: #3e8e41;
+}
+
+.basket__notification .basket__badge {
+  position: absolute;
+  bottom: -10px;
+  left: -10px;
+  padding: 5px 8px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
+
 /* Main container styles */
 
 .main {
@@ -385,6 +411,10 @@ select[multiple] option {
 
 .cards {
   color: #121c1e;
+}
+
+.card.active {
+  background-color: #3e8e41;
 }
 
 /* Footer Styles */

@@ -61,6 +61,8 @@ class Settings {
     select: { AZ: true, ZA: false, qtyUp: false, qtyDown: false },
     isChanged: { isChanged: false },
   };
+
+  static basketMaxToys: number = 3;
 }
 
 export default Settings;

@@ -1,4 +1,5 @@
 import { PageIds } from '../../../app';
+import Basket from '../../templates/basket';
 import Component from '../../templates/component';
 import SearchInput from '../../templates/search-input';
 
@@ -20,6 +21,7 @@ const Buttons = [
 class Header extends Component {
   private className: string;
   private searchBox: Component;
+  private basket: Component;
 
   constructor(tagName: string, className: string) {
     super(tagName, className);
@@ -29,6 +31,7 @@ class Header extends Component {
       'header__search search-container',
       'search-box'
     );
+    this.basket = new Component('div', 'header__basket basket', 'basket');
   }
 
   renderNavButtons() {
@@ -52,9 +55,16 @@ class Header extends Component {
     this.container.append(searchDiv);
   }
 
+  renderBasket() {
+    const basketDiv: HTMLElement = this.basket.render();
+    basketDiv.innerHTML = Basket.basket;
+    this.container.append(basketDiv);
+  }
+
   render() {
     this.renderNavButtons();
     this.renderSearchBox();
+    this.renderBasket();
     return this.container;
   }
 }
