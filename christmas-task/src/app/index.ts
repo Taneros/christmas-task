@@ -13,6 +13,8 @@ import SettingsPage from '../pages/settings';
  * rename vars camel case
  * remove header on main page
  *
+ * check types of methods funtions returns
+ *
  **/
 
 export const enum PageIds {

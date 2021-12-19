@@ -29,18 +29,14 @@ import popUp from '../../core/templates/popup';
  *
  **/
 
-interface basket {
-  [key: string]: Array<number>;
-}
-
 class SettingsPage extends Page {
   private controlSection: Component;
   private cardsSection: Component;
   private static filter = Settings.filter;
   private popup: Component;
 
-  static basketItems: basket = {
-    items: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  static basketItems: interfaces.basket = {
+    items: [],
   };
 
   constructor(id: string, className: string) {
@@ -116,7 +112,7 @@ class SettingsPage extends Page {
         });
         cardDiv.innerHTML = cardTemplate;
         cardDiv.addEventListener('click', (e: Event) => {
-          console.log(`e.currentTarget`, e.currentTarget);
+          // console.log(`e.currentTarget`, e.currentTarget);
           this.handleCardClick(e);
         });
         cardsSections.append(cardDiv);
@@ -203,9 +199,11 @@ class SettingsPage extends Page {
   }
 
   private handleCardClick(e: Event) {
+    // get array of items
     const basketItems = SettingsPage.basketItems.items;
     const cardDiv = <HTMLElement>e.currentTarget;
     const cardImg = <HTMLElement>cardDiv.querySelector('.card__img');
+    const cardQty = '';
     const cardImgNum = Number(
       cardImg.getAttribute('src')?.split('/').slice(-1)[0].split('.')[0]
     );
@@ -220,26 +218,43 @@ class SettingsPage extends Page {
       });
     };
 
-    const checkUnique = (
-      items: Array<number>,
-      item: number
-    ): boolean | undefined => {
-      const uniqueSet: Set<number> = new Set();
-      items.forEach((item) => uniqueSet.add(item));
-      const setSizeBefore = uniqueSet.size;
-      uniqueSet.add(item);
-      if (uniqueSet.size > setSizeBefore) return true;
-      else return false;
-    };
+    // const checkUnique = (
+    //   items: Array<number>,
+    //   item: number
+    // ): boolean | undefined => {
+    //   const uniqueSet: Set<number> = new Set();
+    //   items.forEach((item) => uniqueSet.add(item));
+    //   const setSizeBefore = uniqueSet.size;
+    //   uniqueSet.add(item);
+    //   if (uniqueSet.size > setSizeBefore) return true;
+    //   else return false;
+    // };
 
     const basketNumBadge: HTMLElement =
       document.querySelector('.basket__badge')!;
 
-    if (checkUnique(basketItems, cardImgNum)) {
+    if (!basketItems[cardImgNum]) {
       // check [] less < 21
-      if (basketItems.length < Settings.basketMaxToys) {
+      if (Utils.arrayLength(basketItems) < Settings.basketMaxToys) {
         cardDiv.classList.toggle('active');
-        basketItems.push(cardImgNum);
+        // store qty in basket array under index of img
+        console.log(`here!!!`);
+        basketItems[cardImgNum] = Number(
+          Utils.searchDataByKey(
+            interfaces.EDataKeys.num,
+            String(cardImgNum),
+            interfaces.EDataKeys.count
+          )
+        );
+
+        console.log(
+          `find qty`,
+          Utils.searchDataByKey(
+            interfaces.EDataKeys.num,
+            String(cardImgNum),
+            interfaces.EDataKeys.count
+          )
+        );
       } else {
         console.log(
           `BacketSize is too big!`,
@@ -260,15 +275,6 @@ class SettingsPage extends Page {
         ).then(() => {
           popUpMax.remove();
         });
-        console.log(
-          `var >>>`,
-          Number(
-            getComputedStyle(popUpMax)
-              .getPropertyValue('--timeout')
-              .trim()
-              .slice(0, 3)
-          ) * 1000
-        );
       }
     } else {
       // not unique
@@ -281,7 +287,8 @@ class SettingsPage extends Page {
         SettingsPage.basketItems.items
       );
     }
-    basketNumBadge.innerHTML = String(basketItems.length);
+    console.log(`basketItems >>> `, basketItems);
+    basketNumBadge.innerHTML = String(Utils.arrayLength(basketItems));
   }
 
   private handleFilterByValue(e: Event) {

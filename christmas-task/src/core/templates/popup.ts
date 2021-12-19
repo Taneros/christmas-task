@@ -1,6 +1,6 @@
 class popUp {
   static basketMax = `
-  <span class="popuptext" id="popup-max">Корзина наполнилась!</span>
+  <span class="popuptext" id="popup-max">Все слоты в корзине заняты!</span>
   `;
 }
 

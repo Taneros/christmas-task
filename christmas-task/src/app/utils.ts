@@ -156,7 +156,7 @@ class Utils {
     return dataImport;
   }
 
-  static searchItems(input: string) {
+  static searchItems(input: string): Array<interfaces.IData> {
     let dataImport: Array<interfaces.IData> = data.slice();
 
     const filteredData: Array<interfaces.IData> = [];
@@ -181,6 +181,30 @@ class Utils {
     }
 
     return dataImport;
+  }
+
+  static searchDataByKey(
+    key_1: interfaces.EDataKeys,
+    val_1: string,
+    key_2: interfaces.EDataKeys
+  ) {
+    let foundValue: boolean | string = '';
+    const dataImport: Array<interfaces.IData> = data.slice();
+
+    dataImport.forEach((el) => {
+      for (const [keyEl, valueEl] of Object.entries(el)) {
+        if (keyEl === key_1 && valueEl === val_1) foundValue = el[key_2];
+      }
+    });
+    return foundValue;
+  }
+
+  static araySum(array: Array<number>): number {
+    return array.reduce((a, b) => a + b, 0);
+  }
+
+  static arrayLength(array: Array<number>): number {
+    return array.filter(Boolean).length;
   }
 }
 

@@ -13,8 +13,25 @@ interface IDataExact extends IData {
   favorite: boolean;
 }
 
+interface IDataKeys {}
+
 interface IObj {
   [key: string]: { [key: string]: boolean | number };
 }
 
-export { IData, IDataExact, IObj };
+enum EDataKeys {
+  num = 'num',
+  name = 'name',
+  count = 'count',
+  year = 'year',
+  shape = 'shape',
+  color = 'color',
+  size = 'size',
+  favorite = 'favorite',
+}
+
+interface basket {
+  [key: string]: Array<number>;
+}
+
+export { IData, IDataExact, IObj, EDataKeys, basket };
