@@ -7,6 +7,7 @@ import _default, { target, API } from 'nouislider';
 import * as interfaces from '../../core/interfaces';
 import Utils from '../../app/utils';
 import Settings from '../../app/settings';
+import popUp from '../../core/templates/popup';
 
 //TODO
 /**
@@ -21,8 +22,8 @@ import Settings from '../../app/settings';
  *  + add event listener to each card
  *  + array to store cards numbers
  *  - overlay trigger with basket items on basket btn click
- *  - style: add class outline to each card
- *  - if basket has more than 20 -> show pop up
+ *  + style: add class outline to each card
+ *  + if basket has more than 20 -> show pop up
  *
  *
  *
@@ -36,6 +37,7 @@ class SettingsPage extends Page {
   private controlSection: Component;
   private cardsSection: Component;
   private static filter = Settings.filter;
+  private popup: Component;
 
   static basketItems: basket = {
     items: [],
@@ -45,6 +47,7 @@ class SettingsPage extends Page {
     super(id, className);
     this.controlSection = new Component('section', 'controls');
     this.cardsSection = new Component('section', 'cards');
+    this.popup = new Component('div', 'popup', 'popup');
   }
 
   private createContentControls() {
@@ -209,6 +212,14 @@ class SettingsPage extends Page {
 
     // console.log(`cardImgNum`, cardImgNum);
 
+    const removeEl = (wait: number) => {
+      return new Promise<void>((res) => {
+        setTimeout(() => {
+          res();
+        }, wait);
+      });
+    };
+
     const checkUnique = (
       items: Array<number>,
       item: number
@@ -229,11 +240,36 @@ class SettingsPage extends Page {
       if (basketItems.length < Settings.basketMaxToys) {
         cardDiv.classList.toggle('active');
         basketItems.push(cardImgNum);
-      } else
+      } else {
         console.log(
           `BacketSize is too big!`,
           SettingsPage.basketItems.items.length
         );
+        const popUpMax = this.popup.render();
+        popUpMax.innerHTML = popUp.basketMax;
+        cardDiv.append(popUpMax);
+        popUpMax.classList.add('show');
+
+        removeEl(
+          Number(
+            getComputedStyle(popUpMax)
+              .getPropertyValue('--timeout')
+              .trim()
+              .slice(0, 3)
+          ) * 1100
+        ).then(() => {
+          popUpMax.remove();
+        });
+        console.log(
+          `var >>>`,
+          Number(
+            getComputedStyle(popUpMax)
+              .getPropertyValue('--timeout')
+              .trim()
+              .slice(0, 3)
+          ) * 1000
+        );
+      }
     } else {
       // not unique
       // remove element from array

@@ -62,7 +62,7 @@ class Settings {
     isChanged: { isChanged: false },
   };
 
-  static basketMaxToys: number = 3;
+  static basketMaxToys: number = 20;
 }
 
 export default Settings;
