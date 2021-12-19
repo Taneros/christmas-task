@@ -18,14 +18,14 @@ import popUp from '../../core/templates/popup';
  *  class returns names, tags, ids, classes of components
  *
  * create basket:
- *  + button with number (see premade)
- *  + add event listener to each card
- *  + array to store cards numbers
  *  - overlay trigger with basket items on basket btn click
- *  + style: add class outline to each card
- *  + if basket has more than 20 -> show pop up
+ *  - add shaking style for more than 20
+ *  - add modal overlay to show all items in basket
  *
  *
+ * save to local storage
+ *  - check functions from art-quiz to store objects
+ *  -
  *
  **/
 
@@ -40,7 +40,7 @@ class SettingsPage extends Page {
   private popup: Component;
 
   static basketItems: basket = {
-    items: [],
+    items: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   };
 
   constructor(id: string, className: string) {
@@ -337,10 +337,10 @@ class SettingsPage extends Page {
   }
 
   private handleFilterBySearchInput(e: Event) {
-    // console.log(`e`, e);
+    console.log(`e`, e);
     const input = e.target as HTMLInputElement;
     const inputValue = input.value;
-    // console.log(`input`, input);
+    console.log(`input`, input);
     // console.log(`inputValue`, inputValue);
     this.createContentCards(Utils.searchItems(inputValue.toLowerCase().trim()));
   }

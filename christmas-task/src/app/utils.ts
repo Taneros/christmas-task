@@ -162,7 +162,10 @@ class Utils {
     const filteredData: Array<interfaces.IData> = [];
     dataImport.forEach((el) => {
       for (const [key, value] of Object.entries(el)) {
-        if (key === 'name' && String(value).includes(input))
+        if (
+          key === 'name' &&
+          String(value).trim().toLocaleLowerCase().includes(input)
+        )
           filteredData.push(el);
       }
     });
