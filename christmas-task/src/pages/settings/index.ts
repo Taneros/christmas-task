@@ -32,9 +32,11 @@ import popUp from '../../core/templates/popup';
 class SettingsPage extends Page {
   private controlSection: Component;
   private cardsSection: Component;
-  private static filter = Settings.filter;
+  private static filter = { ...Settings.filter };
   private popup: Component;
   private static isRestoredLSData: boolean = false;
+  private static sliderQty: API;
+  private static sliderYear: API;
 
   static basketItems: interfaces.basket = {
     items: [],
@@ -63,30 +65,30 @@ class SettingsPage extends Page {
       controlSection.querySelector('#slider-count-year')
     );
 
-    const sliderQty = noUiSlider.create(
+    SettingsPage.sliderQty = noUiSlider.create(
       sliderDivQty,
       Settings.sliderQtySettings
     );
-    const sliderYear = noUiSlider.create(
+    SettingsPage.sliderYear = noUiSlider.create(
       sliderDivYear,
       Settings.sliderYearSettings
     );
 
-    (<API>sliderQty).on('update', function (values) {
+    SettingsPage.sliderQty.on('update', function (values) {
       const outputQtyMin = sliderDivQty.previousElementSibling as HTMLElement;
       outputQtyMin.innerHTML = String(parseInt(<string>values[0]));
       const outputQtyMax = sliderDivQty.nextElementSibling as HTMLElement;
       outputQtyMax.innerHTML = String(parseInt(<string>values[1]));
     });
 
-    (<API>sliderYear).on('update', function (values) {
+    SettingsPage.sliderYear.on('update', function (values) {
       const outputQtyMin = sliderDivYear.previousElementSibling as HTMLElement;
       outputQtyMin.innerHTML = String(parseInt(<string>values[0]));
       const outputQtyMax = sliderDivYear.nextElementSibling as HTMLElement;
       outputQtyMax.innerHTML = String(parseInt(<string>values[1]));
     });
 
-    this.container.append(controlSection);
+    this.container.prepend(controlSection);
     // this.bindListeners();
   }
 
@@ -121,6 +123,7 @@ class SettingsPage extends Page {
     };
     if (!SettingsPage.filter.isChanged.isChanged) {
       // console.log(`false! >>>`, SettingsPage.filter.isChanged.isChanged);
+      cardsSections.innerHTML = '';
       renderCard(data);
     } else {
       // console.log(
@@ -132,7 +135,7 @@ class SettingsPage extends Page {
     }
   }
 
-  private restoreState() {
+  private restoreState(): void {
     //TODO
     /**
      * Refactor:
@@ -165,6 +168,15 @@ class SettingsPage extends Page {
       const favBtn = SettingsPage.filter.favorite;
       // console.log(`favBtn`, favBtn);
 
+      const rangeQty = SettingsPage.filter.count;
+      // console.log(`rangeQty`, rangeQty);
+
+      const rangeYear = SettingsPage.filter.year;
+      // console.log(`rangeYear`, rangeYear);
+
+      const select = SettingsPage.filter.select;
+      // console.log(`select`, select);
+
       // const removePopup = (wait: number) => {
       //   return new Promise<void>((res) => {
       //     setTimeout(() => {
@@ -183,7 +195,7 @@ class SettingsPage extends Page {
           const btn = <HTMLElement>(
             btnsBlock.querySelector(`#shape-${innerKey}`)
           );
-          console.log(`btn>>>true`, btn);
+          // console.log(`btn>>>true`, btn);
           SettingsPage.isRestoredLSData = true;
           btn.dispatchEvent(event);
         }
@@ -198,7 +210,7 @@ class SettingsPage extends Page {
           const btn = <HTMLElement>(
             btnsBlock.querySelector(`#color-${innerKey}`)
           );
-          console.log(`btn>>>true`, btn);
+          // console.log(`btn>>>true`, btn);
           SettingsPage.isRestoredLSData = true;
           btn.dispatchEvent(event);
         }
@@ -211,7 +223,7 @@ class SettingsPage extends Page {
             this.container.querySelector(`#filter-by-size`)
           );
           const btn = <HTMLElement>btnsBlock.querySelector(`#size-${innerKey}`);
-          console.log(`btn>>>true`, btn);
+          // console.log(`btn>>>true`, btn);
           SettingsPage.isRestoredLSData = true;
           btn.dispatchEvent(event);
         }
@@ -229,6 +241,47 @@ class SettingsPage extends Page {
           btn.checked = true;
           SettingsPage.isRestoredLSData = true;
           btn.dispatchEvent(event);
+        }
+      }
+
+      // range by qty
+      // if (<number>rangeQty.start > 1 || <number>rangeQty.end < 12) {
+      SettingsPage.sliderQty.set([
+        <number>rangeQty.start,
+        <number>rangeQty.end,
+      ]);
+      const rangeRailQty = <HTMLElement>(
+        this.container.querySelector('#slider-count-count')
+      );
+      const eventQty: Event = new Event('click', { bubbles: true });
+      SettingsPage.isRestoredLSData = true;
+      rangeRailQty.dispatchEvent(eventQty);
+      // }
+
+      // range by year
+      // if (<number>rangeYear.start > 1960 || <number>rangeYear.end < 2020) {
+      SettingsPage.sliderYear.set([
+        <number>rangeYear.start,
+        <number>rangeYear.end,
+      ]);
+      const rangeRailYear = <HTMLElement>(
+        this.container.querySelector('#slider-count-year')
+      );
+      const eventYear: Event = new Event('click', { bubbles: true });
+      SettingsPage.isRestoredLSData = true;
+      rangeRailYear.dispatchEvent(eventYear);
+      // }
+
+      // select
+      for (const [key, val] of Object.entries(select)) {
+        if (val === true) {
+          const selectEl = <HTMLSelectElement>(
+            this.container.querySelector(`#dropdown-select`)
+          );
+          selectEl.value = key;
+          const event: Event = new Event('change', { bubbles: true });
+          SettingsPage.isRestoredLSData = true;
+          selectEl.dispatchEvent(event);
         }
       }
     }
@@ -263,7 +316,7 @@ class SettingsPage extends Page {
       '#search-box-input'
     ) as HTMLElement;
 
-    const debounce = (callback: { (e: Event): void }, wait: number) => {
+    const throttleSearch = (callback: { (e: Event): void }, wait: number) => {
       let timeout: ReturnType<typeof setTimeout>;
       return (...args: [e: Event]) => {
         clearTimeout(timeout);
@@ -276,7 +329,7 @@ class SettingsPage extends Page {
 
     searchInput.addEventListener(
       'keyup',
-      debounce(this.handleFilterBySearchInput, 500)
+      throttleSearch(this.handleFilterBySearchInput, 500)
     );
 
     // Basket
@@ -284,7 +337,6 @@ class SettingsPage extends Page {
     // console.log(`basketDiv`, basketDiv);
 
     // Reset buttons
-
     const resetFiltersButtons: HTMLCollectionOf<Element> =
       this.container.getElementsByClassName('btn controls_reset');
 
@@ -293,19 +345,38 @@ class SettingsPage extends Page {
     for (const el of myArr) {
       el?.addEventListener('click', (e: Event) => {
         if (el.id === 'reset-filters') {
-          // console.log(`e.currentTarget`, e.currentTarget);
-          SettingsPage.filter.isChanged.isChanged = false;
+          console.log(`e.currentTarget`, e.currentTarget);
+          // SettingsPage.filter.isChanged.isChanged = false;
+          SettingsPage.filter = { ...Settings.filter };
+          const controlsSection = this.container.querySelector(
+            '.controls'
+          ) as HTMLElement;
+          controlsSection.innerHTML = '';
+          this.createContentControls();
+          this.bindListeners();
+        } else if (el.id === 'reset-localstorage') {
+          console.log(`e.currentTarget`, e.currentTarget);
+          localStorage.clear();
+          SettingsPage.filter = { ...Settings.filter };
           this.render();
         }
       });
     }
+
     // save controls
-    window.addEventListener('beforeunload', () => {
+    // window.addEventListener('beforeunload', () => {
+    //   Settings.setLocalStorageControls(
+    //     localStorageNames.filter,
+    //     SettingsPage.filter
+    //   );
+    // });
+
+    Utils.delayAction(() =>
       Settings.setLocalStorageControls(
         localStorageNames.filter,
         SettingsPage.filter
-      );
-    });
+      )
+    );
   }
 
   private handleCardClick(e: Event): void {
@@ -412,6 +483,7 @@ class SettingsPage extends Page {
   }
 
   private handleFilterByRange(e: Event): void {
+    SettingsPage.isRestoredLSData = false;
     const sliderRail = e.currentTarget as HTMLElement;
     const sliderRailId = sliderRail.id.split('-').slice(-1)[0];
     // console.log(`rail id`, sliderRailId);
@@ -422,11 +494,11 @@ class SettingsPage extends Page {
     const levelOneProp = SettingsPage.filter[sliderRailId];
     levelOneProp.start = outputQtyMinVal;
     levelOneProp.end = outputQtyMaxVal;
-
     this.createContentCards(Utils.filterData(SettingsPage.filter));
   }
 
   private handleFilterByOption(e: Event): void {
+    SettingsPage.isRestoredLSData = false;
     const selectEl = e.currentTarget as HTMLSelectElement;
     const selectId = selectEl.id.split('-').slice(-1)[0];
     const levelOneProp = SettingsPage.filter[selectId];
@@ -448,6 +520,7 @@ class SettingsPage extends Page {
   }
 
   render() {
+    console.log(`filter`, SettingsPage.filter);
     this.createContentControls();
     this.createContentCards([]);
     this.bindListeners();

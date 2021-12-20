@@ -206,6 +206,35 @@ class Utils {
   static arrayLength(array: Array<number>): number {
     return array.filter(Boolean).length;
   }
+
+  static delayAction(callback: { (): void; (): void }) {
+    let time: ReturnType<typeof setTimeout>;
+    let go: boolean = false;
+    // events
+    window.onload = resetTime;
+    window.onclick = resetTime;
+    window.onkeypress = resetTime;
+    window.ontouchstart = resetTime;
+    window.onmousemove = resetTime;
+    window.onmousedown = resetTime;
+    window.addEventListener('scroll', resetTime, true);
+
+    function action() {
+      return new Promise<void>((res) => {
+        res();
+      });
+    }
+
+    function resetTime() {
+      clearTimeout(time);
+      time = setTimeout(() => {
+        action().then(() => {
+          console.log(`hello!`);
+          callback();
+        });
+      }, 1000 * 3); // save after 3 seconds of inactivity
+    }
+  }
 }
 
 export default Utils;

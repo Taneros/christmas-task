@@ -21,10 +21,10 @@ const enum localStorageNames {
 
 class Settings {
   static sliderYearSettings = {
-    start: [1960, 2020],
+    start: [1940, 2020],
     connect: true,
     range: {
-      min: 1960,
+      min: 1940,
       max: 2020,
     },
     step: 10,
