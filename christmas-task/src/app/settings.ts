@@ -16,7 +16,7 @@ import * as interfaces from '../core/interfaces';
 
 const enum localStorageNames {
   filter = 'filter',
-  toys = 'toys',
+  basket = 'basket',
 }
 
 class Settings {
@@ -67,11 +67,20 @@ class Settings {
     isChanged: { isChanged: false },
   };
 
+  //TODO
+  /**
+   * add array type Array<type of boolean | number> to basketItems
+   **/
+
+  static basketItems: interfaces.basket = {
+    items: [],
+  };
+
   static basketMaxToys: number = 3;
 
   static setLocalStorageControls(
     data_name: localStorageNames,
-    data: interfaces.IObj
+    data: object | []
   ): void {
     localStorage.setItem(data_name, JSON.stringify(data));
   }

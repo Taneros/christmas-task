@@ -38,9 +38,7 @@ class SettingsPage extends Page {
   private static sliderQty: API;
   private static sliderYear: API;
 
-  static basketItems: interfaces.basket = {
-    items: [],
-  };
+  private static basketItems = { ...Settings.basketItems };
 
   constructor(id: string, className: string) {
     super(id, className);
@@ -272,6 +270,12 @@ class SettingsPage extends Page {
     }
   }
 
+  private restoreBasketState(): void {
+    // restore data from LS
+    if (true) {
+    }
+  }
+
   private bindListeners(): void {
     // Buttons
     const buttonBlocks = this.container.querySelectorAll('.filter__btns');
@@ -356,12 +360,18 @@ class SettingsPage extends Page {
     //   );
     // });
 
-    Utils.delayAction(() =>
-      Settings.setLocalStorageControls(
-        localStorageNames.filter,
-        SettingsPage.filter
-      )
-    );
+    Utils.delayAction([
+      () =>
+        Settings.setLocalStorageControls(
+          localStorageNames.filter,
+          SettingsPage.filter
+        ),
+      () =>
+        Settings.setLocalStorageControls(
+          localStorageNames.basket,
+          SettingsPage.basketItems
+        ),
+    ]);
   }
 
   private handleCardClick(e: Event): void {
@@ -392,7 +402,6 @@ class SettingsPage extends Page {
       if (Utils.arrayLength(basketItems) < Settings.basketMaxToys) {
         cardDiv.classList.toggle('active');
         // store qty in basket array under index of img
-        console.log(`here!!!`);
         basketItems[cardImgNum] = Number(
           Utils.searchDataByKey(
             interfaces.EDataKeys.num,
@@ -401,10 +410,6 @@ class SettingsPage extends Page {
           )
         );
       } else {
-        console.log(
-          `BacketSize is too big!`,
-          SettingsPage.basketItems.items.length
-        );
         const popUpMax = this.popup.render();
         popUpMax.innerHTML = popUp.basketMax;
         cardDiv.append(popUpMax);

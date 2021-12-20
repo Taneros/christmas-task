@@ -207,7 +207,7 @@ class Utils {
     return array.filter(Boolean).length;
   }
 
-  static delayAction(callback: { (): void; (): void }) {
+  static delayAction(arrayCallback: Array<{ (): void; (): void }>) {
     let time: ReturnType<typeof setTimeout>;
     let go: boolean = false;
     // events
@@ -230,7 +230,9 @@ class Utils {
       time = setTimeout(() => {
         action().then(() => {
           console.log(`hello!`);
-          callback();
+          arrayCallback.forEach((el) => {
+            el();
+          });
         });
       }, 1000 * 3); // save after 3 seconds of inactivity
     }
