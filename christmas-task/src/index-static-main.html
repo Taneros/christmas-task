@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Christmas Task</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <header class="header">
+        <nav class="header__nav">
+          <a href="#main" class="header__nav__btn">Главная</a
+          ><a href="#settings" class="header__nav__btn">Выбрать Игрушки</a
+          ><a href="#game" class="header__nav__btn">Нарядить Ёлку</a>
+        </nav>
+        <div class="header__search search-container" id="search-box">
+          <form class="search-container__form" action="#">
+            <input
+              class="search-container__input"
+              id="search-box-input"
+              type="search"
+              autocomplete="off"
+              placeholder="Найти игрушку"
+              name="search"
+              autofocus=""
+              onkeypress="return event.keyCode!=13"
+            />
+          </form>
+        </div>
+        <div class="header__basket basket" id="basket">
+          <a href="#" class="basket__notification">
+            <span>Корзина</span>
+            <span class="basket__badge">0</span>
+          </a>
+        </div>
+      </header>
+      <main class="main">
+        <div id="main" class="main__main">
+          <div class="main__welcome">
+            <h1 class="main__welcome__heading">НОВОГОДНЯЯ ИГРА</h1>
+            <p class="main__welcome__heading">"НАРЯДИ ЁЛКУ"</p>
+          </div>
+          <a href="#settings"
+            ><button class="main__start btn">Начать Наряжать</button></a
+          >
+        </div>
+      </main>
+      <footer class="footer">
+        <div class="footer__content">
+          <div class="footer__item">
+            <a href="https://github.com/taneros" target="_blank">
+              <img
+                class="footer__item__icon-git"
+                src="./assets/github.svg"
+                alt="Taneros' GitHub"
+              />
+            </a>
+          </div>
+          <div class="footer__item">
+            <p class="footer__item__date">© 2021</p>
+          </div>
+          <div class="footer__item">
+            <a
+              href="https://rs.school/js/"
+              title="Link to the course"
+              target="_blank"
+            >
+              <img
+                class="footer__item__icon-rss"
+                src="./assets/rs_school_js_grey.svg"
+                alt="RS School"
+              />
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

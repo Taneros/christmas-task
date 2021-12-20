@@ -6,17 +6,25 @@ import SearchInput from '../../templates/search-input';
 const Buttons = [
   {
     id: PageIds.MainPage,
-    text: 'Main Page',
+    text: 'Главная',
   },
   {
     id: PageIds.SettingsPage,
-    text: 'Choose Toys',
+    text: 'Выбрать Игрушки',
   },
   {
     id: PageIds.GamePage,
-    text: 'Decorate Tree',
+    text: 'Нарядить Ёлку',
   },
 ];
+
+//TODO
+/**
+ * add eventlistener on search Box
+ * if hash is not === #settings
+ * if user start typing > change hash and move to Settings page
+ *
+ **/
 
 class Header extends Component {
   private className: string;
@@ -52,6 +60,11 @@ class Header extends Component {
     // const header = document.querySelector('.header') as HTMLElement;
     const searchDiv: HTMLElement = this.searchBox.render();
     searchDiv.innerHTML = SearchInput.searchForm;
+    searchDiv.addEventListener('click', (e: Event) => {
+      if (window.location.hash !== '#settings') {
+        window.location.hash = 'settings';
+      }
+    });
     this.container.append(searchDiv);
   }
 

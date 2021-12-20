@@ -27,6 +27,10 @@ import popUp from '../../core/templates/popup';
  *  - get array of elements and store it after certain intervals in
  *  -
  *
+ *  Card:
+ *
+ *  - change active class to in-basket
+ *
  **/
 
 class SettingsPage extends Page {

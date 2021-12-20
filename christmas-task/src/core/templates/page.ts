@@ -15,7 +15,7 @@ abstract class Page {
     this.container.className = className;
   }
 
-  // protected available thorugh the instance of class
+  // protected available through the instance of class
 
   protected createHeaderTitle(text: string) {
     const headerTitle = document.createElement('h1');

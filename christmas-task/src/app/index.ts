@@ -83,7 +83,7 @@ class App {
     App.container.append(this.main.render());
     this.renderNewPage('main');
     App.container.append(this.footer.render());
-    this.enableRouteChange('settings');
+    this.enableRouteChange('');
   }
 }
 
