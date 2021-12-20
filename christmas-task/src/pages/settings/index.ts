@@ -95,21 +95,28 @@ class SettingsPage extends Page {
     this.container.append(cardsSections);
     // const cardsSection: HTMLElement = this.container.querySelector('.cards')!;
 
-    const renderCard = (data: Array<interfaces.IData>): void => {
-      const cardDataFirstLoad = [...data];
-      cardDataFirstLoad.forEach((el) => {
+    const renderCard = (d: Array<interfaces.IData> = data): void => {
+      const cardData = [...d];
+      cardData.forEach((el) => {
         const cardDivComp = new Component('div', 'card');
         const cardDiv: HTMLElement = cardDivComp.render();
         let cardTemplate: string = SettingsSections.cards;
         Object.entries(el).forEach((key) => {
           const regexp: RegExp = new RegExp(`{{${key[0]}}}`, 'g');
-          if (typeof key[1] === 'string')
+          if (typeof key[1] === 'string') {
             cardTemplate = cardTemplate.replace(regexp, key[1]);
-          else
+          } else {
             cardTemplate = cardTemplate.replace(
               regexp,
               key[1] === false ? 'Нет' : 'Да'
             );
+          }
+          if (
+            key[0] === 'num' &&
+            SettingsPage.basketItems.items[Number(key[1])]
+          ) {
+            cardDiv.classList.toggle('active');
+          }
         });
         cardDiv.innerHTML = cardTemplate;
         cardDiv.addEventListener('click', (e: Event) => {
@@ -272,7 +279,15 @@ class SettingsPage extends Page {
 
   private restoreBasketState(): void {
     // restore data from LS
-    if (true) {
+    if (Settings.getLocalStorageControls(localStorageNames.basket)) {
+      SettingsPage.basketItems = Object(
+        Settings.getLocalStorageControls(localStorageNames.basket)
+      );
+      const basketNumBadge: HTMLElement =
+        document.querySelector('.basket__badge')!;
+      basketNumBadge.innerHTML = String(
+        Utils.arrayLength(SettingsPage.basketItems.items)
+      );
     }
   }
 
@@ -347,6 +362,7 @@ class SettingsPage extends Page {
           console.log(`e.currentTarget`, e.currentTarget);
           localStorage.clear();
           SettingsPage.filter = { ...Settings.filter };
+          SettingsPage.basketItems = { ...Settings.basketItems };
           this.render();
         }
       });
@@ -437,7 +453,7 @@ class SettingsPage extends Page {
         SettingsPage.basketItems.items
       );
     }
-    console.log(`basketItems >>> `, basketItems);
+    // console.log(`basketItems >>> `, basketItems);
     basketNumBadge.innerHTML = String(Utils.arrayLength(basketItems));
   }
 
@@ -510,6 +526,7 @@ class SettingsPage extends Page {
   }
 
   render(): HTMLElement {
+    this.restoreBasketState();
     this.createContentControls();
     this.createContentCards([]);
     this.bindListeners();

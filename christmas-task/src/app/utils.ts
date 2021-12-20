@@ -229,7 +229,7 @@ class Utils {
       clearTimeout(time);
       time = setTimeout(() => {
         action().then(() => {
-          console.log(`hello!`);
+          console.log(`saved to local storage!`);
           arrayCallback.forEach((el) => {
             el();
           });
