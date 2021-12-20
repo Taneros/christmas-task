@@ -187,7 +187,7 @@ class Utils {
     key_1: interfaces.EDataKeys,
     val_1: string,
     key_2: interfaces.EDataKeys
-  ) {
+  ): string | boolean {
     let foundValue: boolean | string = '';
     const dataImport: Array<interfaces.IData> = data.slice();
 

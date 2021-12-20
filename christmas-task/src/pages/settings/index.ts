@@ -200,7 +200,7 @@ class SettingsPage extends Page {
 
   private handleCardClick(e: Event) {
     // get array of items
-    const basketItems = SettingsPage.basketItems.items;
+    let basketItems = SettingsPage.basketItems.items;
     const cardDiv = <HTMLElement>e.currentTarget;
     const cardImg = <HTMLElement>cardDiv.querySelector('.card__img');
     const cardQty = '';
@@ -208,9 +208,9 @@ class SettingsPage extends Page {
       cardImg.getAttribute('src')?.split('/').slice(-1)[0].split('.')[0]
     );
 
-    // console.log(`cardImgNum`, cardImgNum);
+    console.log(`cardImgNum`, cardImgNum);
 
-    const removeEl = (wait: number) => {
+    const removePopup = (wait: number) => {
       return new Promise<void>((res) => {
         setTimeout(() => {
           res();
@@ -246,15 +246,6 @@ class SettingsPage extends Page {
             interfaces.EDataKeys.count
           )
         );
-
-        console.log(
-          `find qty`,
-          Utils.searchDataByKey(
-            interfaces.EDataKeys.num,
-            String(cardImgNum),
-            interfaces.EDataKeys.count
-          )
-        );
       } else {
         console.log(
           `BacketSize is too big!`,
@@ -265,7 +256,7 @@ class SettingsPage extends Page {
         cardDiv.append(popUpMax);
         popUpMax.classList.add('show');
 
-        removeEl(
+        removePopup(
           Number(
             getComputedStyle(popUpMax)
               .getPropertyValue('--timeout')
@@ -279,7 +270,7 @@ class SettingsPage extends Page {
     } else {
       // not unique
       // remove element from array
-      basketItems.splice(basketItems.indexOf(cardImgNum), 1);
+      basketItems[cardImgNum] = 0;
       cardDiv.classList.toggle('active');
 
       console.log(
