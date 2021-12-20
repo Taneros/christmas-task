@@ -4,29 +4,29 @@ class SettingsSections {
   <h2 class="controls__filter-header">Sort by Value</h2>
   <div id="filter-by-shape" class="filter__btns filter__btns_shape">
     <h3 class="filter-btns__header">Shape</h3>
-    <button class="btn" data-filter="ball"></button>
-    <button class="btn" data-filter="bell"></button>
-    <button class="btn" data-filter="pinecone"></button>
-    <button class="btn" data-filter="snowflake"></button>
-    <button class="btn" data-filter="figurine"></button>
+    <button id="shape-ball" class="btn" data-filter="ball"></button>
+    <button id="shape-bell" class="btn" data-filter="bell"></button>
+    <button id="shape-pinecone" class="btn" data-filter="pinecone"></button>
+    <button id="shape-snowflake" class="btn" data-filter="snowflake"></button>
+    <button id="shape-figurine" class="btn" data-filter="figurine"></button>
   </div>
   <div id="filter-by-color" class="filter__btns filter__btns_color">
     <h3 class="filter-btns__header">Color</h3>
-    <button class="btn" data-filter="white"></button>
-    <button class="btn" data-filter="yellow"></button>
-    <button class="btn" data-filter="red"></button>
-    <button class="btn" data-filter="blue"></button>
-    <button class="btn" data-filter="green"></button>
+    <button id="color-white" class="btn" data-filter="white"></button>
+    <button id="color-yellow" class="btn" data-filter="yellow"></button>
+    <button id="color-red" class="btn" data-filter="red"></button>
+    <button id="color-blue" class="btn" data-filter="blue"></button>
+    <button id="color-green" class="btn" data-filter="green"></button>
   </div>
   <div id="filter-by-size" class="filter__btns filter__btns_size">
     <h3 class="filter-btns__header">Size</h3>
-    <button class="btn" data-filter="big"></button>
-    <button class="btn" data-filter="medium"></button>
-    <button class="btn" data-filter="small"></button>
+    <button id="size-big" class="btn" data-filter="big"></button>
+    <button id="size-medium" class="btn" data-filter="medium"></button>
+    <button id="size-small" class="btn" data-filter="small"></button>
   </div>
   <div id="filter-by-favorite" class="filter__btns filter__btns_favorite">
     <h3 class="filter-btns__header">Favorite</h3>
-    <input type="checkbox" data-filter="favorite" class="input" />
+    <input id="favorite-favorite" type="checkbox" data-filter="favorite" class="input" />
   </div>
 </div>
 <div class="controls__filter-by-range">

@@ -14,6 +14,11 @@
 
 import * as interfaces from '../core/interfaces';
 
+const enum localStorageNames {
+  filter = 'filter',
+  toys = 'toys',
+}
+
 class Settings {
   static sliderYearSettings = {
     start: [1960, 2020],
@@ -63,6 +68,20 @@ class Settings {
   };
 
   static basketMaxToys: number = 3;
+
+  static setLocalStorageControls(
+    data_name: localStorageNames,
+    data: interfaces.IObj
+  ): void {
+    localStorage.setItem(data_name, JSON.stringify(data));
+  }
+
+  static getLocalStorageControls(data: localStorageNames): string | boolean {
+    if (localStorage.getItem(data)) {
+      return JSON.parse(String(localStorage.getItem(data)));
+    }
+    return false;
+  }
 }
 
-export default Settings;
+export { Settings, localStorageNames };

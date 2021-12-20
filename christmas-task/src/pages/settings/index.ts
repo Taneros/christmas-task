@@ -6,7 +6,7 @@ import './nouislider.css';
 import _default, { target, API } from 'nouislider';
 import * as interfaces from '../../core/interfaces';
 import Utils from '../../app/utils';
-import Settings from '../../app/settings';
+import { Settings, localStorageNames } from '../../app/settings';
 import popUp from '../../core/templates/popup';
 
 //TODO
@@ -34,6 +34,7 @@ class SettingsPage extends Page {
   private cardsSection: Component;
   private static filter = Settings.filter;
   private popup: Component;
+  private static isRestoredLSData: boolean = false;
 
   static basketItems: interfaces.basket = {
     items: [],
@@ -131,6 +132,108 @@ class SettingsPage extends Page {
     }
   }
 
+  private restoreState() {
+    //TODO
+    /**
+     * Refactor:
+     *   - loop on filter object instead
+     *
+     **/
+
+    // restore data from LS
+    if (Settings.getLocalStorageControls(localStorageNames.filter)) {
+      //TODO
+      /**
+       * - dispatch button event
+       * -
+       *
+       **/
+
+      SettingsPage.filter = Object(
+        Settings.getLocalStorageControls(localStorageNames.filter)
+      );
+
+      const shapeBtns = SettingsPage.filter.shape;
+      // console.log(`shapeBtns`, shapeBtns);
+
+      const colorBtns = SettingsPage.filter.color;
+      // console.log(`shapeBtns`, colorBtns);
+
+      const sizeBtns = SettingsPage.filter.size;
+      // console.log(`sizeBtns`, sizeBtns);
+
+      const favBtn = SettingsPage.filter.favorite;
+      // console.log(`favBtn`, favBtn);
+
+      // const removePopup = (wait: number) => {
+      //   return new Promise<void>((res) => {
+      //     setTimeout(() => {
+      //       res();
+      //     }, wait);
+      //   });
+      // };
+
+      // shape
+      for (const [innerKey, innerVal] of Object.entries(shapeBtns)) {
+        if (innerVal === true) {
+          let event: Event = new Event('click', { bubbles: true });
+          const btnsBlock = <HTMLElement>(
+            this.container.querySelector(`#filter-by-shape`)
+          );
+          const btn = <HTMLElement>(
+            btnsBlock.querySelector(`#shape-${innerKey}`)
+          );
+          console.log(`btn>>>true`, btn);
+          SettingsPage.isRestoredLSData = true;
+          btn.dispatchEvent(event);
+        }
+      }
+      // color
+      for (const [innerKey, innerVal] of Object.entries(colorBtns)) {
+        if (innerVal === true) {
+          let event: Event = new Event('click', { bubbles: true });
+          const btnsBlock = <HTMLElement>(
+            this.container.querySelector(`#filter-by-color`)
+          );
+          const btn = <HTMLElement>(
+            btnsBlock.querySelector(`#color-${innerKey}`)
+          );
+          console.log(`btn>>>true`, btn);
+          SettingsPage.isRestoredLSData = true;
+          btn.dispatchEvent(event);
+        }
+      }
+      // size
+      for (const [innerKey, innerVal] of Object.entries(sizeBtns)) {
+        if (innerVal === true) {
+          let event: Event = new Event('click', { bubbles: true });
+          const btnsBlock = <HTMLElement>(
+            this.container.querySelector(`#filter-by-size`)
+          );
+          const btn = <HTMLElement>btnsBlock.querySelector(`#size-${innerKey}`);
+          console.log(`btn>>>true`, btn);
+          SettingsPage.isRestoredLSData = true;
+          btn.dispatchEvent(event);
+        }
+      }
+      // favorite
+      for (const [innerKey, innerVal] of Object.entries(favBtn)) {
+        if (innerVal === true) {
+          let event: Event = new Event('click', { bubbles: true });
+          const btnsBlock = <HTMLElement>(
+            this.container.querySelector(`#filter-by-favorite`)
+          );
+          const btn = <HTMLInputElement>(
+            btnsBlock.querySelector(`#favorite-${innerKey}`)
+          );
+          btn.checked = true;
+          SettingsPage.isRestoredLSData = true;
+          btn.dispatchEvent(event);
+        }
+      }
+    }
+  }
+
   private bindListeners() {
     // Buttons
     const buttonBlocks = this.container.querySelectorAll('.filter__btns');
@@ -196,9 +299,16 @@ class SettingsPage extends Page {
         }
       });
     }
+    // save controls
+    window.addEventListener('beforeunload', () => {
+      Settings.setLocalStorageControls(
+        localStorageNames.filter,
+        SettingsPage.filter
+      );
+    });
   }
 
-  private handleCardClick(e: Event) {
+  private handleCardClick(e: Event): void {
     // get array of items
     let basketItems = SettingsPage.basketItems.items;
     const cardDiv = <HTMLElement>e.currentTarget;
@@ -217,18 +327,6 @@ class SettingsPage extends Page {
         }, wait);
       });
     };
-
-    // const checkUnique = (
-    //   items: Array<number>,
-    //   item: number
-    // ): boolean | undefined => {
-    //   const uniqueSet: Set<number> = new Set();
-    //   items.forEach((item) => uniqueSet.add(item));
-    //   const setSizeBefore = uniqueSet.size;
-    //   uniqueSet.add(item);
-    //   if (uniqueSet.size > setSizeBefore) return true;
-    //   else return false;
-    // };
 
     const basketNumBadge: HTMLElement =
       document.querySelector('.basket__badge')!;
@@ -282,12 +380,13 @@ class SettingsPage extends Page {
     basketNumBadge.innerHTML = String(Utils.arrayLength(basketItems));
   }
 
-  private handleFilterByValue(e: Event) {
+  private handleFilterByValue(e: Event): void {
+    console.log(`handleFilterByValue e`, e);
     const buttonDiv = e.currentTarget as HTMLElement;
     const button = e.target as HTMLInputElement;
-    // console.log('button', button.checked);
+    console.log('button', button);
     const dataFilterVal: string | undefined = button.dataset.filter;
-    // console.log('dataFilterVal', dataFilterVal);
+    console.log('dataFilterVal', dataFilterVal);
     if (dataFilterVal) {
       const btnDiv: string = buttonDiv.id.split('-').slice(-1)[0];
       const btnData: string = dataFilterVal;
@@ -295,19 +394,24 @@ class SettingsPage extends Page {
       let levelOneProp = SettingsPage.filter[btnDiv];
       // console.log('levelOneProp', levelOneProp);
 
-      if (levelOneProp[btnData] === false) {
-        levelOneProp[btnData] = true;
-        button.classList.add('active');
+      if (!SettingsPage.isRestoredLSData) {
+        if (levelOneProp[btnData] === false) {
+          levelOneProp[btnData] = true;
+          button.classList.add('active');
+        } else {
+          levelOneProp[btnData] = false;
+          button.classList.remove('active');
+        }
       } else {
-        levelOneProp[btnData] = false;
-        button.classList.remove('active');
+        button.classList.toggle('active');
+        SettingsPage.isRestoredLSData = false;
       }
       // console.log('filtered data:', this.filterData(SettingsPage.filter));
       this.createContentCards(Utils.filterData(SettingsPage.filter));
     }
   }
 
-  private handleFilterByRange(e: Event) {
+  private handleFilterByRange(e: Event): void {
     const sliderRail = e.currentTarget as HTMLElement;
     const sliderRailId = sliderRail.id.split('-').slice(-1)[0];
     // console.log(`rail id`, sliderRailId);
@@ -322,7 +426,7 @@ class SettingsPage extends Page {
     this.createContentCards(Utils.filterData(SettingsPage.filter));
   }
 
-  private handleFilterByOption(e: Event) {
+  private handleFilterByOption(e: Event): void {
     const selectEl = e.currentTarget as HTMLSelectElement;
     const selectId = selectEl.id.split('-').slice(-1)[0];
     const levelOneProp = SettingsPage.filter[selectId];
@@ -334,7 +438,7 @@ class SettingsPage extends Page {
     this.createContentCards(Utils.filterData(SettingsPage.filter));
   }
 
-  private handleFilterBySearchInput(e: Event) {
+  private handleFilterBySearchInput(e: Event): void {
     console.log(`e`, e);
     const input = e.target as HTMLInputElement;
     const inputValue = input.value;
@@ -347,6 +451,7 @@ class SettingsPage extends Page {
     this.createContentControls();
     this.createContentCards([]);
     this.bindListeners();
+    this.restoreState();
     return this.container;
   }
 }
