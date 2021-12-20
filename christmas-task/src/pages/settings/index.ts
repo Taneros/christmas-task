@@ -24,7 +24,7 @@ import popUp from '../../core/templates/popup';
  *
  *
  * save to local storage
- *  - check functions from art-quiz to store objects
+ *  - get array of elements and store it after certain intervals in
  *  -
  *
  **/
@@ -135,7 +135,7 @@ class SettingsPage extends Page {
     }
   }
 
-  private restoreState(): void {
+  private restoreFiltersState(): void {
     //TODO
     /**
      * Refactor:
@@ -145,13 +145,6 @@ class SettingsPage extends Page {
 
     // restore data from LS
     if (Settings.getLocalStorageControls(localStorageNames.filter)) {
-      //TODO
-      /**
-       * - dispatch button event
-       * -
-       *
-       **/
-
       SettingsPage.filter = Object(
         Settings.getLocalStorageControls(localStorageNames.filter)
       );
@@ -176,14 +169,6 @@ class SettingsPage extends Page {
 
       const select = SettingsPage.filter.select;
       // console.log(`select`, select);
-
-      // const removePopup = (wait: number) => {
-      //   return new Promise<void>((res) => {
-      //     setTimeout(() => {
-      //       res();
-      //     }, wait);
-      //   });
-      // };
 
       // shape
       for (const [innerKey, innerVal] of Object.entries(shapeBtns)) {
@@ -287,7 +272,7 @@ class SettingsPage extends Page {
     }
   }
 
-  private bindListeners() {
+  private bindListeners(): void {
     // Buttons
     const buttonBlocks = this.container.querySelectorAll('.filter__btns');
     buttonBlocks.forEach((btnBlock) => {
@@ -519,12 +504,11 @@ class SettingsPage extends Page {
     this.createContentCards(Utils.searchItems(inputValue.toLowerCase().trim()));
   }
 
-  render() {
-    console.log(`filter`, SettingsPage.filter);
+  render(): HTMLElement {
     this.createContentControls();
     this.createContentCards([]);
     this.bindListeners();
-    this.restoreState();
+    this.restoreFiltersState();
     return this.container;
   }
 }
