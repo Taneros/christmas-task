@@ -229,14 +229,30 @@ body {
   height: max-content;
 }
 
-.controls > div {
+.controls .filter {
   background-color: darkolivegreen;
   height: 250px;
   border-radius: 5px;
   padding: 10px;
+
+  border-radius: 10px;
+  background-color: rgba(31, 112, 127, 0.3);
+  backdrop-filter: blur(6px);
 }
 
-.controls__filter-header {
+/* individual divs filters */
+.filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter .filter__btns {
+  align-self: flex-start;
+}
+
+.controls__filter-heading {
   font-size: 1.1em;
   margin: 0.5em 0.25em;
 }
@@ -341,13 +357,23 @@ body {
 
 /* Settings - Slider Styles */
 
+.controls__filter-by-range.filter {
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.slider.controls__slider {
+  /* align-self: flex-start; */
+  margin-top: 50px;
+}
+
 .slider {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.slider .controls__filter-header {
+.slider .controls__filter-heading {
   font-size: 0.9em;
 }
 
@@ -370,6 +396,7 @@ body {
 }
 
 /* Select dropdown styles */
+
 :root {
   --select-border: #777;
   --select-focus: rgb(7, 139, 51);
@@ -503,10 +530,28 @@ select[multiple] option {
 }
 
 .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 280px;
   background-color: lightcyan;
   border-radius: 5px;
   position: relative;
+}
+
+.card {
+  padding: 10px;
+  padding-left: 10px;
+  border-radius: 10px;
+  border: 1px solid #278d9f;
+  background-color: rgba(31, 112, 127, 0.3);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  color: lightcyan;
+}
+
+.card .card__description__property {
+  margin: 0.3em 0;
 }
 
 .card__img {
@@ -517,11 +562,11 @@ select[multiple] option {
 }
 
 .cards {
-  color: #121c1e;
+  /* color: #121c1e; */
 }
 
 .card.active {
-  background-color: #3e8e41;
+  background-color: rgba(23, 154, 206, 0.678);
 }
 
 /* Footer Styles */

@@ -76,7 +76,7 @@ class Settings {
     items: [],
   };
 
-  static basketMaxToys: number = 3;
+  static basketMaxToys: number = 20;
 
   static setLocalStorageControls(
     data_name: localStorageNames,

@@ -91,7 +91,6 @@ class SettingsPage extends Page {
     });
 
     this.container.prepend(controlSection);
-    // this.bindListeners();
   }
 
   private createContentCards(filteredData: Array<interfaces.IData>) {
