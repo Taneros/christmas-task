@@ -40,7 +40,7 @@ class Settings {
     step: 1,
   };
 
-  static filter: interfaces.IObj = {
+  filter: interfaces.IObj = {
     count: { start: 1, end: 12 },
     year: { start: 1940, end: 2020 },
     shape: {
@@ -72,7 +72,7 @@ class Settings {
    * add array type Array<type of boolean | number> to basketItems
    **/
 
-  static basketItems: interfaces.basket = {
+  basketItems: interfaces.basket = {
     items: [],
   };
 

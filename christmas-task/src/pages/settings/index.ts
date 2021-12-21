@@ -36,13 +36,13 @@ import popUp from '../../core/templates/popup';
 class SettingsPage extends Page {
   private controlSection: Component;
   private cardsSection: Component;
-  private static filter = Object.assign({}, Settings.filter);
+  private static filter = new Settings().filter;
   private popup: Component;
   private static isRestoredLSData: boolean = false;
   private static sliderQty: API;
   private static sliderYear: API;
 
-  private static basketItems = Object.assign({}, Settings.basketItems);
+  private static basketItems = new Settings().basketItems;
 
   constructor(id: string, className: string) {
     super(id, className);
@@ -293,7 +293,6 @@ class SettingsPage extends Page {
       );
     } else {
       console.log(`no basket in local storage`, SettingsPage.basketItems.items);
-      console.log(`Settings.basket`, Settings.basketItems);
       basketNumBadge.innerHTML = String(
         Utils.arrayLength(SettingsPage.basketItems.items)
       );
@@ -358,9 +357,10 @@ class SettingsPage extends Page {
     for (const el of myArr) {
       el?.addEventListener('click', (e: Event) => {
         if (el.id === 'reset-filters') {
-          console.log(`e.currentTarget`, e.currentTarget);
+          // console.log(`e.currentTarget`, e.currentTarget);
           // SettingsPage.filter.isChanged.isChanged = false;
-          SettingsPage.filter = { ...Settings.filter };
+          // SettingsPage.filter = Object.assign({}, Settings.filter);
+          SettingsPage.filter = new Settings().filter;
           const controlsSection = this.container.querySelector(
             '.controls'
           ) as HTMLElement;
@@ -369,21 +369,13 @@ class SettingsPage extends Page {
           this.bindListeners();
         } else if (el.id === 'reset-localstorage') {
           // console.log(`e.currentTarget`, e.currentTarget);
+          SettingsPage.filter = new Settings().filter;
+          SettingsPage.basketItems = new Settings().basketItems;
           localStorage.clear();
-          SettingsPage.filter = Object.assign({}, Settings.filter);
-          SettingsPage.basketItems = Object.assign({}, Settings.basketItems);
           this.render();
         }
       });
     }
-
-    // save controls
-    // window.addEventListener('beforeunload', () => {
-    //   Settings.setLocalStorageControls(
-    //     localStorageNames.filter,
-    //     SettingsPage.filter
-    //   );
-    // });
 
     Utils.delayAction([
       () =>
