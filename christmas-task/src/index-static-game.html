@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Christmas Task</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <header class="header">
+        <nav class="header__nav">
+          <a href="#main-page" class="header__nav__btn">Main Page</a
+          ><a href="#settings-page" class="header__nav__btn">Choose Toys</a
+          ><a href="#game-page" class="header__nav__btn">Decorate Tree</a>
+        </nav>
+        <div id="search-box" class="header__search search-container">
+          <form class="search-container__form">
+            <input
+              class="search-container__input"
+              id="search-box-input"
+              type="text"
+              placeholder="Search.."
+              name="search"
+            />
+          </form>
+        </div>
+        <div id="basket" class="header__basket basket">
+          <a href="#" class="basket__notification">
+            <span>Корзина</span>
+            <span class="basket__badge">0</span>
+          </a>
+        </div>
+      </header>
+      <main class="main" id="main-page">
+        <div id="main" class="main__game game-main">
+          <section class="game-main__left section">
+            <div class="game-main__left__bg-settings bg-settings">
+              <div class="bg-settings">
+                <button
+                  id="bg-settings-audio"
+                  class="bg-settings__audio__btn btn"
+                ></button>
+                <button
+                  id="bg-settings-show"
+                  class="bg-settings__snow__btn btn"
+                ></button>
+              </div>
+            </div>
+            <div class="game-main__left__choose-tree choose-tree">
+              <h2 class="heading">Выбрать Ёлку</h2>
+              <div class="choose-tree">
+                <div id="choose-tree-1" class="choose-tree__card"></div>
+                <div id="choose-tree-2" class="choose-tree__card"></div>
+                <div id="choose-tree-3" class="choose-tree__card"></div>
+                <div id="choose-tree-4" class="choose-tree__card"></div>
+              </div>
+            </div>
+            <div class="game-main__left__choose-bg choose-bg">
+              <h2 class="heading heading__h2">Выбрать Фон</h2>
+              <div class="choose-bg">
+                <div id="choose-bg-1" class="choose-bg__card"></div>
+                <div id="choose-bg-2" class="choose-bg__card"></div>
+                <div id="choose-bg-3" class="choose-bg__card"></div>
+                <div id="choose-bg-4" class="choose-bg__card"></div>
+                <div id="choose-bg-5" class="choose-bg__card"></div>
+                <div id="choose-bg-6" class="choose-bg__card"></div>
+                <div id="choose-bg-7" class="choose-bg__card"></div>
+                <div id="choose-bg-8" class="choose-bg__card"></div>
+              </div>
+            </div>
+            <div class="game-main__left__choose-lights choose-lights">
+              <h2 class="heading heading__h2">Выбрать Гирлянду</h2>
+              <div class="choose-lights">
+                <button
+                  id="choose-lights-1"
+                  class="choose-lights__btn btn"
+                ></button>
+                <button
+                  id="choose-lights-2"
+                  class="choose-lights__btn btn"
+                ></button>
+                <button
+                  id="choose-lights-3"
+                  class="choose-lights__btn btn"
+                ></button>
+                <button
+                  id="choose-lights-4"
+                  class="choose-lights__btn btn"
+                ></button>
+                <button
+                  id="choose-lights-5"
+                  class="choose-lights__btn btn"
+                ></button>
+                <label class="choose-lights__label label">
+                  <input
+                    id="choose-lights-checkbox"
+                    type="checkbox"
+                    name="lights"
+                    id=""
+                /></label>
+              </div>
+            </div>
+          </section>
+          <section class="game-main__center section">
+            <div class="game-main__center__bg">
+              <div class="game-main__center__tree"></div>
+            </div>
+          </section>
+          <section class="game-main__right section">
+            <div class="game-main__right__toys toys">
+              <h2 class="heading heading__h2">Игрушки</h2>
+              <div class="toys__cards">
+                <div class="toy__card"></div>
+                <div class="toy__card"></div>
+                <div class="toy__card"></div>
+                <div class="toy__card"></div>
+                <div class="toy__card"></div>
+                <div class="toy__card"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+      <footer class="footer">
+        <div class="footer__content">
+          <div class="footer__item">
+            <a href="https://github.com/taneros" target="_blank">
+              <img
+                class="footer__item__icon-git"
+                src="./assets/github.svg"
+                alt="Taneros' GitHub"
+              />
+            </a>
+          </div>
+          <div class="footer__item">
+            <p class="footer__item__date">© 2021</p>
+          </div>
+          <div class="footer__item">
+            <a
+              href="https://rs.school/js/"
+              title="Link to the course"
+              target="_blank"
+            >
+              <img
+                class="footer__item__icon-rss"
+                src="./assets/rs_school_js_grey.svg"
+                alt="RS School"
+              />
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
