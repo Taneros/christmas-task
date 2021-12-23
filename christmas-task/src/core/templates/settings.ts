@@ -58,6 +58,8 @@ class SettingsSections {
       <option id="dropdown-select-ZA" value="ZA">По алфавиту: Я - A</option>
       <option id="dropdown-select-qtyUp" value="qtyUp">По кол-ву: 1 - 12</option>
       <option id="dropdown-select-qtyDown" value="qtyDown">По кол-ву: 12 - 1</option>
+      <option id="dropdown-select-yearUp" value="yearUp">По году: 1940 - 2020</option>
+      <option id="dropdown-select-yearDown" value="yearDown">По году: 2020 - 1940</option>
     </select>
     <span class="focus"></span>
   </div>

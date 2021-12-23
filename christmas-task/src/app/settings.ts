@@ -63,7 +63,14 @@ class Settings {
       small: false,
     },
     favorite: { favorite: false },
-    select: { AZ: false, ZA: false, qtyUp: false, qtyDown: false },
+    select: {
+      AZ: false,
+      ZA: false,
+      qtyUp: false,
+      qtyDown: false,
+      yearUp: false,
+      yearDown: false,
+    },
     isChanged: { isChanged: false },
   };
 

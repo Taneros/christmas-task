@@ -138,6 +138,20 @@ class Utils {
           ): number {
             return Number(b.count) - Number(a.count);
           });
+        } else if (innerVal === true && innerKey === 'yearUp') {
+          dataImport = dataImport.sort(function (
+            a: interfaces.IData,
+            b: interfaces.IData
+          ): number {
+            return Number(a.year) - Number(b.year);
+          });
+        } else if (innerVal === true && innerKey === 'yearDown') {
+          dataImport = dataImport.sort(function (
+            a: interfaces.IData,
+            b: interfaces.IData
+          ): number {
+            return Number(b.year) - Number(a.year);
+          });
         }
       }
 
