@@ -93,16 +93,22 @@ class SettingsPage extends Page {
     this.container.prepend(controlSection);
   }
 
+  private createNotFoundMsg() {
+    const cardsSections: HTMLElement = this.cardsSection.render();
+    cardsSections.innerHTML = '';
+    const msgDiv: HTMLElement = new Component('div', 'notfound').render();
+    msgDiv.innerHTML = 'По запросу ничего не найдено!';
+    cardsSections.append(msgDiv);
+  }
+
   private createContentCards(filteredData: Array<interfaces.IData>) {
     const cardsSections: HTMLElement = this.cardsSection.render();
     this.container.append(cardsSections);
-    // const cardsSection: HTMLElement = this.container.querySelector('.cards')!;
 
     const renderCard = (d: Array<interfaces.IData> = data): void => {
       const cardData = [...d];
       cardData.forEach((el) => {
-        const cardDivComp = new Component('div', 'card');
-        const cardDiv: HTMLElement = cardDivComp.render();
+        const cardDiv: HTMLElement = new Component('div', 'card').render();
         let cardTemplate: string = SettingsSections.cards;
         Object.entries(el).forEach((key) => {
           const regexp: RegExp = new RegExp(`{{${key[0]}}}`, 'g');
@@ -123,21 +129,15 @@ class SettingsPage extends Page {
         });
         cardDiv.innerHTML = cardTemplate;
         cardDiv.addEventListener('click', (e: Event) => {
-          // console.log(`e.currentTarget`, e.currentTarget);
           this.handleCardClick(e);
         });
         cardsSections.append(cardDiv);
       });
     };
     if (!SettingsPage.filter.isChanged.isChanged) {
-      // console.log(`false! >>>`, SettingsPage.filter.isChanged.isChanged);
       cardsSections.innerHTML = '';
       renderCard(data);
     } else {
-      // console.log(
-      //   `true! is isChanged >>>`,
-      //   SettingsPage.filter.isChanged.isChanged
-      // );
       cardsSections.innerHTML = '';
       renderCard(filteredData);
     }
@@ -147,7 +147,8 @@ class SettingsPage extends Page {
     //TODO
     /**
      * Refactor:
-     *   - loop on filter object instead
+     *
+     *   - loop on filter object instead of individual objects
      *
      **/
 
@@ -158,25 +159,12 @@ class SettingsPage extends Page {
       );
 
       const shapeBtns = SettingsPage.filter.shape;
-      // console.log(`shapeBtns`, shapeBtns);
-
       const colorBtns = SettingsPage.filter.color;
-      // console.log(`shapeBtns`, colorBtns);
-
       const sizeBtns = SettingsPage.filter.size;
-      // console.log(`sizeBtns`, sizeBtns);
-
       const favBtn = SettingsPage.filter.favorite;
-      // console.log(`favBtn`, favBtn);
-
       const rangeQty = SettingsPage.filter.count;
-      // console.log(`rangeQty`, rangeQty);
-
       const rangeYear = SettingsPage.filter.year;
-      // console.log(`rangeYear`, rangeYear);
-
       const select = SettingsPage.filter.select;
-      // console.log(`select`, select);
 
       // shape
       for (const [innerKey, innerVal] of Object.entries(shapeBtns)) {
@@ -188,7 +176,6 @@ class SettingsPage extends Page {
           const btn = <HTMLElement>(
             btnsBlock.querySelector(`#shape-${innerKey}`)
           );
-          // console.log(`btn>>>true`, btn);
           SettingsPage.isRestoredLSData = true;
           btn.dispatchEvent(event);
         }
@@ -203,7 +190,6 @@ class SettingsPage extends Page {
           const btn = <HTMLElement>(
             btnsBlock.querySelector(`#color-${innerKey}`)
           );
-          // console.log(`btn>>>true`, btn);
           SettingsPage.isRestoredLSData = true;
           btn.dispatchEvent(event);
         }
@@ -216,7 +202,6 @@ class SettingsPage extends Page {
             this.container.querySelector(`#filter-by-size`)
           );
           const btn = <HTMLElement>btnsBlock.querySelector(`#size-${innerKey}`);
-          // console.log(`btn>>>true`, btn);
           SettingsPage.isRestoredLSData = true;
           btn.dispatchEvent(event);
         }
@@ -238,7 +223,6 @@ class SettingsPage extends Page {
       }
 
       // range by qty
-      // if (<number>rangeQty.start > 1 || <number>rangeQty.end < 12) {
       SettingsPage.sliderQty.set([
         <number>rangeQty.start,
         <number>rangeQty.end,
@@ -252,7 +236,6 @@ class SettingsPage extends Page {
       // }
 
       // range by year
-      // if (<number>rangeYear.start > 1960 || <number>rangeYear.end < 2020) {
       SettingsPage.sliderYear.set([
         <number>rangeYear.start,
         <number>rangeYear.end,
@@ -282,8 +265,7 @@ class SettingsPage extends Page {
 
   private restoreBasketState(): void {
     // restore data from LS
-    const basketNumBadge: HTMLElement =
-      document.querySelector('.basket__badge')!;
+    const basketNumBadge: Element = document.querySelector('.basket__badge')!;
     if (Settings.getLocalStorageControls(localStorageNames.basket)) {
       SettingsPage.basketItems = Object(
         Settings.getLocalStorageControls(localStorageNames.basket)
@@ -292,7 +274,6 @@ class SettingsPage extends Page {
         Utils.arrayLength(SettingsPage.basketItems.items)
       );
     } else {
-      console.log(`no basket in local storage`, SettingsPage.basketItems.items);
       basketNumBadge.innerHTML = String(
         Utils.arrayLength(SettingsPage.basketItems.items)
       );
@@ -345,8 +326,6 @@ class SettingsPage extends Page {
     );
 
     // Basket
-    const basketDiv = document.querySelector('#basket');
-    // console.log(`basketDiv`, basketDiv);
 
     // Reset buttons
     const resetFiltersButtons: HTMLCollectionOf<Element> =
@@ -357,9 +336,6 @@ class SettingsPage extends Page {
     for (const el of myArr) {
       el?.addEventListener('click', (e: Event) => {
         if (el.id === 'reset-filters') {
-          // console.log(`e.currentTarget`, e.currentTarget);
-          // SettingsPage.filter.isChanged.isChanged = false;
-          // SettingsPage.filter = Object.assign({}, Settings.filter);
           SettingsPage.filter = new Settings().filter;
           const controlsSection = this.container.querySelector(
             '.controls'
@@ -368,7 +344,6 @@ class SettingsPage extends Page {
           this.createContentControls();
           this.bindListeners();
         } else if (el.id === 'reset-localstorage') {
-          // console.log(`e.currentTarget`, e.currentTarget);
           SettingsPage.filter = new Settings().filter;
           SettingsPage.basketItems = new Settings().basketItems;
           localStorage.clear();
@@ -377,6 +352,7 @@ class SettingsPage extends Page {
       });
     }
 
+    // save settings to local storage every 3 sec
     Utils.delayAction([
       () =>
         Settings.setLocalStorageControls(
@@ -396,12 +372,11 @@ class SettingsPage extends Page {
     let basketItems = SettingsPage.basketItems.items;
     const cardDiv = <HTMLElement>e.currentTarget;
     const cardImg = <HTMLElement>cardDiv.querySelector('.card__img');
-    const cardQty = '';
     const cardImgNum = Number(
       cardImg.getAttribute('src')?.split('/').slice(-1)[0].split('.')[0]
     );
 
-    console.log(`cardImgNum`, cardImgNum);
+    // console.log(`cardImgNum`, cardImgNum);
 
     const removePopup = (wait: number) => {
       return new Promise<void>((res) => {
@@ -454,7 +429,6 @@ class SettingsPage extends Page {
         SettingsPage.basketItems.items
       );
     }
-    // console.log(`basketItems >>> `, basketItems);
     basketNumBadge.innerHTML = String(Utils.arrayLength(basketItems));
   }
 
@@ -462,15 +436,11 @@ class SettingsPage extends Page {
     console.log(`handleFilterByValue e`, e);
     const buttonDiv = e.currentTarget as HTMLElement;
     const button = e.target as HTMLInputElement;
-    console.log('button', button);
     const dataFilterVal: string | undefined = button.dataset.filter;
-    console.log('dataFilterVal', dataFilterVal);
     if (dataFilterVal) {
       const btnDiv: string = buttonDiv.id.split('-').slice(-1)[0];
       const btnData: string = dataFilterVal;
-      // console.log('btnDiv, btnData', btnDiv, btnData);
       let levelOneProp = SettingsPage.filter[btnDiv];
-      // console.log('levelOneProp', levelOneProp);
 
       if (!SettingsPage.isRestoredLSData) {
         if (levelOneProp[btnData] === false) {
@@ -484,7 +454,6 @@ class SettingsPage extends Page {
         button.classList.toggle('active');
         SettingsPage.isRestoredLSData = false;
       }
-      // console.log('filtered data:', this.filterData(SettingsPage.filter));
       this.createContentCards(Utils.filterData(SettingsPage.filter));
     }
   }
@@ -493,7 +462,6 @@ class SettingsPage extends Page {
     SettingsPage.isRestoredLSData = false;
     const sliderRail = e.currentTarget as HTMLElement;
     const sliderRailId = sliderRail.id.split('-').slice(-1)[0];
-    // console.log(`rail id`, sliderRailId);
     const outputQtyMinVal = Number(
       sliderRail.previousElementSibling?.innerHTML
     );
@@ -518,12 +486,13 @@ class SettingsPage extends Page {
   }
 
   private handleFilterBySearchInput(e: Event): void {
-    console.log(`e`, e);
     const input = e.target as HTMLInputElement;
     const inputValue = input.value;
-    console.log(`input`, input);
-    // console.log(`inputValue`, inputValue);
-    this.createContentCards(Utils.searchItems(inputValue.toLowerCase().trim()));
+    if (Utils.searchItems(inputValue.toLowerCase().trim()).length > 0)
+      this.createContentCards(
+        Utils.searchItems(inputValue.toLowerCase().trim())
+      );
+    else this.createNotFoundMsg();
   }
 
   render(): HTMLElement {

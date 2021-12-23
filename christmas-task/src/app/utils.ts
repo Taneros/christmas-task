@@ -178,8 +178,9 @@ class Utils {
           return dataImport.indexOf(el) !== idx;
         });
       }
+    } else {
+      dataImport = [];
     }
-
     return dataImport;
   }
 
@@ -234,7 +235,7 @@ class Utils {
             el();
           });
         });
-      }, 1000 * 3); // save after 3 seconds of inactivity
+      }, 1000 * 1); // save after 3 seconds of inactivity
     }
   }
 }

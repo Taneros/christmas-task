@@ -10,7 +10,7 @@ class SettingsSections {
     <button id="shape-snowflake" class="btn" data-filter="snowflake"></button>
     <button id="shape-figurine" class="btn" data-filter="figurine"></button>
   </div>
-  <div id="filter-by-color" class="filter__btns filter__btns_color">
+    <div id="filter-by-color" class="filter__btns filter__btns_color">
     <h3 class="filter-btns__header">Цвет</h3>
     <button id="color-white" class="btn" data-filter="white"></button>
     <button id="color-yellow" class="btn" data-filter="yellow"></button>
