@@ -31,6 +31,10 @@ import popUp from '../../core/templates/popup';
  *
  *  - change active class to in-basket
  *
+ *  Search Box:
+ *
+ *  - fix cross does not restart cards create
+ *
  **/
 
 class SettingsPage extends Page {
@@ -304,6 +308,11 @@ class SettingsPage extends Page {
       this.handleFilterByOption(e);
     });
 
+    //TODO
+    /**
+     * move this code to where element is created and attaach event there
+     **/
+
     // Search Box
     const searchInput = document.querySelector(
       '#search-box-input'
@@ -321,7 +330,7 @@ class SettingsPage extends Page {
     };
 
     searchInput.addEventListener(
-      'keyup',
+      'input',
       throttleSearch(this.handleFilterBySearchInput, 500)
     );
 
