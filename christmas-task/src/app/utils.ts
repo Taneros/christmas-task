@@ -224,7 +224,6 @@ class Utils {
 
   static delayAction(arrayCallback: Array<{ (): void; (): void }>) {
     let time: ReturnType<typeof setTimeout>;
-    let go: boolean = false;
     // events
     window.onload = resetTime;
     window.onclick = resetTime;

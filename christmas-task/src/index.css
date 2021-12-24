@@ -1,4 +1,5 @@
 @import url('./nullstyle.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
 
 /* :root {
   --width: 300px;
@@ -748,6 +749,8 @@ select[multiple] option {
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .game-main__center .game-main__center__tree {
@@ -760,6 +763,29 @@ select[multiple] option {
   /* background-color: #278d9f; */
   margin-bottom: 0;
   background-image: var(--game-center-tree);
+}
+
+/* showflake styles */
+
+.flake {
+  position: absolute;
+  top: -40px;
+  color: rgb(247, 252, 243);
+  font-size: 1rem;
+  padding: 1rem;
+  animation: fall 2s linear forwards infinite;
+  animation-delay: 1s;
+}
+
+/* animating snowflake in Y-axis  */
+
+@keyframes fall {
+  from {
+    transform: translateY(-10vh);
+  }
+  to {
+    transform: translateY(100vh);
+  }
 }
 
 /** Game Page Styles - Right Section Styles **/
@@ -780,9 +806,8 @@ select[multiple] option {
 
 .game-main__right__toys .toys__cards {
   display: grid;
-  gap: 3px;
+  gap: 5px;
   grid-template-columns: repeat(auto-fill, minmax(80px, 80px));
-  grid-gap: 1em;
   justify-content: center;
   align-items: center;
   width: 100%;
