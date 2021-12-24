@@ -17,6 +17,7 @@ class GamePage extends Page {
   private centerSection: HTMLElement;
   private rightSection: HTMLElement;
   private gameSections: GameSections;
+  private audioBg: HTMLAudioElement;
 
   constructor(id: string, className: string) {
     super(id, className);
@@ -33,12 +34,14 @@ class GamePage extends Page {
       'game-main__right section'
     ).render();
     this.gameSections = new GameSections();
+    this.audioBg = new Audio();
   }
 
   createLeftSection() {
     const bgSettingsDiv = this.gameSections.leftBgSettings(
       new Component('div', 'game-main__left__bg-settings bg-settings').render()
     );
+
     bgSettingsDiv.addEventListener('click', (e: Event) => {
       this.handleBgSettings(e);
     });
@@ -78,8 +81,18 @@ class GamePage extends Page {
   handleBgSettings(e: Event) {
     // console.log(`e`, e.target);
     const button = <HTMLElement>e.target;
-    if (button.id === 'bg-settings-audio') console.log(`turn on audio`);
-    else if (button.id === 'bg-settings-show') {
+    if (button.id === 'bg-settings-audio') {
+      console.log(`turn on audio`);
+      if (!GamePage.gameOnSettings.bg.audio) {
+        this.audioBg.src = './assets/audio/audio.mp3';
+        this.audioBg.volume = 0.5;
+        GamePage.gameOnSettings.bg.audio = true;
+        this.audioBg.play();
+      } else {
+        GamePage.gameOnSettings.bg.audio = false;
+        this.audioBg.pause();
+      }
+    } else if (button.id === 'bg-settings-show') {
       if (!GamePage.gameOnSettings.bg.snow) {
         GamePage.snowInterval = setInterval(() => {
           this.createSnow();
