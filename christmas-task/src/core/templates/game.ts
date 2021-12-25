@@ -55,6 +55,22 @@ class GameSections {
     `;
     return el;
   }
+
+  centerTreeLights(el: HTMLElement): HTMLElement {
+    el.innerHTML = `
+    <div class="light-bulb theme-color-one"></div>
+    <div class="light-bulb theme-color-two"></div>
+    <div class="light-bulb theme-color-three"></div>
+    <div class="light-bulb theme-color-four"></div>
+    <div class="light-bulb theme-color-five"></div>
+    <div class="light-bulb theme-color-one"></div>
+    <div class="light-bulb theme-color-two"></div>
+    <div class="light-bulb theme-color-three"></div>
+    <div class="light-bulb theme-color-four"></div>
+    <div class="light-bulb theme-color-five"></div>
+    `;
+    return el;
+  }
 }
 
 export default GameSections;

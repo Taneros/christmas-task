@@ -784,23 +784,23 @@ select[multiple] option {
   animation-iteration-count: infinite;
 }
 
-.light-bulb.theme-color-one {
+.game-main__center__light-bulbs.on .light-bulb.theme-color-one {
   animation-name: light-up-theme-color-one;
 }
 
-.light-bulb.theme-color-two {
+.game-main__center__light-bulbs.on .light-bulb.theme-color-two {
   animation-name: light-up-theme-color-two;
 }
 
-.light-bulb.theme-color-three {
+.game-main__center__light-bulbs.on .light-bulb.theme-color-three {
   animation-name: light-up-theme-color-three;
 }
 
-.light-bulb.theme-color-four {
+.game-main__center__light-bulbs.on .light-bulb.theme-color-four {
   animation-name: light-up-theme-color-four;
 }
 
-.light-bulb.theme-color-five {
+.game-main__center__light-bulbs.on .light-bulb.theme-color-five {
   animation-name: light-up-theme-color-five;
 }
 

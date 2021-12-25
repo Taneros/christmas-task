@@ -85,6 +85,7 @@ class App {
     App.container.append(this.footer.render());
     // this.enableRouteChange('');
     this.enableRouteChange('game');
+    // this.enableRouteChange('settings');
   }
 }
 

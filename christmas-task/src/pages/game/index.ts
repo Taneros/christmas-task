@@ -9,6 +9,10 @@ class GamePage extends Page {
       audio: false,
       interval: null,
     },
+    treeLights: {
+      on: false,
+      colored: false,
+    },
   };
 
   private static snowInterval: ReturnType<typeof setInterval>;
@@ -103,6 +107,18 @@ class GamePage extends Page {
         GamePage.gameOnSettings.bg.snow = false;
       }
     }
+    //TODO: try this
+    /**
+     *
+     * const snowflakesIntervalId = setInterval(() => {
+          if (controlBtnSnowflake.classList.contains('active')) { 
+          this.createSnowflake()
+          } else {
+            clearInterval(snowflakesIntervalId);
+          }
+        }, 
+     *
+     **/
   }
 
   handleChooseTree(e: Event) {
@@ -136,29 +152,74 @@ class GamePage extends Page {
   }
 
   handlechooseLights(e: Event) {
-    // console.log(`e`, e.target);
     const button = <HTMLElement>e.target;
-    if (button.id === 'choose-lights-1') console.log(`choose-lights-1`);
+    // console.log(`e`, e.target);
+    // let lightBulbs = <HTMLElement>this.centerSection.querySelector(
+    //   '.game-main__center__light-bulbs'
+    // );
+    let lightBulbs: HTMLElement;
+
+    !this.centerSection.querySelector('.game-main__center__light-bulbs')
+      ? (lightBulbs = this.createTreeLights())
+      : (lightBulbs = <HTMLElement>(
+          this.centerSection.querySelector('.game-main__center__light-bulbs')
+        ));
+
+    if (button.id === 'choose-lights-checkbox') {
+      if (!GamePage.gameOnSettings.treeLights.on) {
+        // lightBulbs!.classList.toggle('on');
+        GamePage.gameOnSettings.treeLights.on = true;
+      } else {
+        console.log(`else remove`);
+        lightBulbs!.remove();
+        GamePage.gameOnSettings.treeLights.on = false;
+      }
+    } else if (button.id === 'choose-lights-1') {
+      console.log(`choose-lights-1`);
+      if (!GamePage.gameOnSettings.treeLights.colored) {
+        //if off > turn on lights
+        lightBulbs!.classList.toggle('on');
+        GamePage.gameOnSettings.treeLights.colored = true;
+      } else {
+        lightBulbs!.classList.toggle('on');
+        GamePage.gameOnSettings.treeLights.colored = false;
+      }
+    }
+    console.log(`GamePage.gameOnSettings`, GamePage.gameOnSettings);
   }
 
   createCenterSection() {
     // game-main__center__container
+
     const centerBg = <HTMLElement>(
       new Component('div', 'game-main__center__bg').render()
     );
+
     const centerTree = <HTMLElement>(
       new Component('div', 'game-main__center__tree').render()
     );
     centerBg.append(centerTree);
+
     this.centerSection.append(centerBg);
     this.container.append(this.centerSection);
   }
 
-  //TODO
+  createTreeLights(): HTMLElement {
+    const centerBg = <HTMLElement>this.centerSection.firstElementChild;
+    const lightBulbs = this.gameSections.centerTreeLights(
+      new Component('div', 'game-main__center__light-bulbs').render()
+    );
+    centerBg.append(lightBulbs);
+    return lightBulbs;
+  }
+
+  //TODO: colored snow
   /**
    * add colored snow
    * https://reactgo.com/css-snow-animation/
+   *
    **/
+
   createSnow() {
     const bg = this.centerSection.firstElementChild as HTMLElement;
     // console.log(`bg`, bg);
