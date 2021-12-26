@@ -1073,4 +1073,26 @@ select[multiple] option {
 }
 
 .toy__card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.toy__card__img {
+  width: 85%;
+  position: absolute;
+}
+
+.toy__card__qty {
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  background-color: #01aa6d;
+  border-radius: 50%;
+  width: 1.5em;
+  height: 1.5em;
+  display: grid;
+  place-content: center;
 }

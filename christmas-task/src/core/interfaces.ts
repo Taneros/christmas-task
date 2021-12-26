@@ -31,7 +31,7 @@ enum EDataKeys {
 }
 
 interface basket {
-  [key: string]: Array<number>;
+  [key: string]: Array<number | null>;
 }
 
 export { IData, IDataExact, IObj, EDataKeys, basket };

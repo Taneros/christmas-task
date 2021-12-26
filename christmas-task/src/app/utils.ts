@@ -219,7 +219,7 @@ class Utils {
     return array.reduce((a, b) => a + b, 0);
   }
 
-  static arrayLength(array: Array<number>): number {
+  static arrayLength(array: Array<number | null>): number {
     return array.filter(Boolean).length;
   }
 

@@ -116,6 +116,26 @@ class GameSections {
     `;
     return el;
   }
+
+  cardsFromBasketImg(): string {
+    const el = `
+    <img
+      class="toy__card__img"
+      src="./assets/toys/{{img}}.png"
+      alt="toy"
+    />
+    `;
+    return el;
+  }
+
+  cardsFromBasketDivQty(): string {
+    const el = `
+
+    <div class="toy__card__qty">{{qty}}</div>
+    `;
+
+    return el;
+  }
 }
 
 export default GameSections;

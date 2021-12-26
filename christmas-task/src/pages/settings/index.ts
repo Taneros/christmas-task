@@ -442,7 +442,7 @@ class SettingsPage extends Page {
   }
 
   private handleFilterByValue(e: Event): void {
-    console.log(`handleFilterByValue e`, e);
+    // console.log(`handleFilterByValue e`, e);
     const buttonDiv = e.currentTarget as HTMLElement;
     const button = e.target as HTMLInputElement;
     const dataFilterVal: string | undefined = button.dataset.filter;

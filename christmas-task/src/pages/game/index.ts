@@ -1,6 +1,8 @@
 import Component from '../../core/templates/component';
 import GameSections from '../../core/templates/game';
 import Page from '../../core/templates/page';
+import * as interfaces from '../../core/interfaces';
+import { data } from '../../assets/data';
 
 class GamePage extends Page {
   static gameOnSettings = {
@@ -17,6 +19,36 @@ class GamePage extends Page {
       yellow: false,
       red: false,
     },
+  };
+
+  static basketItems: interfaces.basket = {
+    items: [
+      null,
+      2,
+      5,
+      3,
+      null,
+      null,
+      null,
+      12,
+      10,
+      2,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      3,
+      7,
+      2,
+      null,
+      null,
+      null,
+      11,
+      9,
+      1,
+    ],
   };
 
   private static snowInterval: ReturnType<typeof setInterval>;
@@ -408,6 +440,49 @@ class GamePage extends Page {
   }
 
   createRightSection() {
+    //TODO
+    /**
+     *
+     * read watch drag & drop
+     *
+     *
+     *
+     **/
+    const cardContainer = <HTMLElement>(
+      new Component('div', 'game-main__right__toys toys').render()
+    );
+    const containerHeading = <HTMLElement>(
+      new Component('h2', 'heading heading__h2').render()
+    );
+    containerHeading.innerHTML = 'Игрушки';
+    const toyCards = <HTMLElement>new Component('div', 'toys__cards').render();
+
+    let dataImport: Array<interfaces.IData> = data.slice();
+
+    GamePage.basketItems.items.forEach((item, idx) => {
+      if (item) {
+        const toyCard = <HTMLElement>new Component('div', 'toy__card').render();
+
+        for (let i = 0; i < item; i++) {
+          const toyImg = <HTMLElement>(
+            new Component('img', 'toy__card__img').render()
+          );
+          toyImg.setAttribute('src', `./assets/toys/${idx}.png`);
+          toyImg.setAttribute('alt', `toy`);
+          toyCard.append(toyImg);
+        }
+
+        const qtyDiv = <HTMLElement>(
+          new Component('div', 'toy__card__qty').render()
+        );
+        qtyDiv.innerHTML = String(item);
+        toyCard.append(qtyDiv);
+        toyCards.append(toyCard);
+      }
+    });
+
+    cardContainer.append(containerHeading, toyCards);
+    this.rightSection.append(cardContainer);
     this.container.append(this.rightSection);
   }
 
