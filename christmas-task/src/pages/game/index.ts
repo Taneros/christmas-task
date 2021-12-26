@@ -12,6 +12,10 @@ class GamePage extends Page {
     treeLights: {
       on: false,
       colored: false,
+      blue: false,
+      green: false,
+      yellow: false,
+      red: false,
     },
   };
 
@@ -107,7 +111,7 @@ class GamePage extends Page {
         GamePage.gameOnSettings.bg.snow = false;
       }
     }
-    //TODO: try this
+    //TODO: remove set interval inside itself without external static method
     /**
      *
      * const snowflakesIntervalId = setInterval(() => {
@@ -153,36 +157,200 @@ class GamePage extends Page {
 
   handlechooseLights(e: Event) {
     const button = <HTMLElement>e.target;
-    // console.log(`e`, e.target);
-    // let lightBulbs = <HTMLElement>this.centerSection.querySelector(
-    //   '.game-main__center__light-bulbs'
-    // );
-    let lightBulbs: HTMLElement;
 
-    !this.centerSection.querySelector('.game-main__center__light-bulbs')
-      ? (lightBulbs = this.createTreeLights())
-      : (lightBulbs = <HTMLElement>(
-          this.centerSection.querySelector('.game-main__center__light-bulbs')
-        ));
+    const checkLightsContainer = (): HTMLElement => {
+      if (
+        !this.centerSection.querySelector(
+          '.game-main__center__light-bulbs__container'
+        )
+      ) {
+        return this.createTreeLights();
+      } else {
+        return this.centerSection.querySelector(
+          '.game-main__center__light-bulbs__container'
+        )!;
+      }
+    };
 
     if (button.id === 'choose-lights-checkbox') {
       if (!GamePage.gameOnSettings.treeLights.on) {
+        checkLightsContainer();
         // lightBulbs!.classList.toggle('on');
         GamePage.gameOnSettings.treeLights.on = true;
       } else {
         console.log(`else remove`);
-        lightBulbs!.remove();
+        checkLightsContainer().remove();
         GamePage.gameOnSettings.treeLights.on = false;
       }
-    } else if (button.id === 'choose-lights-1') {
-      console.log(`choose-lights-1`);
+    } else if (
+      button.id === 'choose-lights-1' &&
+      GamePage.gameOnSettings.treeLights.on
+    ) {
+      checkLightsContainer().remove();
+
       if (!GamePage.gameOnSettings.treeLights.colored) {
         //if off > turn on lights
-        lightBulbs!.classList.toggle('on');
+        checkLightsContainer();
+        Array.from(checkLightsContainer().children).forEach((el) => {
+          el.classList.add('on');
+        });
         GamePage.gameOnSettings.treeLights.colored = true;
       } else {
-        lightBulbs!.classList.toggle('on');
+        checkLightsContainer();
+        Array.from(checkLightsContainer().children).forEach((el) => {
+          el.classList.remove('on');
+        });
         GamePage.gameOnSettings.treeLights.colored = false;
+      }
+    } else if (
+      button.id === 'choose-lights-2' &&
+      GamePage.gameOnSettings.treeLights.on
+    ) {
+      checkLightsContainer().remove();
+      if (!GamePage.gameOnSettings.treeLights.blue) {
+        GamePage.gameOnSettings.treeLights.blue = true;
+        // change bulb colors individually
+        Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
+          lightsLevel.classList.add('on');
+          // console.log(`el.children`, lightsLevel.children);
+          Array.from(lightsLevel.children).forEach((bulb) => {
+            bulb.setAttribute(
+              'style',
+              `
+            background: var(--theme-color-one);
+            animation-name: light-up-theme-color-one;
+            `
+            );
+          });
+        });
+      } else {
+        checkLightsContainer().remove();
+        Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
+          lightsLevel.classList.remove('on');
+          Array.from(lightsLevel.children).forEach((bulb) => {
+            bulb.setAttribute(
+              'style',
+              `
+            background: var(--theme-color-one);
+            animation-name: none;
+            `
+            );
+          });
+        });
+        GamePage.gameOnSettings.treeLights.blue = false;
+      }
+    } else if (
+      button.id === 'choose-lights-3' &&
+      GamePage.gameOnSettings.treeLights.on
+    ) {
+      checkLightsContainer().remove();
+      if (!GamePage.gameOnSettings.treeLights.green) {
+        GamePage.gameOnSettings.treeLights.green = true;
+        // change bulb colors individually
+        Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
+          lightsLevel.classList.add('on');
+          // console.log(`el.children`, lightsLevel.children);
+          Array.from(lightsLevel.children).forEach((bulb) => {
+            bulb.setAttribute(
+              'style',
+              `
+            background: var(--theme-color-two);
+            animation-name: light-up-theme-color-two;
+            `
+            );
+          });
+        });
+      } else {
+        console.log(`else!`);
+        checkLightsContainer().remove();
+        Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
+          lightsLevel.classList.remove('on');
+          Array.from(lightsLevel.children).forEach((bulb) => {
+            bulb.setAttribute(
+              'style',
+              `
+            background: var(--theme-color-two);
+            animation-name: none;
+            `
+            );
+          });
+        });
+        GamePage.gameOnSettings.treeLights.green = false;
+      }
+    } else if (
+      button.id === 'choose-lights-4' &&
+      GamePage.gameOnSettings.treeLights.on
+    ) {
+      checkLightsContainer().remove();
+      if (!GamePage.gameOnSettings.treeLights.yellow) {
+        GamePage.gameOnSettings.treeLights.yellow = true;
+        // change bulb colors individually
+        Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
+          lightsLevel.classList.add('on');
+          // console.log(`el.children`, lightsLevel.children);
+          Array.from(lightsLevel.children).forEach((bulb) => {
+            bulb.setAttribute(
+              'style',
+              `
+            background: var(--theme-color-three);
+            animation-name: light-up-theme-color-three;
+            `
+            );
+          });
+        });
+      } else {
+        console.log(`else!`);
+        checkLightsContainer().remove();
+        Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
+          lightsLevel.classList.remove('on');
+          Array.from(lightsLevel.children).forEach((bulb) => {
+            bulb.setAttribute(
+              'style',
+              `
+            background: var(--theme-color-three);
+            animation-name: none;
+            `
+            );
+          });
+        });
+        GamePage.gameOnSettings.treeLights.yellow = false;
+      }
+    } else if (
+      button.id === 'choose-lights-5' &&
+      GamePage.gameOnSettings.treeLights.on
+    ) {
+      checkLightsContainer().remove();
+      if (!GamePage.gameOnSettings.treeLights.red) {
+        GamePage.gameOnSettings.treeLights.red = true;
+        // change bulb colors individually
+        Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
+          lightsLevel.classList.add('on');
+          // console.log(`el.children`, lightsLevel.children);
+          Array.from(lightsLevel.children).forEach((bulb) => {
+            bulb.setAttribute(
+              'style',
+              `
+            background: var(--theme-color-four);
+            animation-name: light-up-theme-color-four;
+            `
+            );
+          });
+        });
+      } else {
+        checkLightsContainer().remove();
+        Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
+          lightsLevel.classList.remove('on');
+          Array.from(lightsLevel.children).forEach((bulb) => {
+            bulb.setAttribute(
+              'style',
+              `
+            background: var(--theme-color-four);
+            animation-name: none;
+            `
+            );
+          });
+        });
+        GamePage.gameOnSettings.treeLights.red = false;
       }
     }
     console.log(`GamePage.gameOnSettings`, GamePage.gameOnSettings);
@@ -207,20 +375,19 @@ class GamePage extends Page {
   createTreeLights(): HTMLElement {
     const centerBg = <HTMLElement>this.centerSection.firstElementChild;
     const lightBulbs = this.gameSections.centerTreeLights(
-      new Component('div', 'game-main__center__light-bulbs').render()
+      new Component('div', 'game-main__center__light-bulbs__container').render()
     );
     centerBg.append(lightBulbs);
     return lightBulbs;
   }
 
-  //TODO: colored snow
-  /**
-   * add colored snow
-   * https://reactgo.com/css-snow-animation/
-   *
-   **/
-
   createSnow() {
+    //TODO: colored snow
+    /**
+     * add colored snow
+     * https://reactgo.com/css-snow-animation/
+     *
+     **/
     const bg = this.centerSection.firstElementChild as HTMLElement;
     // console.log(`bg`, bg);
     const snowflake = <HTMLElement>(

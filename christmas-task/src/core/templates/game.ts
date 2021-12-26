@@ -43,11 +43,11 @@ class GameSections {
     el.innerHTML = `
     <h2 class="heading heading__h2">Выбрать Гирлянду</h2>
     <div class="choose-lights">
-      <button id="choose-lights-1" class="choose-lights__btn btn"></button>
-      <button id="choose-lights-2" class="choose-lights__btn btn"></button>
-      <button id="choose-lights-3" class="choose-lights__btn btn"></button>
-      <button id="choose-lights-4" class="choose-lights__btn btn"></button>
-      <button id="choose-lights-5" class="choose-lights__btn btn"></button>
+      <button id="choose-lights-1" class="choose-lights__btn btn" data-theme-color="one"></button>
+      <button id="choose-lights-2" class="choose-lights__btn btn" data-theme-color="two"></button>
+      <button id="choose-lights-3" class="choose-lights__btn btn" data-theme-color="three"></button>
+      <button id="choose-lights-4" class="choose-lights__btn btn" data-theme-color="four"></button>
+      <button id="choose-lights-5" class="choose-lights__btn btn" data-theme-color="five"></button>
       <label class="choose-lights__label label">
       <input id="choose-lights-checkbox" type="checkbox" name="lights" id=""
       /></label>
@@ -58,16 +58,61 @@ class GameSections {
 
   centerTreeLights(el: HTMLElement): HTMLElement {
     el.innerHTML = `
-    <div class="light-bulb theme-color-one"></div>
-    <div class="light-bulb theme-color-two"></div>
-    <div class="light-bulb theme-color-three"></div>
-    <div class="light-bulb theme-color-four"></div>
-    <div class="light-bulb theme-color-five"></div>
-    <div class="light-bulb theme-color-one"></div>
-    <div class="light-bulb theme-color-two"></div>
-    <div class="light-bulb theme-color-three"></div>
-    <div class="light-bulb theme-color-four"></div>
-    <div class="light-bulb theme-color-five"></div>
+      <div class="game-main__center__light-bulbs">
+        <div class="light-bulb theme-color-one"></div>
+        <div class="light-bulb theme-color-two"></div>
+        <div class="light-bulb theme-color-three"></div>
+        <div class="light-bulb theme-color-four"></div>
+        <div class="light-bulb theme-color-five"></div>
+        <div class="light-bulb theme-color-one"></div>
+        <div class="light-bulb theme-color-two"></div>
+        <div class="light-bulb theme-color-three"></div>
+        <div class="light-bulb theme-color-four"></div>
+      </div>
+      <div class="game-main__center__light-bulbs">
+        <div class="light-bulb theme-color-one"></div>
+        <div class="light-bulb theme-color-two"></div>
+        <div class="light-bulb theme-color-three"></div>
+        <div class="light-bulb theme-color-four"></div>
+        <div class="light-bulb theme-color-five"></div>
+        <div class="light-bulb theme-color-one"></div>
+        <div class="light-bulb theme-color-two"></div>
+        <div class="light-bulb theme-color-three"></div>
+        <div class="light-bulb theme-color-four"></div>
+      </div>
+      <div class="game-main__center__light-bulbs">
+        <div class="light-bulb theme-color-one"></div>
+        <div class="light-bulb theme-color-two"></div>
+        <div class="light-bulb theme-color-three"></div>
+        <div class="light-bulb theme-color-four"></div>
+        <div class="light-bulb theme-color-five"></div>
+        <div class="light-bulb theme-color-one"></div>
+        <div class="light-bulb theme-color-two"></div>
+        <div class="light-bulb theme-color-three"></div>
+        <div class="light-bulb theme-color-four"></div>
+      </div>
+      <div class="game-main__center__light-bulbs">
+        <div class="light-bulb theme-color-one"></div>
+        <div class="light-bulb theme-color-two"></div>
+        <div class="light-bulb theme-color-three"></div>
+        <div class="light-bulb theme-color-four"></div>
+        <div class="light-bulb theme-color-five"></div>
+        <div class="light-bulb theme-color-one"></div>
+        <div class="light-bulb theme-color-two"></div>
+        <div class="light-bulb theme-color-three"></div>
+        <div class="light-bulb theme-color-four"></div>
+      </div>
+      <div class="game-main__center__light-bulbs">
+        <div class="light-bulb theme-color-one"></div>
+        <div class="light-bulb theme-color-two"></div>
+        <div class="light-bulb theme-color-three"></div>
+        <div class="light-bulb theme-color-four"></div>
+        <div class="light-bulb theme-color-five"></div>
+        <div class="light-bulb theme-color-one"></div>
+        <div class="light-bulb theme-color-two"></div>
+        <div class="light-bulb theme-color-three"></div>
+        <div class="light-bulb theme-color-four"></div>
+      </div>
     `;
     return el;
   }
