@@ -83,8 +83,9 @@ class App {
     App.container.append(this.main.render());
     this.renderNewPage('main');
     App.container.append(this.footer.render());
-    this.enableRouteChange('');
-    // this.enableRouteChange('game');
+    // this.enableRouteChange('');
+    this.enableRouteChange('game');
+    // this.enableRouteChange('settings');
   }
 }
 

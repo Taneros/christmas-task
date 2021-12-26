@@ -1,5 +1,6 @@
 import * as interfaces from '../core/interfaces';
 import { data } from '../assets/data';
+import { voidFn } from '../core/types';
 
 class Utils {
   static rusLabel = [
@@ -224,6 +225,18 @@ class Utils {
 
   static delayAction(arrayCallback: Array<{ (): void; (): void }>) {
     let time: ReturnType<typeof setTimeout>;
+
+    const resetTime: voidFn = () => {
+      clearTimeout(time);
+      time = setTimeout(() => {
+        action().then(() => {
+          console.log(`saved to local storage!`);
+          arrayCallback.forEach((el) => {
+            el();
+          });
+        });
+      }, 1000 * 3); // save after 3 seconds of inactivity
+    };
     // events
     window.onload = resetTime;
     window.onclick = resetTime;
@@ -237,18 +250,6 @@ class Utils {
       return new Promise<void>((res) => {
         res();
       });
-    }
-
-    function resetTime() {
-      clearTimeout(time);
-      time = setTimeout(() => {
-        action().then(() => {
-          console.log(`saved to local storage!`);
-          arrayCallback.forEach((el) => {
-            el();
-          });
-        });
-      }, 1000 * 1); // save after 3 seconds of inactivity
     }
   }
 }
