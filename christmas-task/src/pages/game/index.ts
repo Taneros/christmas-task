@@ -272,9 +272,9 @@ class GamePage extends Page {
       GamePage.gameOnSettings.treeLights.on
     ) {
       checkLightsContainer().remove();
-      resetOtherLights();
       if (!GamePage.gameOnSettings.treeLights.colored_1) {
         //if off > turn on lights
+        resetOtherLights();
         checkLightsContainer();
         Array.from(checkLightsContainer().children).forEach((el) => {
           el.classList.add('on');
@@ -293,8 +293,8 @@ class GamePage extends Page {
       GamePage.gameOnSettings.treeLights.on
     ) {
       checkLightsContainer().remove();
-      resetOtherLights();
       if (!GamePage.gameOnSettings.treeLights.blue_2) {
+        resetOtherLights();
         GamePage.gameOnSettings.treeLights.blue_2 = true;
         // change bulb colors individually
         Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
@@ -331,9 +331,8 @@ class GamePage extends Page {
       GamePage.gameOnSettings.treeLights.on
     ) {
       checkLightsContainer().remove();
-      resetOtherLights();
-      resetOtherLights();
       if (!GamePage.gameOnSettings.treeLights.green_3) {
+        resetOtherLights();
         GamePage.gameOnSettings.treeLights.green_3 = true;
         // change bulb colors individually
         Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
@@ -371,8 +370,8 @@ class GamePage extends Page {
       GamePage.gameOnSettings.treeLights.on
     ) {
       checkLightsContainer().remove();
-      resetOtherLights();
       if (!GamePage.gameOnSettings.treeLights.yellow_4) {
+        resetOtherLights();
         GamePage.gameOnSettings.treeLights.yellow_4 = true;
         // change bulb colors individually
         Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
