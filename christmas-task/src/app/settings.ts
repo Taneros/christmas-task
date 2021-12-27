@@ -49,11 +49,11 @@ class Settings {
 
     treeLights: {
       on: false,
-      colored: false,
-      blue: false,
-      green: false,
-      yellow: false,
-      red: false,
+      colored_1: false,
+      blue_2: false,
+      green_3: false,
+      yellow_4: false,
+      red_5: false,
     },
   };
 

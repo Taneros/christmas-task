@@ -197,6 +197,7 @@ class GamePage extends Page {
         GamePage.gameOnSettings.tree[key] = false;
       }
       GamePage.gameOnSettings.tree[`tree_${imgNum}`] = true;
+      GamePage.isRestoredLSData = false;
     }
   }
 
@@ -217,6 +218,7 @@ class GamePage extends Page {
         GamePage.gameOnSettings.bgImg[key] = false;
       }
       GamePage.gameOnSettings.bgImg[`bgImg_${imgNum}`] = true;
+      GamePage.isRestoredLSData = false;
     }
   }
 
@@ -237,45 +239,63 @@ class GamePage extends Page {
       }
     };
 
+    // resetAll other lights
+    const resetOtherLights = () => {
+      // reset all other settings
+      for (const [key, val] of Object.entries(
+        GamePage.gameOnSettings.treeLights
+      )) {
+        key !== 'on' ? (GamePage.gameOnSettings.treeLights[key] = false) : null;
+      }
+    };
+
     if (button.id === 'choose-lights-checkbox') {
-      if (!GamePage.gameOnSettings.treeLights.on) {
-        // console.log(`checkbox`, (<HTMLInputElement>button).value);
+      if (GamePage.isRestoredLSData) {
         checkLightsContainer();
-        // lightBulbs!.classList.toggle('on');
         GamePage.gameOnSettings.treeLights.on = true;
         (<HTMLInputElement>button).checked = true;
+        GamePage.isRestoredLSData = false;
       } else {
-        // console.log(`else remove`);
-        checkLightsContainer().remove();
-        GamePage.gameOnSettings.treeLights.on = false;
-        (<HTMLInputElement>button).checked = false;
+        if (!GamePage.gameOnSettings.treeLights.on) {
+          checkLightsContainer();
+          GamePage.gameOnSettings.treeLights.on = true;
+          (<HTMLInputElement>button).checked = true;
+        } else {
+          // console.log(`else remove`);
+          checkLightsContainer().remove();
+          GamePage.gameOnSettings.treeLights.on = false;
+          (<HTMLInputElement>button).checked = false;
+        }
       }
     } else if (
       button.id === 'choose-lights-1' &&
       GamePage.gameOnSettings.treeLights.on
     ) {
       checkLightsContainer().remove();
-      if (!GamePage.gameOnSettings.treeLights.colored) {
+      resetOtherLights();
+      if (!GamePage.gameOnSettings.treeLights.colored_1) {
         //if off > turn on lights
         checkLightsContainer();
         Array.from(checkLightsContainer().children).forEach((el) => {
           el.classList.add('on');
         });
-        GamePage.gameOnSettings.treeLights.colored = true;
+        resetOtherLights();
+        GamePage.gameOnSettings.treeLights.colored_1 = true;
       } else {
         checkLightsContainer();
         Array.from(checkLightsContainer().children).forEach((el) => {
           el.classList.remove('on');
         });
-        GamePage.gameOnSettings.treeLights.colored = false;
+        GamePage.gameOnSettings.treeLights.colored_1 = false;
       }
     } else if (
       button.id === 'choose-lights-2' &&
       GamePage.gameOnSettings.treeLights.on
     ) {
       checkLightsContainer().remove();
-      if (!GamePage.gameOnSettings.treeLights.blue) {
-        GamePage.gameOnSettings.treeLights.blue = true;
+      resetOtherLights();
+      if (!GamePage.gameOnSettings.treeLights.blue_2) {
+        GamePage.gameOnSettings.treeLights.blue_2 = true;
         // change bulb colors individually
         Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
           lightsLevel.classList.add('on');
@@ -304,15 +324,17 @@ class GamePage extends Page {
             );
           });
         });
-        GamePage.gameOnSettings.treeLights.blue = false;
+        GamePage.gameOnSettings.treeLights.blue_2 = false;
       }
     } else if (
       button.id === 'choose-lights-3' &&
       GamePage.gameOnSettings.treeLights.on
     ) {
       checkLightsContainer().remove();
-      if (!GamePage.gameOnSettings.treeLights.green) {
-        GamePage.gameOnSettings.treeLights.green = true;
+      resetOtherLights();
+      resetOtherLights();
+      if (!GamePage.gameOnSettings.treeLights.green_3) {
+        GamePage.gameOnSettings.treeLights.green_3 = true;
         // change bulb colors individually
         Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
           lightsLevel.classList.add('on');
@@ -342,15 +364,16 @@ class GamePage extends Page {
             );
           });
         });
-        GamePage.gameOnSettings.treeLights.green = false;
+        GamePage.gameOnSettings.treeLights.green_3 = false;
       }
     } else if (
       button.id === 'choose-lights-4' &&
       GamePage.gameOnSettings.treeLights.on
     ) {
       checkLightsContainer().remove();
-      if (!GamePage.gameOnSettings.treeLights.yellow) {
-        GamePage.gameOnSettings.treeLights.yellow = true;
+      resetOtherLights();
+      if (!GamePage.gameOnSettings.treeLights.yellow_4) {
+        GamePage.gameOnSettings.treeLights.yellow_4 = true;
         // change bulb colors individually
         Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
           lightsLevel.classList.add('on');
@@ -380,15 +403,16 @@ class GamePage extends Page {
             );
           });
         });
-        GamePage.gameOnSettings.treeLights.yellow = false;
+        GamePage.gameOnSettings.treeLights.yellow_4 = false;
       }
     } else if (
       button.id === 'choose-lights-5' &&
       GamePage.gameOnSettings.treeLights.on
     ) {
-      checkLightsContainer().remove();
-      if (!GamePage.gameOnSettings.treeLights.red) {
-        GamePage.gameOnSettings.treeLights.red = true;
+      if (!GamePage.gameOnSettings.treeLights.red_5) {
+        checkLightsContainer().remove();
+        resetOtherLights();
+        GamePage.gameOnSettings.treeLights.red_5 = true;
         // change bulb colors individually
         Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
           lightsLevel.classList.add('on');
@@ -417,7 +441,8 @@ class GamePage extends Page {
             );
           });
         });
-        GamePage.gameOnSettings.treeLights.red = false;
+        resetOtherLights();
+        GamePage.gameOnSettings.treeLights.red_5 = false;
       }
     }
     // console.log(`GamePage.gameOnSettings`, GamePage.gameOnSettings);
@@ -653,9 +678,15 @@ class GamePage extends Page {
       );
     } else {
       GamePage.gameOnSettings = new Settings().gameOnSettings;
+      console.log(`just created!`, GamePage.gameOnSettings);
     }
 
     const bgSettings = GamePage.gameOnSettings.bg;
+    const treeSettings = GamePage.gameOnSettings.tree;
+    const bgImgSettings = GamePage.gameOnSettings.bgImg;
+    const treeLightsSettings = GamePage.gameOnSettings.treeLights;
+
+    console.log(`treeLightsSettings just loaded!`, treeLightsSettings);
 
     // Snow & Music
     for (const [innerKey, innerVal] of Object.entries(bgSettings)) {
@@ -674,7 +705,78 @@ class GamePage extends Page {
         btn.dispatchEvent(event);
       }
     }
+
+    // tree
+
+    for (const [innerKey, innerVal] of Object.entries(treeSettings)) {
+      if (innerVal === true) {
+        let event: Event = new Event('click', { bubbles: true });
+        const btnsBlock = <HTMLElement>(
+          this.container.querySelector(`.choose-tree`)
+        );
+        console.log(`restoreGameOnSettings() btnsBLock`, btnsBlock);
+        const getNum: string = String(innerKey.match(/\d+/g));
+        const btn = <HTMLElement>(
+          btnsBlock.querySelector(`#choose-tree-${getNum}`)
+        );
+        // SettingsPage.isRestoredLSData = true;
+        console.log(`dispatch event`, innerKey, innerVal);
+        GamePage.isRestoredLSData = true;
+        btn.dispatchEvent(event);
+      }
+    }
+
+    // background Image
+    for (const [innerKey, innerVal] of Object.entries(bgImgSettings)) {
+      if (innerVal === true) {
+        let event: Event = new Event('click', { bubbles: true });
+        const btnsBlock = <HTMLElement>(
+          this.container.querySelector(`.choose-bg`)
+        );
+        // console.log(`restoreGameOnSettings() btnsBLock`, btnsBlock);
+        const getNum: string = String(innerKey.match(/\d+/g));
+        const btn = <HTMLElement>(
+          btnsBlock.querySelector(`#choose-bg-${getNum}`)
+        );
+        // console.log(`dispatch event`, innerKey, innerVal);
+        GamePage.isRestoredLSData = true;
+        btn.dispatchEvent(event);
+      }
+    }
+
+    if (treeLightsSettings.on) {
+      let event: Event = new Event('click', { bubbles: true });
+      const btnsBlock = <HTMLElement>(
+        this.container.querySelector(`.choose-lights`)
+      );
+      // console.log(`restoreGameOnSettings() btnsBLock`, btnsBlock);
+      const btn = <HTMLElement>(
+        btnsBlock.querySelector(`#choose-lights-checkbox`)
+      );
+      GamePage.isRestoredLSData = true;
+      btn.dispatchEvent(event);
+      console.log(`restoreBasketState() btn`, btn);
+      // loop over next values
+      for (const [innerKey, innerVal] of Object.entries(treeLightsSettings)) {
+        if (innerKey !== 'on' && innerVal === true) {
+          let event: Event = new Event('click', { bubbles: true });
+          const btnsBlock = <HTMLElement>(
+            this.container.querySelector(`.choose-lights`)
+          );
+          console.log(`restoreGameOnSettings() btnsBLock`, btnsBlock);
+          const getNum: string = String(innerKey.match(/\d+/g));
+          const btn = <HTMLElement>(
+            btnsBlock.querySelector(`#choose-lights-${getNum}`)
+          );
+          console.log(`dispatch event`, innerKey, innerVal);
+          GamePage.isRestoredLSData = true;
+          btn.dispatchEvent(event);
+        }
+      }
+    }
   }
+
+  // choose bg
 
   private saveToLS(): void {
     new Utils().delayAction([

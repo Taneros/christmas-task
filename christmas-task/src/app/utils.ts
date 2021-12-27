@@ -235,7 +235,7 @@ class Utils {
             el();
           });
         });
-      }, 1000 * 1); // save after 3 seconds of inactivity
+      }, 1000 * 0.5); // save after 3 seconds of inactivity
     };
     // events
     window.onload = resetTime;
