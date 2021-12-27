@@ -3,7 +3,7 @@ class GameSections {
     el.innerHTML = `
       <div class="bg-settings">
         <button id="bg-settings-audio" class="bg-settings__audio__btn btn"></button>
-        <button id="bg-settings-show" class="bg-settings__snow__btn btn"></button>
+        <button id="bg-settings-snow" class="bg-settings__snow__btn btn"></button>
       </div>
     `;
     return el;
@@ -49,8 +49,14 @@ class GameSections {
       <button id="choose-lights-4" class="choose-lights__btn btn" data-theme-color="four"></button>
       <button id="choose-lights-5" class="choose-lights__btn btn" data-theme-color="five"></button>
       <label class="choose-lights__label label">
-      <input id="choose-lights-checkbox" type="checkbox" name="lights" id=""
-      /></label>
+      <input
+        class="choose-lights__input"
+        id="choose-lights-checkbox"
+        type="checkbox"
+        name="lights"
+      />
+      <span class="slider round"></span>
+      </label>
     </div>
     `;
     return el;

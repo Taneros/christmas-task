@@ -30,6 +30,7 @@ import Utils from '../../app/utils';
 class GamePage extends Page {
   static gameOnSettings: interfaces.IGameOnSettingsExt;
   static basketItems: interfaces.basket;
+  private static isRestoredLSData: boolean = false;
 
   private static snowInterval: ReturnType<typeof setInterval>;
 
@@ -77,20 +78,11 @@ class GamePage extends Page {
     Array.from(chooseTreeDiv.children[1].children).forEach((div) => {
       div.setAttribute(
         'style',
-        `background: rgba(173, 216, 230, 0.719) url("../assets/tree/${div.id.match(
+        `background: rgba(173 216 230 / 23%) url("../assets/tree/${div.id.match(
           /\d+/g
         )}.png") no-repeat center; background-size: contain;`
       );
     });
-
-    //TODO change bg
-    /**
-     * use method above
-     *
-     *
-     *
-     *
-     **/
 
     const chooseBgImg = this.gameSections.leftChooseTreeBG(
       new Component('div', 'game-main__left__choose-bg choose-bg').render()
@@ -98,6 +90,21 @@ class GamePage extends Page {
     chooseBgImg.addEventListener('click', (e: Event) => {
       this.handlechooseBgImg(e);
     });
+
+    Array.from(chooseBgImg.children).forEach((bg) => {
+      // console.log(`bg`, bg);
+      if (bg.className === 'choose-bg') {
+        Array.from(bg.children).forEach((bgDiv, idx) => {
+          bgDiv.setAttribute(
+            'style',
+            `background-image: url('./assets/bg/${
+              idx + 1
+            }.jpg'); background-size: cover;`
+          );
+        });
+      }
+    });
+
     const chooseLights = this.gameSections.leftChooseLights(
       new Component(
         'div',
@@ -123,25 +130,40 @@ class GamePage extends Page {
     // console.log(`e`, e.target);
     const button = <HTMLElement>e.target;
     if (button.id === 'bg-settings-audio') {
-      console.log(`turn on audio`);
       if (!GamePage.gameOnSettings.bg.audio) {
         this.audioBg.src = './assets/audio/audio.mp3';
         this.audioBg.volume = 0.5;
         GamePage.gameOnSettings.bg.audio = true;
         this.audioBg.play();
+        // button.style.border = 'saturate(1.5) brightness(0.8)';
+        button.classList.add('active');
       } else {
         GamePage.gameOnSettings.bg.audio = false;
         this.audioBg.pause();
+        // button.style.filter = 'none';
+        button.classList.remove('active');
       }
-    } else if (button.id === 'bg-settings-show') {
-      if (!GamePage.gameOnSettings.bg.snow) {
+    } else if (button.id === 'bg-settings-snow') {
+      if (GamePage.isRestoredLSData) {
+        console.log(`handleBgSettings() > turn on snow is restored`);
         GamePage.snowInterval = setInterval(() => {
           this.createSnow();
           GamePage.gameOnSettings.bg.snow = true;
         }, 100);
+        button.classList.add('active');
+        GamePage.isRestoredLSData = false;
       } else {
-        clearInterval(GamePage.snowInterval);
-        GamePage.gameOnSettings.bg.snow = false;
+        if (!GamePage.gameOnSettings.bg.snow) {
+          GamePage.snowInterval = setInterval(() => {
+            this.createSnow();
+            GamePage.gameOnSettings.bg.snow = true;
+          }, 100);
+          button.classList.add('active');
+        } else {
+          clearInterval(GamePage.snowInterval);
+          GamePage.gameOnSettings.bg.snow = false;
+          button.classList.remove('active');
+        }
       }
     }
     //TODO: remove set interval inside itself without external static method
@@ -162,13 +184,19 @@ class GamePage extends Page {
     // console.log(`e`, e.target);
     const button = <HTMLElement>e.target;
     if (button.id.split('-')[0] === 'choose') {
+      const imgNum: string = String(button.id.match(/\d+/g));
       const centerDivTree = <HTMLElement>(
         this.container.querySelector('.game-main__center__tree')
       );
       centerDivTree.style.setProperty(
         '--game-center-tree',
-        `url("../assets/tree/${button.id.match(/\d+/g)}.png")`
+        `url("../assets/tree/${imgNum}.png")`
       );
+      // reset all other settings
+      for (const [key, val] of Object.entries(GamePage.gameOnSettings.tree)) {
+        GamePage.gameOnSettings.tree[key] = false;
+      }
+      GamePage.gameOnSettings.tree[`tree_${imgNum}`] = true;
     }
   }
 
@@ -176,7 +204,7 @@ class GamePage extends Page {
     // console.log(`e`, e.target);
     const button = <HTMLElement>e.target;
     if (button.id.split('-')[0] === 'choose') {
-      // console.log(`match /^\D+/g`, button.id.match(/\d/g));
+      const imgNum: string = String(button.id.match(/\d+/g));
       const centerDivBg = <HTMLElement>(
         this.container.querySelector('.game-main__center__bg')
       );
@@ -184,6 +212,11 @@ class GamePage extends Page {
         '--game-center-bg',
         `url("../assets/bg/${button.id.match(/\d+/g)}.jpg")`
       );
+      // reset all other settings
+      for (const [key, val] of Object.entries(GamePage.gameOnSettings.bgImg)) {
+        GamePage.gameOnSettings.bgImg[key] = false;
+      }
+      GamePage.gameOnSettings.bgImg[`bgImg_${imgNum}`] = true;
     }
   }
 
@@ -206,20 +239,22 @@ class GamePage extends Page {
 
     if (button.id === 'choose-lights-checkbox') {
       if (!GamePage.gameOnSettings.treeLights.on) {
+        // console.log(`checkbox`, (<HTMLInputElement>button).value);
         checkLightsContainer();
         // lightBulbs!.classList.toggle('on');
         GamePage.gameOnSettings.treeLights.on = true;
+        (<HTMLInputElement>button).checked = true;
       } else {
         // console.log(`else remove`);
         checkLightsContainer().remove();
         GamePage.gameOnSettings.treeLights.on = false;
+        (<HTMLInputElement>button).checked = false;
       }
     } else if (
       button.id === 'choose-lights-1' &&
       GamePage.gameOnSettings.treeLights.on
     ) {
       checkLightsContainer().remove();
-
       if (!GamePage.gameOnSettings.treeLights.colored) {
         //if off > turn on lights
         checkLightsContainer();
@@ -614,15 +649,35 @@ class GamePage extends Page {
 
     if (Settings.getLocalStorageControls(localStorageNames.gameOnSettings)) {
       GamePage.gameOnSettings = Object(
-        Settings.getLocalStorageControls(localStorageNames.basket)
+        Settings.getLocalStorageControls(localStorageNames.gameOnSettings)
       );
     } else {
       GamePage.gameOnSettings = new Settings().gameOnSettings;
     }
+
+    const bgSettings = GamePage.gameOnSettings.bg;
+
+    // Snow & Music
+    for (const [innerKey, innerVal] of Object.entries(bgSettings)) {
+      if (innerVal === true) {
+        let event: Event = new Event('click', { bubbles: true });
+        const btnsBlock = <HTMLElement>(
+          this.container.querySelector(`.bg-settings`)
+        );
+        console.log(`restoreGameOnSettings() btnsBLock`, btnsBlock);
+        const btn = <HTMLElement>(
+          btnsBlock.querySelector(`#bg-settings-${innerKey}`)
+        );
+        // SettingsPage.isRestoredLSData = true;
+        console.log(`dispatch event`, innerKey, innerVal);
+        GamePage.isRestoredLSData = true;
+        btn.dispatchEvent(event);
+      }
+    }
   }
 
   private saveToLS(): void {
-    Utils.delayAction([
+    new Utils().delayAction([
       () =>
         Settings.setLocalStorageControls(
           localStorageNames.gameOnSettings,
@@ -633,11 +688,11 @@ class GamePage extends Page {
 
   render() {
     this.restoreBasketState();
-    this.restoreGameOnSettings();
     this.createLeftSection();
     this.createCenterSection();
     this.createRightSection();
     this.saveToLS();
+    this.restoreGameOnSettings();
     return this.container;
   }
 }

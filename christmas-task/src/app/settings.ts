@@ -22,17 +22,20 @@ const enum localStorageNames {
 
 class Settings {
   gameOnSettings: interfaces.IGameOnSettingsExt = {
-    startDecorate: false,
+    startDecorate: { start: false },
+
     bg: {
       snow: false,
       audio: false,
     },
+
     tree: {
       tree_1: false,
       tree_2: false,
       tree_3: false,
       tree_4: false,
     },
+
     bgImg: {
       bgImg_1: false,
       bgImg_2: false,
@@ -43,6 +46,7 @@ class Settings {
       bgImg_7: false,
       bgImg_8: false,
     },
+
     treeLights: {
       on: false,
       colored: false,

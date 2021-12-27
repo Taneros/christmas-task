@@ -656,16 +656,37 @@ select[multiple] option {
 
 /** Game Page Styles - Left Section Styles **/
 
-/* Audio */
-.game-main__left__bg-settings {
-}
-
-.bg-settings__container {
+.btn.active {
+  border: 1px solid #26aa01a3;
+  border-radius: 5px;
+  background-color: #102b1140;
 }
 
 .bg-settings .btn {
   height: 45px;
   width: 45px;
+}
+
+.bg-settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Audio */
+
+.bg-settings__audio__btn {
+  background-image: url('./assets/audio/audio.png');
+  background-size: contain;
+  background-color: transparent;
+}
+
+/* Snow */
+
+.bg-settings__snow__btn {
+  background-image: url('./assets/snow/snow.png');
+  background-size: contain;
+  background-color: transparent;
 }
 
 /* Choose tree */
@@ -689,6 +710,7 @@ select[multiple] option {
   cursor: pointer;
   border-radius: 5px;
 }
+
 /* Choose Background */
 .game-main__left__choose-bg {
   display: flex;
@@ -711,6 +733,11 @@ select[multiple] option {
   border-radius: 3px;
 }
 
+/* .choose-bg__card:nth-child(1) {
+  background-image: url('./assets/bg/1.jpg');
+  background-size: cover;
+} */
+
 /* Choose Lights */
 
 .game-main__left__choose-lights {
@@ -731,7 +758,111 @@ select[multiple] option {
 .choose-lights .choose-lights__btn {
   width: 20px;
   height: 20px;
-  background-color: lightpink;
+  border-radius: 50%;
+}
+
+.choose-lights .choose-lights__btn:nth-child(1) {
+  position: relative;
+  background-color: red;
+  border: 5px solid rgb(30, 218, 13);
+  outline: 5px solid rgb(0, 70, 150);
+  outline-offset: 0px;
+}
+.choose-lights .choose-lights__btn:nth-child(1).btn::after {
+  /* content: ''; */
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgb(3, 32, 194);
+  top: 4px;
+  right: 4px;
+}
+.choose-lights .choose-lights__btn:nth-child(2) {
+  position: relative;
+  background-color: rgb(14, 17, 214);
+}
+
+.choose-lights .choose-lights__btn:nth-child(3) {
+  position: relative;
+  background-color: rgb(47, 214, 14);
+}
+
+.choose-lights .choose-lights__btn:nth-child(4) {
+  position: relative;
+  background-color: rgb(246, 250, 24);
+}
+
+.choose-lights .choose-lights__btn:nth-child(5) {
+  position: relative;
+  background-color: rgb(194, 11, 35);
+}
+
+/* Toggle switch */
+
+.choose-lights__label {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+}
+
+/* Hide default HTML checkbox */
+.choose-lights__label input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.choose-lights__input:checked + .slider {
+  background-color: #2196f3;
+}
+
+.choose-lights__input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+.choose-lights__input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.choose-lights__label {
 }
 
 /** Game Page Styles - Center Section Styles **/
