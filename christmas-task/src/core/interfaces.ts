@@ -34,8 +34,8 @@ interface basket {
   [key: string]: Array<number | null>;
 }
 
-interface IGameOnSettingsExt extends IGameOnSettings {
-  startDecorate: boolean;
+interface IGameOnSettingsExt_ {
+  startDecorate: { start: boolean };
   bg: {
     snow: boolean;
     audio: boolean;
@@ -66,8 +66,8 @@ interface IGameOnSettingsExt extends IGameOnSettings {
   };
 }
 
-interface IGameOnSettings {
-  [key: string]: boolean | { [key: string]: boolean };
+interface IGameOnSettingsExt {
+  [key: string]: { [key: string]: boolean };
 }
 
 export { IData, IDataExact, IObj, EDataKeys, basket, IGameOnSettingsExt };

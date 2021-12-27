@@ -223,7 +223,7 @@ class Utils {
     return array.filter(Boolean).length;
   }
 
-  static delayAction(arrayCallback: Array<{ (): void; (): void }>) {
+  delayAction(arrayCallback: Array<{ (): void; (): void }>) {
     let time: ReturnType<typeof setTimeout>;
 
     const resetTime: voidFn = () => {
@@ -235,7 +235,7 @@ class Utils {
             el();
           });
         });
-      }, 1000 * 3); // save after 3 seconds of inactivity
+      }, 1000 * 0.5); // save after 3 seconds of inactivity
     };
     // events
     window.onload = resetTime;
