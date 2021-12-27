@@ -1,23 +1,35 @@
 import Component from '../../core/templates/component';
 import GameSections from '../../core/templates/game';
 import Page from '../../core/templates/page';
+import * as interfaces from '../../core/interfaces';
+import { data } from '../../assets/data';
+import { Settings, localStorageNames } from '../../app/settings';
+import Utils from '../../app/utils';
+
+//TODO
+/**
+ *
+ * 27.12 Mon
+ *
+ *  - get HTML lists of divs - snap shots..
+ *  if has tag startedDecorating > restore tree
+ *  - Update basket on all routs (main page! hide?)
+ *  - Game senter append empty div after
+ *
+ *
+ *  Styles
+ *    - tree bg btn
+ *    - tree lights bg
+ *    - audio btn & snow
+ *    - + colored snow?
+ *    -
+ *
+ *
+ **/
 
 class GamePage extends Page {
-  static gameOnSettings = {
-    bg: {
-      snow: false,
-      audio: false,
-      interval: null,
-    },
-    treeLights: {
-      on: false,
-      colored: false,
-      blue: false,
-      green: false,
-      yellow: false,
-      red: false,
-    },
-  };
+  static gameOnSettings: interfaces.IGameOnSettingsExt;
+  static basketItems: interfaces.basket;
 
   private static snowInterval: ReturnType<typeof setInterval>;
 
@@ -56,9 +68,30 @@ class GamePage extends Page {
     const chooseTreeDiv = this.gameSections.leftChooseTree(
       new Component('div', 'game-main__left__choose-tree choose-tree').render()
     );
+
     chooseTreeDiv.addEventListener('click', (e: Event) => {
       this.handleChooseTree(e);
     });
+
+    // get all tree divs
+    Array.from(chooseTreeDiv.children[1].children).forEach((div) => {
+      div.setAttribute(
+        'style',
+        `background: rgba(173, 216, 230, 0.719) url("../assets/tree/${div.id.match(
+          /\d+/g
+        )}.png") no-repeat center; background-size: contain;`
+      );
+    });
+
+    //TODO change bg
+    /**
+     * use method above
+     *
+     *
+     *
+     *
+     **/
+
     const chooseBgImg = this.gameSections.leftChooseTreeBG(
       new Component('div', 'game-main__left__choose-bg choose-bg').render()
     );
@@ -129,7 +162,6 @@ class GamePage extends Page {
     // console.log(`e`, e.target);
     const button = <HTMLElement>e.target;
     if (button.id.split('-')[0] === 'choose') {
-      console.log(`choose-tree-1`);
       const centerDivTree = <HTMLElement>(
         this.container.querySelector('.game-main__center__tree')
       );
@@ -178,7 +210,7 @@ class GamePage extends Page {
         // lightBulbs!.classList.toggle('on');
         GamePage.gameOnSettings.treeLights.on = true;
       } else {
-        console.log(`else remove`);
+        // console.log(`else remove`);
         checkLightsContainer().remove();
         GamePage.gameOnSettings.treeLights.on = false;
       }
@@ -261,7 +293,7 @@ class GamePage extends Page {
           });
         });
       } else {
-        console.log(`else!`);
+        // console.log(`else!`);
         checkLightsContainer().remove();
         Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
           lightsLevel.classList.remove('on');
@@ -299,7 +331,7 @@ class GamePage extends Page {
           });
         });
       } else {
-        console.log(`else!`);
+        // console.log(`else!`);
         checkLightsContainer().remove();
         Array.from(checkLightsContainer().children).forEach((lightsLevel) => {
           lightsLevel.classList.remove('on');
@@ -353,7 +385,7 @@ class GamePage extends Page {
         GamePage.gameOnSettings.treeLights.red = false;
       }
     }
-    console.log(`GamePage.gameOnSettings`, GamePage.gameOnSettings);
+    // console.log(`GamePage.gameOnSettings`, GamePage.gameOnSettings);
   }
 
   createCenterSection() {
@@ -366,10 +398,66 @@ class GamePage extends Page {
     const centerTree = <HTMLElement>(
       new Component('div', 'game-main__center__tree').render()
     );
+
+    const dragNDropArea = <HTMLElement>(
+      new Component('div', 'game-main__center__dragNdrop-area').render()
+    );
+
+    const eventListeners: Array<string> = [
+      'dragover',
+      'dragenter',
+      'dragleave',
+      'drop',
+    ];
+
+    eventListeners.forEach((event) => {
+      dragNDropArea.addEventListener(event, (e: Event) => {
+        if (event === 'dragover') this.handleDragover(e);
+        if (event === 'dragenter') this.handleDragenter(e);
+        if (event === 'dragleave') this.handleDragleave(e);
+        if (event === 'drop') this.handleDrop(e);
+      });
+    });
+
     centerBg.append(centerTree);
+    centerBg.append(dragNDropArea);
 
     this.centerSection.append(centerBg);
+
     this.container.append(this.centerSection);
+  }
+
+  handleDrop(e: Event) {
+    // console.log(`handledrop`, e);
+    // console.log(`e.Dragdrop`, (<DragEvent>e).offsetX, (<DragEvent>e).offsetY);
+
+    // console.log(`handleDrop() e.target`, e.target);
+
+    if (
+      (<HTMLElement>e.target).className === 'game-main__center__dragNdrop-area'
+    ) {
+      (<HTMLElement>GamePage.toyElement).setAttribute(
+        'style',
+        `top: ${(<DragEvent>e).offsetY - 50}px; left: ${
+          (<DragEvent>e).offsetX - 50
+        }px`
+      );
+      (<HTMLElement>e.target).append(<HTMLElement>GamePage.toyElement);
+    }
+  }
+
+  handleDragleave(e: Event) {
+    console.log(`handleDragleave`);
+  }
+  handleDragenter(e: Event) {
+    // console.log(`handleDragenter`, e);
+    e.preventDefault();
+    // console.log(`e.offset X Y`, (<DragEvent>e).offsetX, (<DragEvent>e).offsetY);
+  }
+
+  handleDragover(e: Event) {
+    console.log(`handleDragover`);
+    e.preventDefault();
   }
 
   createTreeLights(): HTMLElement {
@@ -408,13 +496,148 @@ class GamePage extends Page {
   }
 
   createRightSection() {
+    const cardContainer = <HTMLElement>(
+      new Component('div', 'game-main__right__toys toys').render()
+    );
+    const containerHeading = <HTMLElement>(
+      new Component('h2', 'heading heading__h2').render()
+    );
+    containerHeading.innerHTML = 'Игрушки';
+    const toyCards = <HTMLElement>new Component('div', 'toys__cards').render();
+
+    let dataImport: Array<interfaces.IData> = data.slice();
+
+    // console.log(`here!`, GamePage.basketItems.items);
+
+    GamePage.basketItems.items.forEach((item, idx) => {
+      if (item) {
+        const toyCard = <HTMLElement>new Component('div', 'toy__card').render();
+
+        for (let i = 0; i < item; i++) {
+          const toyImg = <HTMLElement>(
+            new Component('img', 'toy__card__img').render()
+          );
+          toyImg.setAttribute('src', `./assets/toys/${idx}.png`);
+          toyImg.setAttribute('alt', `toy`);
+          toyImg.setAttribute('draggable', `true`);
+          toyImg.addEventListener('dragstart', (e: Event) => {
+            this.handleToyDragStart(e);
+            // console.log(
+            //   `parentElement`,
+            //   (<HTMLElement>e.target).parentElement?.lastElementChild?.innerHTML
+            // );
+            // this.handleToyCardBadge(e, <HTMLElement>e.target);
+
+            GamePage.toyPromise = this.dragEndPromise().then(() => {
+              return {
+                eventDrag: e,
+                HTMLEl: (<HTMLElement>e.target).parentElement!,
+              };
+            });
+          });
+          toyImg.addEventListener('dragend', (e: Event) => {
+            console.log(`dragend`, e);
+            GamePage.toyPromise.then(
+              (value: { eventDrag: Event; HTMLEl: HTMLElement }) => {
+                console.log(`value!`, value);
+                const { eventDrag, HTMLEl } = value;
+                this.handleToyCardBadge(eventDrag, HTMLEl);
+              }
+            );
+            this.handleToyDragEnd(e);
+          });
+          toyCard.append(toyImg);
+        }
+
+        const qtyDiv = <HTMLElement>(
+          new Component('div', 'toy__card__qty').render()
+        );
+        qtyDiv.innerHTML = String(item);
+        toyCard.append(qtyDiv);
+        toyCards.append(toyCard);
+      }
+    });
+
+    cardContainer.append(containerHeading, toyCards);
+    this.rightSection.append(cardContainer);
     this.container.append(this.rightSection);
   }
 
+  static toyElement: HTMLElement | null = null;
+  static toyPromise: Promise<{ eventDrag: Event; HTMLEl: HTMLElement }>;
+
+  dragEndPromise() {
+    return Promise.resolve();
+  }
+
+  handleToyCardBadge(e: Event, el: HTMLElement) {
+    // console.log(`handleToyCardBadge() e `, e);
+    const childrenNum = Number((<HTMLElement>el).children.length) - 1;
+    const lastEl = <HTMLElement>el.lastElementChild;
+    lastEl.innerHTML = String(childrenNum);
+  }
+
+  handleToyDragStart(e: Event) {
+    // console.log(`handleToyDragStart() e.target`, e.target);
+    GamePage.toyElement = <HTMLElement>e.target;
+  }
+
+  handleToyDragEnd(e: Event) {
+    console.log(`end > e.target`, e.target);
+    GamePage.toyElement = null;
+  }
+
+  private restoreBasketState(): void {
+    //TODO move to utils
+    /**
+     * reused in settings index ts and here ....
+     *
+     **/
+    // restore data from LS
+    const basketNumBadge = <HTMLElement>(
+      document.querySelector('.basket__badge')
+    );
+    if (Settings.getLocalStorageControls(localStorageNames.basket)) {
+      GamePage.basketItems = Object(
+        Settings.getLocalStorageControls(localStorageNames.basket)
+      );
+    } else {
+      GamePage.basketItems = new Settings().defaultBasketItems;
+    }
+    basketNumBadge.innerHTML = String(
+      Utils.arrayLength(GamePage.basketItems.items)
+    );
+  }
+
+  private restoreGameOnSettings(): void {
+    // restore data from LS
+
+    if (Settings.getLocalStorageControls(localStorageNames.gameOnSettings)) {
+      GamePage.gameOnSettings = Object(
+        Settings.getLocalStorageControls(localStorageNames.basket)
+      );
+    } else {
+      GamePage.gameOnSettings = new Settings().gameOnSettings;
+    }
+  }
+
+  private saveToLS(): void {
+    Utils.delayAction([
+      () =>
+        Settings.setLocalStorageControls(
+          localStorageNames.gameOnSettings,
+          GamePage.gameOnSettings
+        ),
+    ]);
+  }
+
   render() {
+    this.restoreBasketState();
+    this.restoreGameOnSettings();
     this.createLeftSection();
     this.createCenterSection();
     this.createRightSection();
+    this.saveToLS();
     return this.container;
   }
 }

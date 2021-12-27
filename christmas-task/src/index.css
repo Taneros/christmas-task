@@ -686,6 +686,8 @@ select[multiple] option {
   background-color: rgba(173, 216, 230, 0.719);
   width: 115px;
   height: 115px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 /* Choose Background */
 .game-main__left__choose-bg {
@@ -705,6 +707,8 @@ select[multiple] option {
   background-color: rgba(173, 216, 230, 0.719);
   width: 65px;
   height: 65px;
+  cursor: pointer;
+  border-radius: 3px;
 }
 
 /* Choose Lights */
@@ -751,6 +755,7 @@ select[multiple] option {
   align-items: center;
   position: relative;
   overflow: hidden;
+  z-index: 5;
 }
 
 .game-main__center .game-main__center__tree {
@@ -759,10 +764,27 @@ select[multiple] option {
   background-position: bottom;
   background-repeat: no-repeat;
   width: 350px;
-  height: 85%;
+  height: 500px;
   /* background-color: #278d9f; */
   margin-bottom: 0;
   background-image: var(--game-center-tree);
+  z-index: 10;
+  position: absolute;
+}
+
+.game-main__center__dragNdrop-area {
+  width: 350px;
+  height: 500px;
+  /* background-color: #278d9f; */
+  margin-bottom: 0;
+  z-index: 15;
+  position: relative;
+}
+
+/* adjust toy size for dnd area */
+.game-main__center__dragNdrop-area .toy__card__img {
+  height: 68px;
+  width: 68px;
 }
 
 /* showflake styles */
@@ -799,6 +821,7 @@ select[multiple] option {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  z-index: 12;
 }
 
 .game-main__center__light-bulbs {
@@ -1073,4 +1096,29 @@ select[multiple] option {
 }
 
 .toy__card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 5px;
+}
+
+.toy__card__img {
+  width: 85%;
+  position: absolute;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.toy__card__qty {
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  background-color: #01aa6d;
+  border-radius: 50%;
+  width: 1.5em;
+  height: 1.5em;
+  display: grid;
+  place-content: center;
 }
