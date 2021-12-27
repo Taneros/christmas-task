@@ -17,9 +17,42 @@ import * as interfaces from '../core/interfaces';
 const enum localStorageNames {
   filter = 'filter',
   basket = 'basket',
+  gameOnSettings = 'gameOnSettings',
 }
 
 class Settings {
+  gameOnSettings: interfaces.IGameOnSettingsExt = {
+    startDecorate: false,
+    bg: {
+      snow: false,
+      audio: false,
+    },
+    tree: {
+      tree_1: false,
+      tree_2: false,
+      tree_3: false,
+      tree_4: false,
+    },
+    bgImg: {
+      bgImg_1: false,
+      bgImg_2: false,
+      bgImg_3: false,
+      bgImg_4: false,
+      bgImg_5: false,
+      bgImg_6: false,
+      bgImg_7: false,
+      bgImg_8: false,
+    },
+    treeLights: {
+      on: false,
+      colored: false,
+      blue: false,
+      green: false,
+      yellow: false,
+      red: false,
+    },
+  };
+
   static sliderYearSettings = {
     start: [1940, 2020],
     connect: true,
@@ -38,6 +71,32 @@ class Settings {
       max: 12,
     },
     step: 1,
+  };
+
+  defaultBasketItems: interfaces.basket = {
+    items: [
+      null,
+      2,
+      5,
+      3,
+      2,
+      4,
+      6,
+      12,
+      10,
+      2,
+      7,
+      11,
+      5,
+      3,
+      4,
+      3,
+      3,
+      7,
+      2,
+      12,
+      8,
+    ],
   };
 
   filter: interfaces.IObj = {
