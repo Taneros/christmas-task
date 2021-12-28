@@ -815,7 +815,7 @@ select[multiple] option {
 }
 
 /* The slider */
-.slider {
+.choose-lights .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -827,7 +827,7 @@ select[multiple] option {
   transition: 0.4s;
 }
 
-.slider:before {
+.choose-lights .slider:before {
   position: absolute;
   content: '';
   height: 20px;
@@ -854,15 +854,12 @@ select[multiple] option {
 }
 
 /* Rounded sliders */
-.slider.round {
+.choose-lights .slider.round {
   border-radius: 34px;
 }
 
-.slider.round:before {
+.choose-lights .slider.round:before {
   border-radius: 50%;
-}
-
-.choose-lights__label {
 }
 
 /** Game Page Styles - Center Section Styles **/

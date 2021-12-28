@@ -18,6 +18,7 @@ const enum localStorageNames {
   filter = 'filter',
   basket = 'basket',
   gameOnSettings = 'gameOnSettings',
+  hash = 'hash',
 }
 
 class Settings {
@@ -150,7 +151,7 @@ class Settings {
 
   static setLocalStorageControls(
     data_name: localStorageNames,
-    data: object | []
+    data: object | [] | string
   ): void {
     localStorage.setItem(data_name, JSON.stringify(data));
   }

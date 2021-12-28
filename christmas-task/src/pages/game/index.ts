@@ -78,7 +78,7 @@ class GamePage extends Page {
     Array.from(chooseTreeDiv.children[1].children).forEach((div) => {
       div.setAttribute(
         'style',
-        `background: rgba(173 216 230 / 23%) url("../assets/tree/${div.id.match(
+        `background: rgba(173 216 230 / 23%) url("./assets/tree/${div.id.match(
           /\d+/g
         )}.png") no-repeat center; background-size: contain;`
       );
@@ -656,7 +656,20 @@ class GamePage extends Page {
     const basketNumBadge = <HTMLElement>(
       document.querySelector('.basket__badge')
     );
-    if (Settings.getLocalStorageControls(localStorageNames.basket)) {
+
+    console.log(
+      `LS`,
+      Object(Settings.getLocalStorageControls(localStorageNames.basket))[
+        'items'
+      ]
+    );
+
+    if (
+      Settings.getLocalStorageControls(localStorageNames.basket) &&
+      Object(Settings.getLocalStorageControls(localStorageNames.basket))[
+        'items'
+      ].length !== 0
+    ) {
       GamePage.basketItems = Object(
         Settings.getLocalStorageControls(localStorageNames.basket)
       );
