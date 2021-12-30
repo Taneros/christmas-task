@@ -944,7 +944,7 @@ select[multiple] option {
   bottom: 0;
   width: 65%;
   min-width: 350px;
-  height: 75%;
+  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

@@ -430,7 +430,7 @@ class SettingsPage extends Page {
     } else {
       // not unique
       // remove element from array
-      basketItems[cardImgNum] = 0;
+      basketItems[cardImgNum] = null;
       cardDiv.classList.toggle('active');
 
       console.log(

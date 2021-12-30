@@ -657,18 +657,18 @@ class GamePage extends Page {
       document.querySelector('.basket__badge')
     );
 
-    console.log(
-      `LS`,
-      Object(Settings.getLocalStorageControls(localStorageNames.basket))[
-        'items'
-      ]
-    );
+    // console.log(
+    //   `LS`,
+    //   Object(Settings.getLocalStorageControls(localStorageNames.basket))[
+    //     'items'
+    //   ]
+    // );
 
     if (
       Settings.getLocalStorageControls(localStorageNames.basket) &&
       Object(Settings.getLocalStorageControls(localStorageNames.basket))[
         'items'
-      ].length !== 0
+      ].filter((el: number | null) => el !== null).length
     ) {
       GamePage.basketItems = Object(
         Settings.getLocalStorageControls(localStorageNames.basket)
